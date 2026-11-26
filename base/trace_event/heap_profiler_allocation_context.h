@@ -71,7 +71,7 @@ struct BASE_EXPORT AllocationContext {
   AllocationContext();
   AllocationContext(const Backtrace& backtrace, const char* type_name);
 
-  friend bool BASE_EXPORT operator==(const AllocationContext&,
+  friend bool operator==(const AllocationContext&,
                                      const AllocationContext&) = default;
 
   Backtrace backtrace;

@@ -120,7 +120,7 @@ struct FeatureParam {
 
   // Calling Get() or GetWithoutCache() will activate the field trial associated
   // with |feature|. See GetFieldTrialParamValueByFeature() for more details.
-  BASE_EXPORT T Get() const {
+  T Get() const {
     if (internal::IsFeatureParamWithCacheEnabled() && cache_getter &&
         !feature->IsRuntimeMutable()) {
       return cache_getter(this);
@@ -144,31 +144,31 @@ struct FeatureParam {
 // instantiations for the FeatureParam<> to ensure instantiating them
 // in the base components to export them.
 template <>
-bool FeatureParam<bool>::GetWithoutCache() const;
+BASE_EXPORT bool FeatureParam<bool>::GetWithoutCache() const;
 template struct FeatureParam<bool>;
 template struct internal::FeatureParamTraits<bool>;
 
 template <>
-int FeatureParam<int>::GetWithoutCache() const;
+BASE_EXPORT int FeatureParam<int>::GetWithoutCache() const;
 template struct FeatureParam<int>;
 template struct internal::FeatureParamTraits<int>;
 
 template <>
-size_t FeatureParam<size_t>::GetWithoutCache() const;
+BASE_EXPORT size_t FeatureParam<size_t>::GetWithoutCache() const;
 template struct FeatureParam<size_t>;
 template struct internal::FeatureParamTraits<size_t>;
 
 template <>
-double FeatureParam<double>::GetWithoutCache() const;
+BASE_EXPORT double FeatureParam<double>::GetWithoutCache() const;
 template struct FeatureParam<double>;
 template struct internal::FeatureParamTraits<double>;
 
 template <>
-std::string FeatureParam<std::string>::GetWithoutCache() const;
+BASE_EXPORT std::string FeatureParam<std::string>::GetWithoutCache() const;
 template struct FeatureParam<std::string>;
 
 template <>
-TimeDelta FeatureParam<TimeDelta>::GetWithoutCache() const;
+BASE_EXPORT TimeDelta FeatureParam<TimeDelta>::GetWithoutCache() const;
 template struct FeatureParam<TimeDelta>;
 template struct internal::FeatureParamTraits<TimeDelta>;
 
