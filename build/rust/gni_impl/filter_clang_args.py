@@ -29,6 +29,12 @@ unknown synthesized arguments.
 """
 
 
+# GCC options (MinGW GCC builds) that libclang does not know.
+_GCC_ONLY_ARGS = {
+    '-fno-keep-inline-dllexport',
+}
+
+
 def filter_clang_args(clangargs):
 
     def do_filter(args):
@@ -54,7 +60,7 @@ def filter_clang_args(clangargs):
                     i += 2
                     continue
 
-            if arg == '-ftime-trace':
+            if arg == '-ftime-trace' or arg in _GCC_ONLY_ARGS:
                 i += 1
                 continue
 
