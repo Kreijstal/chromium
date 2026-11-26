@@ -20,7 +20,9 @@ assert(is_win)
 config("absl") {
   # absl.natvis listed as an input in //third_party/abseil-cpp/BUILD.gn to
   # guarantee relinking on changes.
-  ldflags = [ "/NATVIS:" + rebase_path("absl.natvis", root_build_dir) ]
+  if (is_msvc) {
+    ldflags = [ "/NATVIS:" + rebase_path("absl.natvis", root_build_dir) ]
+  }
 }
 
 config("chrome") {
@@ -62,19 +64,25 @@ config("blink") {
 
 config("cc") {
   # cc.natvis listed as an input in //cc/base to guarantee relinking on changes.
-  ldflags = [ "/NATVIS:" + rebase_path("cc.natvis", root_build_dir) ]
+  if (is_msvc) {
+    ldflags = [ "/NATVIS:" + rebase_path("cc.natvis", root_build_dir) ]
+  }
 }
 
 config("cc_component_build") {
   # cc-component-build.natvis listed as an input in //cc/base to guarantee
   # relinking on changes.
-  ldflags =
-      [ "/NATVIS:" + rebase_path("cc-component-build.natvis", root_build_dir) ]
+  if (is_msvc) {
+    ldflags =
+        [ "/NATVIS:" + rebase_path("cc-component-build.natvis", root_build_dir) ]
+  }
 }
 
 config("cc_non_component_build") {
   # cc-non-component-build.natvis listed as an input in //cc/base to guarantee
   # relinking on changes.
-  ldflags = [ "/NATVIS:" +
-              rebase_path("cc-non-component-build.natvis", root_build_dir) ]
+  if (is_msvc) {
+    ldflags = [ "/NATVIS:" +
+                rebase_path("cc-non-component-build.natvis", root_build_dir) ]
+  }
 }
