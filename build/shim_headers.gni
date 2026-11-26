@@ -5,7 +5,11 @@
 template("shim_headers") {
   action_name = "gen_${target_name}"
   config_name = "${target_name}_config"
-  shim_headers_path = "${root_gen_dir}"
+  if (is_qtwebengine) {
+    shim_headers_path = "${root_gen_dir}"
+  } else {
+    shim_headers_path = "${root_gen_dir}/shim_headers/${target_name}"
+  }
 
   config(config_name) {
     include_dirs = [ shim_headers_path ]
@@ -28,11 +32,19 @@ template("shim_headers") {
     }
     args += invoker.headers
 
-    output_pattern = "$target_gen_dir/" + invoker.root_path + "/{{source_file_part}}"
-    outputs = process_file_template(invoker.headers,output_pattern)
+    if (is_qtwebengine) {
+      output_pattern = "$target_gen_dir/" + invoker.root_path + "/{{source_file_part}}"
+      outputs = process_file_template(invoker.headers,output_pattern)
 
-    input_pattern = "{{source_dir}}/" + invoker.root_path + "/{{source_file_part}}"
-    inputs = process_file_template(invoker.headers, input_pattern)
+      input_pattern = "{{source_dir}}/" + invoker.root_path + "/{{source_file_part}}"
+      inputs = process_file_template(invoker.headers, input_pattern)
+    } else {
+      outputs = []
+      foreach(h, invoker.headers) {
+        outputs += [ shim_headers_path + "/" +
+                     rebase_path(invoker.root_path, "//") + "/" + h ]
+      }
+    }
   }
 
   group(target_name) {
