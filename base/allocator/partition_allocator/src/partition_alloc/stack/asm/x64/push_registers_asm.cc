@@ -49,6 +49,7 @@ asm(".att_syntax                                          \n"
     "  pop %rbp                                           \n"
     "  ret                                                \n");
 
+#endif
 #else  // !_WIN64
 
 // We maintain 16-byte alignment at calls. There is an 8-byte return address

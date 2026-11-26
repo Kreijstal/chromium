@@ -5,6 +5,7 @@
 #ifndef PARTITION_ALLOC_INTERNAL_ALLOCATOR_FORWARD_H_
 #define PARTITION_ALLOC_INTERNAL_ALLOCATOR_FORWARD_H_
 
+#include <cstddef>
 #include <new>
 #include <type_traits>
 
