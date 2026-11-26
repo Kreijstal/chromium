@@ -181,6 +181,12 @@ declare_args() {
 }
 
 declare_args() {
+  # Appended to component library names, so components built from different
+  # Chromium versions can be installed side by side.
+  component_output_suffix = ""
+}
+
+declare_args() {
   # sdk.gni of a chromium-base SDK and the directory of its import libraries;
   # the targets it lists link those instead of compiling their sources.
   chromium_base_sdk_gni = ""
@@ -923,7 +929,10 @@ template("component") {
       _output_name = string_replace(_output_name, "//", "")
       _output_name = string_replace(_output_name, "/", "_")
       _output_name = string_replace(_output_name, ":", "_")
+    } else {
+      _output_name = invoker.output_name
     }
+    _output_name += component_output_suffix
   } else if (defined(invoker.static_component_type)) {
     assert(invoker.static_component_type == "static_library" ||
            invoker.static_component_type == "source_set")
@@ -935,13 +944,18 @@ template("component") {
   } else {
     _component_mode = "static_library"
   }
+  if (!defined(_output_name) && defined(invoker.output_name)) {
+    _output_name = invoker.output_name
+  }
 
   target(_component_mode, target_name) {
     if (defined(_output_name)) {
       output_name = _output_name
     }
     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
-    forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
+    forward_variables_from(invoker,
+                           "*",
+                           TESTONLY_AND_VISIBILITY + [ "output_name" ])
   }
 }
 
