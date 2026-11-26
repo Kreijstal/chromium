@@ -43,8 +43,8 @@ if (toolchain_has_rust) {
     "unwind",
   ]
 
-  if (!is_win) {
-    # These are no longer present in the Windows toolchain.
+  if (!is_msvc) {
+    # These are no longer present in the Windows (MSVC) toolchain.
     stdlib_files += [
       "libc",
 
@@ -52,6 +52,17 @@ if (toolchain_has_rust) {
       # https://github.com/rust-lang/rust/issues/151776 is resolved.
       "memchr",
       "object",
+    ]
+  }
+
+  if (is_mingw) {
+    # The windows-gnu std symbolizes backtraces with gimli.
+    stdlib_files += [
+      "addr2line",
+      "adler2",
+      "gimli",
+      "miniz_oxide",
+      "windows_link",
     ]
   }
 
@@ -100,7 +111,7 @@ if (toolchain_has_rust) {
   # When `rustc` drives the linking, then `rustc_wrapper.py` removes the
   # suffix from the `-l<name>.lib` arguments (because `rustc` adds it).
   source_set("stdlib_dependent_libs") {
-    if (is_win) {
+    if (is_msvc) {
       # The libc crate tries to link in the Windows CRT, but we specify the CRT
       # library ourselves in //build/config/win:dynamic_crt and
       # //build/config/win:static_crt because Rustc does not allow us to specify
@@ -115,7 +126,18 @@ if (toolchain_has_rust) {
 
   # See the comment above `stdlib_dependent_libs`.
   source_set("stdlib_public_dependent_libs") {
-    if (is_win) {
+    if (is_mingw) {
+      # GCC spells them without the MSVC suffix.
+      libs = [
+        "advapi32",
+        "bcrypt",
+        "kernel32",
+        "ntdll",
+        "synchronization",
+        "userenv",
+        "ws2_32",
+      ]
+    } else if (is_win) {
       # These libs provide functions that are used by the stdlib. Rust crates
       # will try to link them in with #[link] directives. However these don't
       # get propagated to the linker if Rust isn't driving the linking (a C++

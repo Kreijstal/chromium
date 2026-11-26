@@ -676,7 +676,12 @@ template("single_gcc_toolchain") {
       # We need to specify link groups, at least, for single pass linkers. I.e.
       # Rust libraries are alpha-sorted instead of by dependencies so they fail
       # to link if not properly ordered or grouped.
-      link_command += "$start_group_flag @\"$rspfile\" $end_group_flag {{solibs}} {{libs}} $start_group_flag {{rlibs}} $end_group_flag"
+      if (is_mingw) {
+        # GNU ld is single pass; rlibs reference archives in the rsp.
+        link_command += "$start_group_flag @\"$rspfile\" {{solibs}} {{libs}} {{rlibs}} $end_group_flag"
+      } else {
+        link_command += "$start_group_flag @\"$rspfile\" $end_group_flag {{solibs}} {{libs}} $start_group_flag {{rlibs}} $end_group_flag"
+      }
 
       # Generate a map file to be used for binary size analysis.
       # Map file adds ~10% to the link time on a z620.
