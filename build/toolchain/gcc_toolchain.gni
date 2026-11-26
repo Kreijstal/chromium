@@ -866,7 +866,12 @@ template("single_gcc_toolchain") {
         pool = "//build/toolchain:link_pool($default_toolchain)"
 
         default_output_extension = default_shlib_extension
-        output_prefix = "lib"
+        if (is_win) {
+          # rustc finds windows-gnu DLL crates by name without a lib prefix.
+          output_prefix = ""
+        } else {
+          output_prefix = "lib"
+        }
         default_output_dir = "{{root_out_dir}}${default_shlib_subdir}"
         description = "RUST(DYLIB) {{output}}"
         outputs = [
@@ -890,7 +895,12 @@ template("single_gcc_toolchain") {
         pool = "//build/toolchain:link_pool($default_toolchain)"
 
         default_output_extension = default_shlib_extension
-        output_prefix = "lib"
+        if (is_win) {
+          # rustc finds windows-gnu DLL crates by name without a lib prefix.
+          output_prefix = ""
+        } else {
+          output_prefix = "lib"
+        }
         default_output_dir = "{{root_out_dir}}${default_shlib_subdir}"
         description = "RUST(MACRO) {{output}}"
         outputs = [
