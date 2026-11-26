@@ -47,6 +47,7 @@ namespace ABI {
 }
 #else
 #include <windows.foundation.h>
+#endif
 // clang-format off
 #include <windows.h> // Must be included before <mmsystem.h>
 #include <mmsystem.h>
