@@ -17,7 +17,7 @@
 #include "third_party/skia/include/core/SkPaint.h"
 #include "third_party/skia/include/core/SkSurface.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

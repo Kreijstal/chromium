@@ -10,7 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class APITypeReferenceMap;

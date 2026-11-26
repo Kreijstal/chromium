@@ -56,7 +56,7 @@
 #include "third_party/blink/renderer/platform/testing/layer_tree_host_embedder.h"
 #include "third_party/blink/renderer/platform/testing/runtime_enabled_features_test_helpers.h"
 #include "ui/gl/gpu_preference.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using testing::Test;
 using testing::_;

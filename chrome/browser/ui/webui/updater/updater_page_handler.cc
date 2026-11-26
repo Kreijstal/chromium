@@ -35,12 +35,16 @@
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/updater/updater_ui.mojom.h"
+#include "build/build_config.h"
 #include "chrome/browser/updater/updater.h"
-#include "chrome/enterprise_companion/global_constants.h"
-#include "chrome/enterprise_companion/installer_paths.h"
 #include "chrome/updater/mojom/updater_service.mojom.h"
 #include "chrome/updater/updater_scope.h"
+
+#if !BUILDFLAG(IS_MINGW)
+#include "chrome/enterprise_companion/global_constants.h"
+#include "chrome/enterprise_companion/installer_paths.h"
 #include "chrome/updater/util/util.h"
+#endif
 #include "components/services/unzip/content/unzip_service.h"
 #include "components/services/unzip/public/cpp/unzip.h"
 #include "components/services/unzip/public/mojom/unzipper.mojom.h"
@@ -53,12 +57,21 @@ class DefaultUpdaterPageHandlerDelegate final
  public:
   std::optional<base::FilePath> GetUpdaterInstallDirectory(
       updater::UpdaterScope scope) const override {
+#if BUILDFLAG(IS_MINGW)
+    // No updater on MinGW.
+    return std::nullopt;
+#else
     return updater::GetInstallDirectory(scope);
+#endif
   }
 
   std::optional<base::FilePath> GetEnterpriseCompanionInstallDirectory()
       const override {
+#if BUILDFLAG(IS_MINGW)
+    return std::nullopt;
+#else
     return enterprise_companion::GetInstallDirectory();
+#endif
   }
 
   void GetSystemUpdaterState(
@@ -430,6 +443,10 @@ void UpdaterPageHandler::GetEnterpriseCompanionState(
           [](scoped_refptr<Delegate> delegate,
              const std::vector<updater::mojom::AppState>& app_states)
               -> GetEnterpriseCompanionStateResult {
+#if BUILDFLAG(IS_MINGW)
+            // No enterprise companion on MinGW.
+            return GetEnterpriseCompanionStateResponse::New();
+#else
             auto it = std::ranges::find_if(
                 app_states, [](const updater::mojom::AppState& app_state) {
                   return base::CompareCaseInsensitiveASCII(
@@ -451,6 +468,7 @@ void UpdaterPageHandler::GetEnterpriseCompanionState(
             return GetEnterpriseCompanionStateResponse::New(
                 EnterpriseCompanionState::New(
                     /*version=*/it->version, *std::move(install_dir)));
+#endif
           },
           delegate_)
           .Then(base::BindPostTaskToCurrentDefault(std::move(callback))));

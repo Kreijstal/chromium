@@ -9,7 +9,7 @@
 #include "third_party/blink/renderer/platform/bindings/thread_debugger.h"
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/traced_value.h"
-#include "v8/include/v8-inspector-protocol.h"
+#include "v8-inspector-protocol.h"
 
 namespace blink {
 

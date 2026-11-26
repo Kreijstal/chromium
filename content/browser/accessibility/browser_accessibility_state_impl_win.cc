@@ -33,7 +33,6 @@
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "ui/accessibility/accessibility_features.h"
 #include "ui/accessibility/platform/ax_platform.h"
-#include "ui/accessibility/platform/ax_platform_node_win.h"
 #include "ui/accessibility/platform/uia_client_info_source_win.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/win/singleton_hwnd.h"

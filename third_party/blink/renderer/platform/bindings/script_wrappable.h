@@ -37,7 +37,7 @@
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/type_traits.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

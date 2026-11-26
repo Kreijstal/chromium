@@ -98,7 +98,7 @@ source_set("test_support") {
 # :common_mojom which might be in different modules in a component-build.
 source_set("crypto_lib") {
   if (is_win) {
-    libs = [ "crypt32.lib" ]
+    libs = [ "crypt32" ]
   }
 }
 
@@ -118,6 +118,6 @@ source_set("unit_tests") {
   ]
 
   if (is_win) {
-    libs = [ "crypt32.lib" ]
+    libs = [ "crypt32" ]
   }
 }

@@ -131,7 +131,7 @@ void RecordEnclaveAvailabilityInternal(std::string_view type,
   // This API does not appear to be exported from kernel32.dll on
   // Windows 10.0.10240.
   static auto is_enclave_type_supported_func =
-      reinterpret_cast<decltype(&IsEnclaveTypeSupported)>(::GetProcAddress(
+      reinterpret_cast<BOOL(WINAPI*)(DWORD)>(::GetProcAddress(
           ::GetModuleHandleW(L"kernel32.dll"), "IsEnclaveTypeSupported"));
 
   bool is_supported = false;

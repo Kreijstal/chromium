@@ -34,6 +34,9 @@ class __declspec(uuid("6A283FE2-ECFA-4599-91C4-E80957137B26")) IOpenWithLauncher
                                            int flags) = 0;
 };
 
+constexpr IID IID_IOpenWithLauncher = {
+    0x6a283fe2, 0xecfa, 0x4599, {0x91, 0xc4, 0xe8, 0x09, 0x57, 0x13, 0x7b, 0x26}};
+
 // Returns the class ID for the "Execute Unknown" class, read from
 // `HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\OpenWith`.
 // Returns std::nullopt upon failure.
@@ -143,8 +146,9 @@ bool LaunchDefaultAppForFileExtensionSettings(
   }
   Microsoft::WRL::ComPtr<IOpenWithLauncher> open_with_launcher;
   if (FAILED(::CoCreateInstance(*open_with_launcher_clsid, nullptr,
-                                CLSCTX_LOCAL_SERVER,
-                                IID_PPV_ARGS(&open_with_launcher)))) {
+                                CLSCTX_LOCAL_SERVER, IID_IOpenWithLauncher,
+                                reinterpret_cast<void**>(
+                                    open_with_launcher.GetAddressOf())))) {
     RecordOpenWithLauncherResult(OpenWithLauncherResult::kComError);
     return false;
   }

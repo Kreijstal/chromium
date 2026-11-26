@@ -9,10 +9,10 @@
 
 #include "base/functional/unretained_traits.h"
 #include "third_party/blink/renderer/platform/heap/thread_state_storage.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/garbage-collected.h"
-#include "v8/include/cppgc/liveness-broker.h"
-#include "v8/include/cppgc/type-traits.h"
+#include "cppgc/allocation.h"
+#include "cppgc/garbage-collected.h"
+#include "cppgc/liveness-broker.h"
+#include "cppgc/type-traits.h"
 
 namespace cppgc {
 class LivenessBroker;

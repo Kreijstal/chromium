@@ -11,7 +11,7 @@
 #include "third_party/blink/renderer/platform/scheduler/common/task_priority.h"
 #include "third_party/blink/renderer/platform/testing/main_thread_isolate.h"
 #include "third_party/blink/renderer/platform/testing/scoped_main_thread_overrider.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink::scheduler {
 class MainThreadSchedulerImpl;

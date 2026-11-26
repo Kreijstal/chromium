@@ -10,8 +10,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "v8-forward.h"
+#include "v8-persistent-handle.h"
 
 namespace extensions {
 

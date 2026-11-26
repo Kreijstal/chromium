@@ -17,8 +17,8 @@
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/scheduler/public/event_loop.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-microtask-queue.h"
+#include "v8-forward.h"
+#include "v8-microtask-queue.h"
 
 namespace blink {
 

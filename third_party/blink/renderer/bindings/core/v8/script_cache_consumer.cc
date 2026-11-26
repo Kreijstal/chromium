@@ -23,7 +23,7 @@
 #include "third_party/blink/renderer/platform/wtf/cross_thread_functional.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #include "third_party/perfetto/include/perfetto/tracing/track_event_args.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

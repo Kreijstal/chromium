@@ -12,8 +12,8 @@
 #include "gin/object_template_builder.h"
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/wrappable.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 namespace extensions {
 

@@ -33,7 +33,7 @@
 
 #include "third_party/blink/renderer/platform/bindings/scoped_persistent.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

@@ -15,8 +15,8 @@
 #include "base/trace_event/memory_allocator_dump.h"
 #include "base/trace_event/memory_dump_manager.h"
 #include "third_party/blink/renderer/platform/heap/thread_state.h"
-#include "v8/include/cppgc/heap-statistics.h"
-#include "v8/include/v8-isolate.h"
+#include "cppgc/heap-statistics.h"
+#include "v8-isolate.h"
 
 namespace blink {
 namespace {

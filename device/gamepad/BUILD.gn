@@ -99,8 +99,18 @@ component("gamepad") {
       "xinput_haptic_gamepad_win.cc",
       "xinput_haptic_gamepad_win.h",
     ]
+    if (is_mingw) {
+      sources -= [
+        "wgi_data_fetcher_win.cc",
+        "wgi_data_fetcher_win.h",
+        "wgi_gamepad_device.cc",
+        "wgi_gamepad_device.h",
+      ]
+      libs = [ "hid" ]
+    } else {
+      libs = [ "hid.lib" ]
+    }
     deps += [ "//device/base" ]
-    libs = [ "hid.lib" ]
   }
 
   if (is_linux || is_chromeos) {

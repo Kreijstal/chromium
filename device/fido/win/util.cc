@@ -39,6 +39,10 @@ enum BiometricAvailability {
 
 void DeviceHasBiometricsAvailableInternal(
     base::OnceCallback<void(bool)> callback) {
+#if defined(__MINGW32__)
+  std::move(callback).Run(false);
+  return;
+#else
   SCOPED_MAY_LOAD_LIBRARY_AT_BACKGROUND_PRIORITY();
   // Lookup requires an asynchronous system API call, so cache the value.
   static std::atomic<BiometricAvailability> availability =
@@ -95,6 +99,7 @@ void DeviceHasBiometricsAvailableInternal(
     std::move(second_split.second).Run(false);
     return;
   }
+#endif
 }
 
 std::optional<bool>& GetBiometricOverride() {

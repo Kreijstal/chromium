@@ -71,14 +71,14 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_origin_trials.h"
 #include "url/origin.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-microtask-queue.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-primitive.h"
-#include "v8/include/v8-template.h"
+#include "cppgc/allocation.h"
+#include "v8-context.h"
+#include "v8-cppgc.h"
+#include "v8-isolate.h"
+#include "v8-microtask-queue.h"
+#include "v8-object.h"
+#include "v8-primitive.h"
+#include "v8-template.h"
 
 using perfetto::protos::pbzero::ChromeTrackEvent;
 

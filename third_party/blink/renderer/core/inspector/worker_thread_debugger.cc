@@ -47,7 +47,7 @@
 #include "third_party/blink/renderer/platform/bindings/source_location.h"
 #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

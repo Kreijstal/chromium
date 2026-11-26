@@ -5,7 +5,9 @@
 #include "gpu/config/gpu_info_collector.h"
 
 // C system before C++ system.
-#include <DirectML.h>
+//#if BUILDFLAG(USE_ML)
+#include <directx/DirectML.h>
+//#endif
 #include <d3d11.h>
 #include <d3d11_3.h>
 #include <dxgi.h>
@@ -318,6 +320,9 @@ std::string DriverVersionToString(LARGE_INTEGER driver_version) {
 
 void CollectNPUInformation(GPUInfo* gpu_info) {
   // Enumerate all dxcore adapters to retrieve the NPUs.
+#if defined(__MINGW32__)
+  return;
+#else
   base::ScopedNativeLibrary dxcore_library(
       base::LoadSystemLibrary(L"DXCore.dll"));
   if (!dxcore_library.is_valid()) {
@@ -447,6 +452,7 @@ void CollectNPUInformation(GPUInfo* gpu_info) {
       gpu_info->npus.push_back(device);
     }
   }
+#endif
 }
 
 bool CollectDriverInfoD3D(GPUInfo* gpu_info) {
@@ -606,9 +612,9 @@ void GetGpuSupportedDirectXVersion(uint32_t& d3d12_feature_level,
     // For the default adapter only: EnumAdapters(0, ...).
     // Check to see if the adapter supports Direct3D 12.
     for (auto level : feature_levels) {
-      if (SUCCEEDED(d3d12_create_device_proc(dxgi_adapter.Get(), level,
-                                             _uuidof(ID3D12Device),
-                                             &d3d12_device))) {
+      if (SUCCEEDED(d3d12_create_device_proc(
+              dxgi_adapter.Get(), level, IID_ID3D12Device,
+              reinterpret_cast<void**>(d3d12_device.GetAddressOf())))) {
         d3d12_feature_level = level;
         break;
       }
@@ -643,6 +649,9 @@ void GetGpuSupportedDirectXVersion(uint32_t& d3d12_feature_level,
       if (!dml_library.is_valid()) {
         return;
       }
+#if defined(__MINGW32__)
+      return;
+#else
       // On older versions of windows DMLCreateDevice accepts a different
       // number of parameters. We should use DMLCreateDevice1 which always
       // takes the same number of parameters to ensure consistency
@@ -676,6 +685,7 @@ void GetGpuSupportedDirectXVersion(uint32_t& d3d12_feature_level,
         directml_feature_level =
             feature_levels_supported.MaxSupportedFeatureLevel;
       }
+#endif
     }
   }
 }

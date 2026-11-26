@@ -19,7 +19,9 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "device/base/features.h"
+#if defined(COMPILER_MSVC)
 #include "device/bluetooth/bluetooth_adapter_winrt.h"
+#endif
 #include "device/bluetooth/bluetooth_classic_win.h"
 #include "device/bluetooth/bluetooth_device_win.h"
 #include "device/bluetooth/bluetooth_discovery_session_outcome.h"
@@ -38,7 +40,11 @@ scoped_refptr<BluetoothAdapter> BluetoothAdapter::CreateAdapter() {
 
 // static
 scoped_refptr<BluetoothAdapter> BluetoothAdapterWin::CreateAdapter() {
+#if defined(COMPILER_MSVC)
   return base::WrapRefCounted(new BluetoothAdapterWinrt());
+#else
+  return CreateClassicAdapter();  // No WinRT adapter on MinGW.
+#endif
 }
 
 // static

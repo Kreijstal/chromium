@@ -9,8 +9,8 @@
 
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/type_traits.h"
-#include "v8/include/cppgc/heap-consistency.h"
-#include "v8/include/cppgc/member.h"
+#include "cppgc/heap-consistency.h"
+#include "cppgc/member.h"
 
 namespace blink {
 

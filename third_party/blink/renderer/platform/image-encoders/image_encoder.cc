@@ -13,6 +13,11 @@
 #include <stdio.h>  // Needed by jpeglib.h
 
 #include "jpeglib.h"  // for JPEG_MAX_DIMENSION
+#if defined(__MINGW32__)
+// mingw's jmorecfg.h includes shlwapi.h, whose StrCat macro would rename
+// later blink::StrCat calls in this jumbo unit to the nonexistent StrCatW.
+#undef StrCat
+#endif
 #include "third_party/libwebp/src/src/webp/encode.h"  // for WEBP_MAX_DIMENSION
 
 namespace blink {

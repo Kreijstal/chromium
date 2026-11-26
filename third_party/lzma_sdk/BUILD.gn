@@ -13,7 +13,7 @@ use_arm_neon_optimizations = target_cpu == "arm" || target_cpu == "arm64"
 # LzmaDecOpt.asm only works on x64 and not x86.
 # https://sourceforge.net/p/sevenzip/discussion/45797/thread/768932e9dd/?limit=25#0d6c
 # If enable_lzma_opt is enabled, disable_llvm_ml should be enabled as well.
-enable_lzma_opt = host_os == "win" && target_cpu == "x64" && !is_msan
+enable_lzma_opt = is_msvc && host_os == "win" && target_cpu == "x64" && !is_msan
 if (enable_lzma_opt) {
   assert(disable_llvm_ml)
 }

@@ -36,9 +36,6 @@ source_set("updater") {
     "//chrome/browser/resources/updater:resources",
     "//chrome/browser/ui/webui:plural_string_handler",
     "//chrome/browser/updater",
-    "//chrome/enterprise_companion:constants_prod",
-    "//chrome/enterprise_companion:installer_paths",
-    "//chrome/updater:browser_sources",
     "//components/services/unzip/content",
     "//components/services/unzip/public/cpp",
     "//components/services/unzip/public/mojom",
@@ -46,24 +43,36 @@ source_set("updater") {
     "//mojo/public/cpp/bindings",
     "//ui/webui",
   ]
+
+  # chrome/updater and the enterprise companion are MSVC-only.
+  if (!is_mingw) {
+    deps += [
+      "//chrome/enterprise_companion:constants_prod",
+      "//chrome/enterprise_companion:installer_paths",
+      "//chrome/updater:browser_sources",
+    ]
+  }
 }
 
-source_set("unit_tests") {
-  testonly = true
-  sources = [ "updater_page_handler_unittest.cc" ]
-  deps = [
-    ":mojo_bindings",
-    ":updater",
-    "//base",
-    "//base/test:test_support",
-    "//chrome/enterprise_companion:constants_prod",
-    "//chrome/updater:browser_sources",
-    "//components/services/unzip:in_process",
-    "//components/services/unzip/content",
-    "//components/services/unzip/public/mojom",
-    "//mojo/public/cpp/bindings",
-    "//testing/gmock",
-    "//testing/gtest",
-    "//third_party/zlib/google:zip",
-  ]
+# Needs the MSVC-only chrome/updater and enterprise companion.
+if (!is_mingw) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [ "updater_page_handler_unittest.cc" ]
+    deps = [
+      ":mojo_bindings",
+      ":updater",
+      "//base",
+      "//base/test:test_support",
+      "//chrome/enterprise_companion:constants_prod",
+      "//chrome/updater:browser_sources",
+      "//components/services/unzip:in_process",
+      "//components/services/unzip/content",
+      "//components/services/unzip/public/mojom",
+      "//mojo/public/cpp/bindings",
+      "//testing/gmock",
+      "//testing/gtest",
+      "//third_party/zlib/google:zip",
+    ]
+  }
 }

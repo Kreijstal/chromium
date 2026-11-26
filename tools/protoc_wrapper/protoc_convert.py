@@ -26,8 +26,8 @@ def Main():
   )
   args, passthrough_args = parser.parse_known_args()
 
-  stdin = open(args.infile, 'r')
-  stdout = open(args.outfile, 'w')
+  stdin = open(args.infile, 'r', encoding='utf-8')
+  stdout = open(args.outfile, 'w', encoding='utf-8')
 
   subprocess.check_call(
     [args.protoc] + passthrough_args, stdin=stdin, stdout=stdout

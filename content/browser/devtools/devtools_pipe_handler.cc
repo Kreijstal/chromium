@@ -96,7 +96,7 @@ class PipeIOBase {
   base::AtomicFlag shutting_down_;
 };
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 // Temporary CRT parameter validation error handler override that allows
 //  _get_osfhandle() to return INVALID_HANDLE_VALUE instead of crashing.
 class ScopedInvalidParameterHandlerOverride {
@@ -128,7 +128,7 @@ class ScopedInvalidParameterHandlerOverride {
   const _invalid_parameter_handler prev_invalid_parameter_handler_;
 };
 
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 }  // namespace
 
@@ -140,7 +140,9 @@ class PipeReaderBase : public PipeIOBase {
         devtools_handler_(std::move(devtools_handler)),
         read_fd_(read_fd) {
 #if BUILDFLAG(IS_WIN)
+#if defined(COMPILER_MSVC)
     ScopedInvalidParameterHandlerOverride invalid_parameter_handler_override;
+#endif
     read_handle_ = reinterpret_cast<HANDLE>(_get_osfhandle(read_fd));
 #endif
   }
@@ -157,7 +159,9 @@ class PipeReaderBase : public PipeIOBase {
 #if BUILDFLAG(IS_WIN)
     // Cancel pending synchronous read.
     CancelIoEx(read_handle_, nullptr);
+#if defined(COMPILER_MSVC)
     ScopedInvalidParameterHandlerOverride invalid_parameter_handler_override;
+#endif
     _close(read_fd_);
     read_handle_ = INVALID_HANDLE_VALUE;
 #else
@@ -224,7 +228,9 @@ class PipeWriterBase : public PipeIOBase {
   explicit PipeWriterBase(int write_fd)
       : PipeIOBase("DevToolsPipeHandlerWriteThread"), write_fd_(write_fd) {
 #if BUILDFLAG(IS_WIN)
+#if defined(COMPILER_MSVC)
     ScopedInvalidParameterHandlerOverride invalid_parameter_handler_override;
+#endif
     write_handle_ = reinterpret_cast<HANDLE>(_get_osfhandle(write_fd));
 #endif
   }
@@ -240,7 +246,9 @@ class PipeWriterBase : public PipeIOBase {
  protected:
   void ClosePipe() override {
 #if BUILDFLAG(IS_WIN)
+#if defined(COMPILER_MSVC)
     ScopedInvalidParameterHandlerOverride invalid_parameter_handler_override;
+#endif
     _close(write_fd_);
     write_handle_ = INVALID_HANDLE_VALUE;
 #else

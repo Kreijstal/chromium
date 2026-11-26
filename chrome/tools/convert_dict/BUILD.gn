@@ -58,6 +58,9 @@ executable("convert_dict") {
   testonly = true
 
   sources = [ "convert_dict.cc" ]
+  if (is_mingw) {
+    ldflags = [ "-municode" ]
+  }
   deps = [
     ":lib",
     "//base",

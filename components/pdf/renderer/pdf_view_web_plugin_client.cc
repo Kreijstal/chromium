@@ -35,10 +35,10 @@
 #include "ui/accessibility/ax_features.mojom-features.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-value.h"
+#include "v8-context.h"
+#include "v8-isolate.h"
+#include "v8-local-handle.h"
+#include "v8-value.h"
 
 #if BUILDFLAG(ENABLE_PRINTING)
 #include "components/printing/renderer/print_render_frame_helper.h"

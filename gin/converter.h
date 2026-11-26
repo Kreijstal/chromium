@@ -19,10 +19,10 @@
 #include "base/location.h"
 #include "base/notreached.h"
 #include "gin/gin_export.h"
-#include "v8/include/v8-container.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-source-location.h"
+#include "v8-container.h"
+#include "v8-forward.h"
+#include "v8-isolate.h"
+#include "v8-source-location.h"
 
 namespace base {
 class TimeTicks;

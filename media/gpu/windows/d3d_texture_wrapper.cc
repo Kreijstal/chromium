@@ -103,6 +103,7 @@ D3DStatus DefaultD3DTextureWrapper::Init(
   picture_buffer_gpu_resource_init_done_cb_ =
       std::move(picture_buffer_gpu_resource_init_done_cb);
 
+#if defined(COMPILER_MSVC)
   // Start construction of the GpuResources.
   // We send the texture itself, since we assume that we're using the angle
   // device for decoding.  Sharing seems not to work very well.  Otherwise, we
@@ -119,6 +120,7 @@ D3DStatus DefaultD3DTextureWrapper::Init(
       std::move(get_helper_cb), size_, output_color_space_, output_si_format_,
       video_device_, texture, array_slice, std::move(picture_buffer),
       std::move(gpu_resource_init_cb), workarounds_);
+#endif
   return D3DStatus::Codes::kOk;
 }
 
@@ -164,6 +166,7 @@ DefaultD3DTextureWrapper::GpuResources::GpuResources(
 
   auto* shared_image_manager = helper_->GetSharedImageManager();
 
+#if defined(COMPILER_MSVC)
   // Usage flags to allow the display compositor to draw from it, video to
   // decode from it, and webgl/canvas to read from it.
   gpu::SharedImageUsageSet usage = gpu::SHARED_IMAGE_USAGE_VIDEO_DECODE |
@@ -254,6 +257,7 @@ DefaultD3DTextureWrapper::GpuResources::GpuResources(
   std::move(gpu_resource_init_cb)
       .Run(std::move(picture_buffer), std::move(shared_image_rep),
            std::move(shared_image));
+#endif
 }
 
 DefaultD3DTextureWrapper::GpuResources::~GpuResources() = default;

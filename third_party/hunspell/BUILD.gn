@@ -81,7 +81,7 @@ static_library("hunspell") {
 
   cflags = []
 
-  if (is_win) {
+  if (is_msvc) {
     cflags += [
       # TODO(jschuh): http://crbug.com/167187 size_t -> int
       "/wd4267",

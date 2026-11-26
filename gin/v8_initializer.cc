@@ -45,8 +45,8 @@
 #include "partition_alloc/page_allocator.h"
 #include "partition_alloc/partition_address_space.h"
 #include "tools/v8_context_snapshot/buildflags.h"
-#include "v8/include/v8-initialization.h"
-#include "v8/include/v8-snapshot.h"
+#include "v8-initialization.h"
+#include "v8-snapshot.h"
 
 #if defined(V8_USE_EXTERNAL_STARTUP_DATA)
 #if BUILDFLAG(IS_ANDROID)

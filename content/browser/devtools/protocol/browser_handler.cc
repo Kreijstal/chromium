@@ -53,7 +53,7 @@
 #include "third_party/blink/public/common/global_privacy_control/global_privacy_control_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/gurl.h"
-#include "v8/include/v8-version-string.h"
+#include "v8-version-string.h"
 
 using blink::PermissionType;
 

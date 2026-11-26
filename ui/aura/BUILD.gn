@@ -163,7 +163,12 @@ component("aura") {
     ]
   }
 
-  if (is_win) {
+  if (is_mingw) {
+    libs = [
+      "wtsapi32",
+      "dwmapi",
+    ]
+  } else {
     libs = [
       "wtsapi32.lib",
       "dwmapi.lib",

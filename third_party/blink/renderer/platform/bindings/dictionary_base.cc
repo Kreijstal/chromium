@@ -6,7 +6,7 @@
 
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
-#include "v8/include/v8-object.h"
+#include "v8-object.h"
 
 namespace blink {
 

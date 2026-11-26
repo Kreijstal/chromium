@@ -8,7 +8,9 @@
 
 #include "base/win/scoped_hdc.h"
 #include "ui/display/display.h"
+#if defined(COMPILER_MSVC)
 #include "ui/display/win/uwp_text_scale_factor.h"
+#endif
 
 namespace display {
 namespace win {
@@ -37,7 +39,11 @@ int GetDPIFromScalingFactor(float device_scaling_factor) {
 }
 
 double GetAccessibilityFontScale() {
+#if defined(COMPILER_MSVC)
   return 1.0 / UwpTextScaleFactor::Instance()->GetTextScaleFactor();
+#else
+  return 1.0;  // No UWP text scale factor on MinGW.
+#endif
 }
 
 namespace internal {

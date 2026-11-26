@@ -162,12 +162,20 @@ component("crypto") {
       "unexportable_key_win.h",
       "user_verifying_key_win.cc",
     ]
-    libs = [
-      "crypt32.lib",
-      "ncrypt.lib",
-      "tbs.lib",
-    ]
-    ldflags = [ "/DELAYLOAD:tbs.dll" ]
+    if (is_mingw) {
+      sources -= [ "user_verifying_key_win.cc" ]
+      libs = [
+        "ncrypt",
+        "tbs",
+      ]
+    } else {
+      libs = [
+        "crypt32.lib",
+        "ncrypt.lib",
+        "tbs.lib",
+      ]
+      ldflags = [ "/DELAYLOAD:tbs.dll" ]
+    }
   }
 
   # Some files are built when NSS is used for the platform certificate library.

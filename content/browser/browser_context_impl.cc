@@ -16,6 +16,7 @@
 #include "base/trace_event/trace_event.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/common/features.h"
+#include "content/public/browser/webid/identity_request_dialog_controller.h"
 #include "content/browser/background_sync/background_sync_scheduler.h"
 #include "content/browser/browsing_data/browsing_data_remover_impl.h"
 #include "content/browser/btm/btm_service_impl.h"

@@ -119,6 +119,7 @@ static base::TimeDelta ExtractStartTime(AVStream* stream) {
   if (stream->start_time != kNoFFmpegTimestamp)
     start_time = ConvertFromTimeBase(stream->time_base, stream->start_time);
 
+#if LIBAVFORMAT_VERSION_MAJOR < 61
   // Next try to use the first DTS value, for codecs where we know PTS == DTS
   // (excludes all H26x codecs). The start time must be returned in PTS.
   if (av_stream_get_first_dts(stream) != kNoFFmpegTimestamp &&
@@ -130,6 +131,7 @@ static base::TimeDelta ExtractStartTime(AVStream* stream) {
     if (first_pts < start_time)
       start_time = first_pts;
   }
+#endif
 
   return start_time;
 }

@@ -5,7 +5,7 @@
 #ifndef EXTENSIONS_RENDERER_NATIVE_HANDLER_H_
 #define EXTENSIONS_RENDERER_NATIVE_HANDLER_H_
 
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 

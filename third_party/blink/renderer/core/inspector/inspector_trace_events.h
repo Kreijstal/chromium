@@ -26,7 +26,7 @@
 #include "third_party/blink/renderer/platform/scheduler/public/web_scheduling_priority.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace base {
 class UnguessableToken;

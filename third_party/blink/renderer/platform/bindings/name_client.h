@@ -7,7 +7,7 @@
 
 #include "third_party/blink/renderer/platform/bindings/buildflags.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
-#include "v8/include/cppgc/name-provider.h"
+#include "cppgc/name-provider.h"
 
 namespace blink {
 

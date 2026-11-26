@@ -18,8 +18,8 @@
 #include "third_party/blink/public/web/web_script_source.h"
 #include "third_party/blink/public/web/web_serialized_script_value.h"
 #include "third_party/re2/src/re2/re2.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 namespace plugins {
 

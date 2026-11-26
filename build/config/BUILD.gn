@@ -151,7 +151,7 @@ config("release") {
 
 # This config defines the default libraries applied to all targets.
 config("default_libs") {
-  if (is_win) {
+  if (is_win && !is_mingw) {
     # TODO(brettw) this list of defaults should probably be smaller, and
     # instead the targets that use the less common ones (e.g. wininet or
     # winspool) should include those explicitly.
@@ -195,6 +195,31 @@ config("default_libs") {
         "ole32.lib",
       ]
     }
+  } else if (is_mingw) {
+    libs = [
+      "advapi32",
+      "comdlg32",
+      "dbghelp",
+      "dnsapi",
+      "gdi32",
+      "msimg32",
+      "odbc32",
+      "odbccp32",
+      "oleaut32",
+      "shell32",
+      "shlwapi",
+      "user32",
+      "usp10",
+      "uuid",
+      "version",
+      "wininet",
+      "winmm",
+      "winspool",
+      "ws2_32",
+      "delayimp",
+      "kernel32",
+      "ole32",
+    ]
   } else if (is_android) {
     libs = [
       "dl",
@@ -343,7 +368,7 @@ if (is_win) {
 config("executable_config") {
   configs = []
 
-  if (is_win) {
+  if (is_win && !is_mingw) {
     configs += _windows_linker_configs
   } else if (is_mac) {
     configs += [ "//build/config/mac:mac_dynamic_flags" ]
@@ -410,7 +435,7 @@ config("shared_library_config") {
 # Recommend precompiled headers for targets with more than 50 .cc files.
 config("precompiled_headers") {
   if (enable_precompiled_headers) {
-    if (is_win) {
+    if (is_win && !is_mingw) {
       # This is a string rather than a file GN knows about. It has to match
       # exactly what's in the /FI flag below, and what might appear in the
       # source code in quotes for an #include directive.
@@ -423,7 +448,7 @@ config("precompiled_headers") {
 
       # Force include the header.
       cflags = [ "/FI$precompiled_header" ]
-    } else if (is_mac || is_linux) {
+    } else if (is_mac || is_linux || is_mingw) {
       precompiled_source = "//build/precompile.h"
     }
   }

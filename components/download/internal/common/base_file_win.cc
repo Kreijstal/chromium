@@ -11,7 +11,9 @@
 
 #include <shellapi.h>
 #include <wrl/client.h>
+#if defined(COMPILER_MSVC)
 #include <wrl/implements.h>
+#endif
 
 #include "base/threading/scoped_blocking_call.h"
 #include "base/win/com_init_util.h"
@@ -144,9 +146,13 @@ DownloadInterruptReason HRESULTToDownloadInterruptReason(HRESULT hr) {
 }
 
 class FileOperationProgressSink
+#if defined(COMPILER_MSVC)
     : public Microsoft::WRL::RuntimeClass<
           Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
           IFileOperationProgressSink> {
+#else
+    : public IFileOperationProgressSink {
+#endif
  public:
   FileOperationProgressSink() = default;
 
@@ -229,7 +235,7 @@ class FileOperationProgressSink
   IFACEMETHODIMP UpdateProgress(UINT, UINT) override { return S_OK; }
 
  protected:
-  ~FileOperationProgressSink() override = default;
+  ~FileOperationProgressSink() = default;
 
  private:
   HRESULT result_ = S_OK;
@@ -237,6 +243,7 @@ class FileOperationProgressSink
 
 }  // namespace
 
+#if defined(COMPILER_MSVC)
 // Renames a file using IFileOperation::MoveItem() to ensure that the target
 // file gets the correct default security descriptor in the new path.
 // Returns a network error, or net::OK for success.
@@ -305,5 +312,6 @@ DownloadInterruptReason BaseFile::MoveFileAndAdjustPermissions(
 
   return interrupt_reason;
 }
+#endif
 
 }  // namespace download

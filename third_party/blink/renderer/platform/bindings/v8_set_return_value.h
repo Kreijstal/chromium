@@ -16,8 +16,8 @@
 #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
 #include "third_party/blink/renderer/platform/bindings/v8_value_cache.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
-#include "v8/include/v8-function-callback.h"
-#include "v8/include/v8.h"
+#include "v8-function-callback.h"
+#include "v8.h"
 
 namespace blink::bindings {
 

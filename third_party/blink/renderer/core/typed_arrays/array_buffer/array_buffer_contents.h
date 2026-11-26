@@ -33,7 +33,7 @@
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/thread_safe_ref_counted.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace base::subtle {
 class PlatformSharedMemoryRegion;

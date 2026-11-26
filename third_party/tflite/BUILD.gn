@@ -278,10 +278,14 @@ if (!use_litert_tflite) {
     }
 
     if (is_win) {
-      cflags += [
-        "/DTFL_COMPILE_LIBRARY",
-        "/wd4018",
-      ]
+      if (is_msvc) {
+        cflags += [
+          "/DTFL_COMPILE_LIBRARY",
+          "/wd4018",
+        ]
+      } else {
+        defines += [ "TFL_COMPILE_LIBRARY" ]
+      }
 
       defines += [ "TFLITE_MMAP_DISABLED" ]
     }

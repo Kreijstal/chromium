@@ -106,7 +106,11 @@ component("native_theme") {
 
     public_deps += [ "//ui/color:accent_color_observer" ]
 
-    libs = [ "uxtheme.lib" ]
+    if (is_mingw) {
+      libs = [ "uxtheme" ]
+    } else {
+      libs = [ "uxtheme.lib" ]
+    }
   }
 
   # Mac uses `NativeThemeAura` for the web instance. That class does not depend

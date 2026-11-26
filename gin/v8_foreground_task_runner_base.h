@@ -5,7 +5,7 @@
 #ifndef GIN_V8_FOREGROUND_TASK_RUNNER_BASE_H_
 #define GIN_V8_FOREGROUND_TASK_RUNNER_BASE_H_
 
-#include "v8/include/v8-platform.h"
+#include "v8-platform.h"
 
 #include "gin/gin_export.h"
 #include "gin/public/v8_idle_task_runner.h"

@@ -267,9 +267,11 @@ std::unique_ptr<D3DTextureWrapper> CopyTextureSelector::CreateTextureWrapper(
   if (FAILED(device->CreateTexture2D(&texture_desc, nullptr, &out_texture)))
     return nullptr;
 
+#if defined(COMPILER_MSVC)
   if (FAILED(
           SetDebugName(out_texture.Get(), "D3D11Decoder_CopyTextureSelector")))
     return nullptr;
+#endif
 
   gfx::ColorSpace output_color_space =
       GetOutputColorSpace(input_color_space, IsRGB(pixel_format_));

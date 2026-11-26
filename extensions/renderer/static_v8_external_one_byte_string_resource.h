@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "base/compiler_specific.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-primitive.h"
 
 namespace extensions {
 

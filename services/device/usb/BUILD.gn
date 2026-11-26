@@ -79,12 +79,21 @@ static_library("usb") {
       "usb_service_win.h",
     ]
 
-    libs = [
-      "advapi32.lib",
-      "ole32.lib",
-      "setupapi.lib",
-      "winusb.lib",
-    ]
+    if (is_msvc) {
+      libs = [
+        "advapi32.lib",
+        "ole32.lib",
+        "setupapi.lib",
+        "winusb.lib",
+      ]
+    } else {
+      libs = [
+        "advapi32",
+        "ole32",
+        "setupapi",
+        "winusb",
+      ]
+    }
 
     deps += [ "//third_party/re2" ]
   }

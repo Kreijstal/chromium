@@ -122,15 +122,21 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "components/stylus_handwriting/win/features.h"
+#if !defined(__MINGW32__)
 #include "content/browser/renderer_host/input/stylus_handwriting_controller_win.h"
+#endif
 #include "content/browser/renderer_host/legacy_render_widget_host_win.h"
 #include "content/common/features.h"
+#if !defined(__MINGW32__)
 #include "ui/accessibility/platform/ax_fragment_root_win.h"
 #include "ui/accessibility/platform/browser_accessibility_manager_win.h"
 #include "ui/accessibility/platform/browser_accessibility_win.h"
+#endif
 #include "ui/base/ime/virtual_keyboard_controller.h"
 #include "ui/base/ime/virtual_keyboard_controller_observer.h"
+#if !defined(__MINGW32__)
 #include "ui/base/ime/win/tsf_input_scope.h"
+#endif
 #include "ui/base/win/hidden_window.h"
 #include "ui/display/win/screen_win.h"
 #include "ui/events/win/system_event_state_lookup.h"
@@ -176,6 +182,20 @@ namespace content {
 BASE_FEATURE(kPreventReentrantInternalSetBounds,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(IS_WIN) && defined(__MINGW32__)
+// MinGW has no WRL, so the Windows Shell Handwriting controller is not built.
+class StylusHandwritingControllerWin {
+ public:
+  static void Initialize() {}
+  static bool IsHandwritingAPIAvailable() { return false; }
+  static StylusHandwritingControllerWin* GetInstance() { return nullptr; }
+  int GetStylusHandwritingToleranceInDips(aura::Window&) const { return 0; }
+  template <typename... Args>
+  void OnStartStylusWriting(Args&&...) {}
+  void OnFocusHandled() {}
+  void OnFocusFailed() {}
+};
+#endif
 namespace {
 // Guards CHECKing that the UI compositor LSI is only ever invalid when
 // `RenderWidgetHost` is hidden.
@@ -461,6 +481,7 @@ void RenderWidgetHostViewAura::InitAsChild(gfx::NativeView parent_view) {
 
   // Set input scope once after the window is created and before any focus
   // change happens.
+#if !defined(__MINGW32__)  // TSF sources are not built on MinGW.
   if (aura::WindowTreeHost* host = window_->GetHost();
       host && GetInputMethod()) {
     InputScope input_scope = ShouldDoLearning() ? IS_DEFAULT : IS_PRIVATE;
@@ -471,6 +492,7 @@ void RenderWidgetHostViewAura::InitAsChild(gfx::NativeView parent_view) {
       host->window()->SetProperty(kLastInputScopeKey, input_scope);
     }
   }
+#endif
 #endif
 }
 
@@ -610,7 +632,10 @@ HWND RenderWidgetHostViewAura::GetHostWindowHWND() const {
 #endif
 
 gfx::NativeViewAccessible RenderWidgetHostViewAura::GetNativeViewAccessible() {
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) && defined(__MINGW32__)
+  // No native accessibility without ATL.
+  return static_cast<gfx::NativeViewAccessible>(NULL);
+#elif BUILDFLAG(IS_WIN)
   aura::WindowTreeHost* window_host = window_->GetHost();
   if (!window_host)
     return static_cast<gfx::NativeViewAccessible>(NULL);
@@ -2353,6 +2378,7 @@ void RenderWidgetHostViewAura::SetActiveCompositionForAccessibility(
     const gfx::Range& range,
     const std::u16string& active_composition_text,
     bool is_composition_committed) {
+#if !defined(__MINGW32__)
   ui::BrowserAccessibilityManager* manager =
       host()->GetRootBrowserAccessibilityManager();
   if (manager) {
@@ -2365,6 +2391,7 @@ void RenderWidgetHostViewAura::SetActiveCompositionForAccessibility(
                                       is_composition_committed);
     }
   }
+#endif
 }
 
 ui::TextInputClient::EditingContext
@@ -2386,9 +2413,11 @@ RenderWidgetHostViewAura::GetTextEditingContext() {
 }
 
 void RenderWidgetHostViewAura::NotifyOnFrameFocusChanged() {
+#if BUILDFLAG(IS_MSVC)
   if (GetInputMethod()) {
     GetInputMethod()->OnUrlChanged();
   }
+#endif
 }
 #endif  // BUILDFLAG(IS_WIN)
 
@@ -2902,8 +2931,12 @@ void RenderWidgetHostViewAura::OnTouchEvent(ui::TouchEvent* event) {
       event->type() == ui::EventType::kTouchPressed) {
     // The raw pointer and stroke id will be later used during the stylus
     // handwriting request in OnStartStylusWriting().
+#if defined(__MINGW32__)
+    last_stylus_handwriting_properties_ = std::nullopt;
+#else
     last_stylus_handwriting_properties_ =
         ui::GetStylusHandwritingProperties(*event);
+#endif
     TRACE_EVENT2(
         "ime", "RenderWidgetHostViewAura::OnTouchEvent",
         "handwriting_pointer_id",

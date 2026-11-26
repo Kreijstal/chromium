@@ -26,7 +26,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_remote_frame.h"
 #include "third_party/blink/public/web/web_view.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using content::V8ValueConverter;
 

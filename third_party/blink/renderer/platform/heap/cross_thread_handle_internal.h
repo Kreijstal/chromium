@@ -8,8 +8,8 @@
 #include "base/functional/bind.h"
 #include "base/threading/platform_thread.h"
 #include "third_party/blink/public/public_buildflags.h"
-#include "v8/include/cppgc/cross-thread-persistent.h"
-#include "v8/include/cppgc/source-location.h"
+#include "cppgc/cross-thread-persistent.h"
+#include "cppgc/source-location.h"
 
 // Required to optimize away locations for builds that do not need them to avoid
 // binary size blowup.

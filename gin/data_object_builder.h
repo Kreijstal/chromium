@@ -12,8 +12,8 @@
 #include "base/memory/stack_allocated.h"
 #include "gin/converter.h"
 #include "gin/gin_export.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-object.h"
+#include "v8-forward.h"
+#include "v8-object.h"
 
 namespace gin {
 

@@ -79,10 +79,17 @@ source_set("lib") {
     "//base",
   ]
 
-  libs = [
-    "crypt32.lib",
-    "rpcrt4.lib",
-  ]
+  if (is_msvc) {
+    libs = [
+      "crypt32",
+      "rpcrt4.lib",
+    ]
+  } else {
+    libs = [
+      "crypt32",
+      "rpcrt4",
+    ]
+  }
 }
 
 source_set("service_lib") {

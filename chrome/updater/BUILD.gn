@@ -22,7 +22,7 @@ if (is_win) {
 # check that the C++ includes match the build dependency graph.
 
 group("updater") {
-  if (is_win) {
+  if (is_msvc) {
     deps = [ "//chrome/updater/win" ]
   }
   if (is_mac) {
@@ -32,7 +32,7 @@ group("updater") {
     deps = [ "//chrome/updater/linux" ]
   }
 
-  if (is_win || is_mac || is_linux) {
+  if (is_msvc || is_mac || is_linux) {
     deps += [
       ":updater_license",
       "//chrome/updater/test/qualification_app",
@@ -48,7 +48,7 @@ group("updater") {
 group("all") {
   testonly = true
 
-  if (is_win || is_mac || is_linux) {
+  if (is_msvc || is_mac || is_linux) {
     deps = [
       ":updater",
       ":updater_tests",
@@ -60,7 +60,7 @@ group("all") {
   }
 }
 
-if (is_win || is_mac || is_linux) {
+if (is_msvc || is_mac || is_linux) {
   action("updater_license") {
     script = "//chrome/updater/fix_licenses.py"
     deps = [ ":generate_updater_license" ]
@@ -308,7 +308,7 @@ if (is_win || is_mac || is_linux) {
       ]
     }
 
-    if (is_win) {
+    if (is_msvc) {
       sources += [
         "activity_impl_win.cc",
         "app/app_install_util_win.cc",
@@ -742,7 +742,7 @@ if (is_win || is_mac || is_linux) {
     }
   }
 
-  if (is_linux || is_mac || is_win) {
+  if (is_linux || is_mac || is_msvc) {
     crx3("updater_selfupdate_test_crx") {
       base_dir = "$root_build_dir"
       key = "test/data/selfupdate_test_key.der"
@@ -782,7 +782,7 @@ if (is_win || is_mac || is_linux) {
         }
       }
 
-      if (is_win) {
+      if (is_msvc) {
         inputs = [ "$root_build_dir/UpdaterSetup_test.exe" ]
         deps = [ "//chrome/updater/win/installer:installer_test" ]
 
@@ -1045,7 +1045,7 @@ if (is_win || is_mac || is_linux) {
 
     defines = []
 
-    if (is_win) {
+    if (is_msvc) {
       sources += [
         "activity_impl_win_unittest.cc",
         "app/app_install_win_unittest.cc",
@@ -1307,7 +1307,7 @@ if (is_win || is_mac || is_linux) {
     }
   }
 
-  if (is_win) {
+  if (is_msvc) {
     action("generate_allowed_imports") {
       testonly = true
       script = "//chrome/test/delayload/generate_allowed_imports.py"
@@ -1386,7 +1386,7 @@ if (is_win || is_mac || is_linux) {
         "//third_party/updater:old_updater",
       ]
     }
-    if (is_win) {
+    if (is_msvc) {
       deps += [ "//chrome/installer/util:with_no_strings" ]
       data_deps = [
         ":test_service_files",
@@ -1427,7 +1427,7 @@ if (is_win || is_mac || is_linux) {
         "//third_party/updater:old_updater",
       ]
     }
-    if (is_win) {
+    if (is_msvc) {
       deps += [ "//chrome/installer/util:with_no_strings" ]
       data_deps += [
         ":test_service_files",
@@ -1440,7 +1440,7 @@ if (is_win || is_mac || is_linux) {
     }
   }
 
-  if (is_win) {
+  if (is_msvc) {
     group("updater_tests_win_uac") {
       testonly = true
       data = [ "//testing/scripts/run_telemetry_as_googletest.py" ]

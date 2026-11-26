@@ -37,7 +37,7 @@ source_set("renderers") {
     "//ui/gfx",
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "win/media_engine_extension.cc",
       "win/media_engine_extension.h",
@@ -65,9 +65,9 @@ source_set("renderers") {
 
     # media_foundation_renderer uses Windows D3D and Media Foundation APIs.
     libs = [
-      "d3d11.lib",
+      "d3d11",
       "mfplat.lib",
-      "dxgi.lib",
+      "dxgi",
     ]
   }
 

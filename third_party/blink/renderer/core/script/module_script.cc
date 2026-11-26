@@ -21,7 +21,7 @@
 #include "third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

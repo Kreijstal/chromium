@@ -36,6 +36,16 @@ config("inside_blink") {
     "BLINK_IMPLEMENTATION=1",
     "INSIDE_BLINK",
   ]
+  if (is_clang || !is_msvc) {
+    cflags += [
+      "-Wno-unused-variable",
+    ]
+  } else {
+    cflags += [
+      "/wd4101",
+      "/wd4805",
+    ]
+  }
   if (is_clang) {
     cflags += [
       "-Wconversion",
@@ -58,7 +68,7 @@ import("//build/config/pch.gni")
 
 config("blink_pch") {
   if (enable_precompiled_headers) {
-    if (is_win) {
+    if (is_msvc) {
       # This is a string rather than a file GN knows about. It has to match
       # exactly what's in the /FI flag below, and what might appear in the
       # source code in quotes for an #include directive.
@@ -72,6 +82,8 @@ config("blink_pch") {
 
       # Force include the header.
       cflags = [ "/FI$precompiled_header" ]
+    } else if (is_mingw) {
+      precompiled_source = "//third_party/blink/renderer/build/win/precompile.h"
     } else if (is_mac) {
       precompiled_source = "//third_party/blink/renderer/build/mac/prefix.h"
     } else if (is_linux) {
@@ -86,7 +98,7 @@ config("config") {
   cflags = []
   defines = []
 
-  if (is_win) {
+  if (is_msvc) {
     cflags += [
       "/wd4305",  # Truncation from 'type1' to 'type2'.
       "/wd4324",  # Struct padded due to declspec(align).

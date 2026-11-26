@@ -14,7 +14,7 @@
 #include "ui/gfx/gpu_fence.h"
 #include "ui/gfx/gpu_memory_buffer_handle.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "ui/gfx/win/d3d_shared_fence.h"
 #endif
 
@@ -255,7 +255,7 @@ void ClientSharedImageInterface::CopyToGpuMemoryBuffer(
   proxy_->CopyToGpuMemoryBuffer(std::move(sync_tokens), mailbox);
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void ClientSharedImageInterface::CopyToGpuMemoryBufferAsync(
     std::vector<SyncToken> sync_tokens,
     const Mailbox& mailbox,

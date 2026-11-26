@@ -15,6 +15,7 @@
 #ifndef CRASHPAD_COMPAT_WIN_STRINGS_H_
 #define CRASHPAD_COMPAT_WIN_STRINGS_H_
 
+#ifdef _MSC_VER
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,6 +24,10 @@ int strcasecmp(const char* s1, const char* s2);
 
 #ifdef __cplusplus
 }  // extern "C"
+#endif
+
+#else
+#include_next <strings.h>
 #endif
 
 #endif  // CRASHPAD_COMPAT_WIN_STRINGS_H_

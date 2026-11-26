@@ -29,7 +29,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/unicode_string.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

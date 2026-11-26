@@ -31,7 +31,7 @@ static_library("winhttp") {
 
   defines = [ "SECURITY_WIN32" ]
 
-  libs = [ "winhttp.lib" ]
+  libs = [ "winhttp" ]
 }
 
 source_set("unit_tests") {

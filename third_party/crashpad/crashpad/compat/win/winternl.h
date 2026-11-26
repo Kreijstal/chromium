@@ -15,8 +15,12 @@
 #ifndef CRASHPAD_COMPAT_WIN_WINTERNL_H_
 #define CRASHPAD_COMPAT_WIN_WINTERNL_H_
 
+#ifdef _MSC_VER
 // include_next <winternl.h>
 #include <../um/winternl.h>
+#else
+#include_next <winternl.h>
+#endif
 
 // 10.0.16299.0 SDK
 

@@ -60,7 +60,7 @@
 #include "third_party/skia/include/core/SkTypes.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

@@ -26,22 +26,22 @@
 #include "mojo/public/cpp/bindings/clone_traits.h"
 #include "third_party/blink/public/mojom/installedapp/related_application.mojom.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "content/browser/installedapp/fetch_related_win_apps_task.h"
 #include "content/browser/installedapp/native_win_app_fetcher.h"
 #include "content/browser/installedapp/native_win_app_fetcher_impl.h"
-#endif
+#endif  // BUILDFLAG(IS_MSVC)
 
 namespace content {
 
 namespace {
 constexpr int kMaxNumberOfQueriedApps = 10;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 std::unique_ptr<NativeWinAppFetcher> CreateNativeWinAppFetcher() {
   return std::make_unique<NativeWinAppFetcherImpl>();
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 }
 
 InstalledAppProviderImpl::InstalledAppProviderImpl(
@@ -49,10 +49,10 @@ InstalledAppProviderImpl::InstalledAppProviderImpl(
     mojo::PendingReceiver<blink::mojom::InstalledAppProvider> pending_receiver,
     base::SelfDeletingPassKey key)
     : DocumentService(render_frame_host, std::move(pending_receiver), key) {
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   native_win_app_fetcher_factory_ =
       base::BindRepeating(&CreateNativeWinAppFetcher);
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 }
 
 InstalledAppProviderImpl::~InstalledAppProviderImpl() = default;
@@ -92,13 +92,13 @@ void InstalledAppProviderImpl::FilterInstalledApps(
 
   base::ConcurrentCallbacks<FetchRelatedAppsTaskResult> concurrent;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   if (base::FeatureList::IsEnabled(features::kFilterInstalledAppsWinMatching)) {
     StartTask(std::make_unique<FetchRelatedWinAppsTask>(
                   native_win_app_fetcher_factory_.Run()),
               related_apps, concurrent.CreateCallback());
   }
-#endif
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(
@@ -159,14 +159,14 @@ void InstalledAppProviderImpl::AggregateTaskResults(
   return std::move(callback).Run(mojo::Clone(matched_apps));
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void InstalledAppProviderImpl::SetNativeWinAppFetcherFactoryForTesting(
     base::RepeatingCallback<std::unique_ptr<NativeWinAppFetcher>()> factory) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK_IS_TEST();
   native_win_app_fetcher_factory_ = std::move(factory);
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 // static
 void InstalledAppProviderImpl::Create(

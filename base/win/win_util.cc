@@ -15,7 +15,9 @@
 #include <cfgmgr32.h>
 #include <inspectable.h>
 #include <lm.h>
+#if defined(COMPILER_MSVC)
 #include <mdmregistration.h>
+#endif
 #include <ntstatus.h>
 #include <powrprof.h>
 #include <propkey.h>
@@ -173,6 +175,7 @@ bool* GetDomainEnrollmentStateStorage() {
 }
 
 bool* GetRegisteredWithManagementStateStorage() {
+#if defined(COMPILER_MSVC)
   static bool state = [] {
     // Mitigate the issues caused by loading DLLs on a background thread
     // (http://crbug/973868).
@@ -201,9 +204,13 @@ bool* GetRegisteredWithManagementStateStorage() {
   }();
 
   return &state;
+#else
+  return nullptr;
+#endif
 }
 
 std::optional<DSREG_JOIN_TYPE>& GetAzureADJoinStateStorage() {
+#if defined(COMPILER_MSVC)
   static std::optional<DSREG_JOIN_TYPE> state = [] {
     base::ElapsedTimer timer;
 
@@ -244,6 +251,9 @@ std::optional<DSREG_JOIN_TYPE>& GetAzureADJoinStateStorage() {
                             timer.Elapsed());
     return join_type;
   }();
+#else
+  static std::optional<DSREG_JOIN_TYPE> state;
+#endif
   return state;
 }
 
@@ -467,6 +477,7 @@ std::optional<PinUser32AndGdi32TrialState> g_pin_user32_and_gdi32_trial_state;
 // Convertible(5), or Detachable(6).
 // https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-deployment-deviceform
 bool& IsDeviceFormConvertible() {
+#if defined(COMPILER_MSVC)
   static bool is_convertible = [] {
     DWORD deviceForm = DEVICEFAMILYDEVICEFORM_UNKNOWN;
     using lpfnRtlGetDeviceFamilyInfo =
@@ -485,6 +496,7 @@ bool& IsDeviceFormConvertible() {
            (deviceForm == DEVICEFAMILYDEVICEFORM_DETACHABLE);
   }();
   return is_convertible;
+#endif
 }
 
 // Returns a reference to a cached boolean that is true if the device hardware
@@ -643,6 +655,7 @@ bool QueryDeviceConvertibility() {
 // it to always return UserInteractionMode_Touch which as per documentation
 // indicates tablet mode.
 bool IsWindows10TabletMode(HWND hwnd) {
+#if defined(COMPILER_MSVC)
   ScopedHString view_settings_guid = ScopedHString::Create(
       RuntimeClass_Windows_UI_ViewManagement_UIViewSettings);
   Microsoft::WRL::ComPtr<IUIViewSettingsInterop> view_settings_interop;
@@ -667,6 +680,9 @@ bool IsWindows10TabletMode(HWND hwnd) {
   }
 
   return mode == ABI::Windows::UI::ViewManagement::UserInteractionMode_Touch;
+#else
+  return false;
+#endif
 }
 
 void IsDeviceSlateWithKeyboard(HWND hwnd,
@@ -851,7 +867,9 @@ void SetAbortBehaviorForCrashReporting() {
   // Disabling the _CALL_REPORTFAULT behavior is important since otherwise it
   // has the sideffect of clearing our exception filter, which means we
   // don't get any crash.
+#if defined(COMPILER_MSVC) || (defined(COMPILER_GCC) && defined(_UCRT))
   _set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
+#endif
 
   // Set a SIGABRT handler for good measure. We will crash even if the default
   // is left in place, however this allows us to crash earlier. And it also
@@ -1108,13 +1126,17 @@ bool GetLoadedModulesSnapshot(HANDLE process, std::vector<HMODULE>* snapshot) {
 }
 
 void EnableFlicks(HWND hwnd) {
+#if defined(COMPILER_MSVC)
   ::RemoveProp(hwnd, MICROSOFT_TABLETPENSERVICE_PROPERTY);
+#endif
 }
 
 void DisableFlicks(HWND hwnd) {
+#if defined(COMPILER_MSVC)
   ::SetProp(hwnd, MICROSOFT_TABLETPENSERVICE_PROPERTY,
             reinterpret_cast<HANDLE>(TABLET_DISABLE_FLICKS |
                                      TABLET_DISABLE_FLICKFALLBACKKEYS));
+#endif
 }
 
 void EnableHighDPISupport() {

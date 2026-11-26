@@ -62,6 +62,7 @@ REPLACEMENTS = {
     'libXNVCtrl': 'third_party/angle/src/third_party/libXNVCtrl/BUILD.gn',
     'libxslt': 'third_party/libxslt/BUILD.gn',
     'libyuv': 'third_party/libyuv/BUILD.gn',
+    'nasm': 'third_party/nasm/BUILD.gn',
     'openh264': 'third_party/openh264/BUILD.gn',
     'opus': 'third_party/opus/BUILD.gn',
     're2': 'third_party/re2/BUILD.gn',

@@ -8,7 +8,7 @@
 #include "third_party/blink/renderer/bindings/modules/v8/v8_binding_for_modules.h"
 #include "third_party/blink/renderer/modules/indexeddb/idb_key.h"
 #include "third_party/blink/renderer/modules/indexeddb/idb_value.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

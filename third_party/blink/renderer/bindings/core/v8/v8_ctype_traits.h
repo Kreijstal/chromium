@@ -8,7 +8,7 @@
 #include <type_traits>
 
 #include "third_party/blink/renderer/bindings/core/v8/idl_types_base.h"
-#include "v8/include/v8-fast-api-calls.h"
+#include "v8-fast-api-calls.h"
 
 namespace blink {
 

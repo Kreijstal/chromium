@@ -15,7 +15,7 @@
 #include "build/build_config.h"
 #include "gin/public/isolate_holder.h"
 #include "gin/test/v8_test.h"
-#include "v8/include/v8-initialization.h"
+#include "v8-initialization.h"
 
 namespace gin {
 

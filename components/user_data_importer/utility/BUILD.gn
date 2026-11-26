@@ -60,8 +60,13 @@ source_set("safari_data_importer") {
     "//components/strings",
     "//components/user_data_importer/common",
   ]
+
+  if (!enable_rust) {
+    deps -= [":zip_ffi_glue"]
+  }
 }
 
+if (enable_rust) {
 rust_static_library("zip_ffi_glue") {
   allow_unsafe = true
   crate_root = "parsing_ffi/lib.rs"
@@ -85,6 +90,7 @@ rust_static_library("zip_ffi_glue") {
     "//third_party/rust/serde_json_lenient/v0_2:lib",
     "//third_party/rust/zip/v8:lib",
   ]
+}
 }
 
 copy("valid_test_archive_files") {

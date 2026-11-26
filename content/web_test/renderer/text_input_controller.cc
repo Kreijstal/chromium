@@ -21,9 +21,9 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/ime/ime_text_span.h"
 #include "ui/events/base_event_utils.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8.h"
 
 namespace content {
 

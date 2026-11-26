@@ -28,6 +28,7 @@ import("//build/config/cast.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/cronet/config.gni")
 import("//build/config/dcheck_always_on.gni")
+import("//build/config/jumbo.gni")
 import("//build/config/logging.gni")
 import("//build/config/profiling/profiling.gni")
 import("//build/config/rust.gni")
@@ -103,8 +104,8 @@ assert(!is_wasm, "base must not be built in most wasm toolchains")
 
 # This is here instead of in //build because //build is DEPS'd in by a few
 # subprojects that still support MSVC.
-assert(!is_win || is_clang,
-       "only clang-cl is supported on Windows, see https://crbug.com/988071")
+#assert(!is_win || is_clang,
+#       "only clang-cl is supported on Windows, see https://crbug.com/988071")
 
 if (is_android || is_robolectric) {
   import("//build/config/android/rules.gni")
@@ -121,7 +122,7 @@ _enable_code_ordering = is_android && !is_component_build &&
                         (current_cpu == "arm" || current_cpu == "arm64" ||
                          current_cpu == "x86" || current_cpu == "x64")
 
-if (is_win) {
+if (is_msvc) {
   # This is in a separate config so the flags can be applied to dependents.
   # ldflags in GN aren't automatically inherited.
   config("base_win_linker_flags") {
@@ -139,6 +140,9 @@ if (is_win) {
       "/DELAYLOAD:shcore.dll",
       "/DELAYLOAD:tbs.dll",
     ]
+  }
+} else if (is_mingw) {
+  config("base_win_linker_flags") {
   }
 }
 
@@ -246,7 +250,7 @@ source_set("asan_raw_ptr_service") {
 # base compilation units to be linked in where they wouldn't have otherwise.
 # This does not include test code (test support and anything in the test
 # directory) which should use source_set as is recommended for GN targets).
-component("base") {
+jumbo_component("base") {
   sources = [
     "allocator/allocator_check.cc",
     "allocator/allocator_check.h",
@@ -405,6 +409,8 @@ component("base") {
     "hash/legacy_hash.cc",
     "hash/legacy_hash.h",
     "json/json_common.h",
+    "json/json_parser.cc",
+    "json/json_parser.h",
     "json/json_reader.cc",
     "json/json_reader.h",
     "json/json_string_value_serializer.cc",
@@ -1108,6 +1114,10 @@ component("base") {
     ]
   }
 
+  jumbo_excluded_sources = [
+      "logging.cc",
+  ]
+
   if (is_linux || is_chromeos) {
     sources += [
       "debug/proc_maps_linux.cc",
@@ -1127,6 +1137,7 @@ component("base") {
       "threading/thread_type_delegate.cc",
       "threading/thread_type_delegate.h",
     ]
+    jumbo_excluded_sources += [ "process/memory_linux.cc" ]
   }
 
   if (is_chromeos) {
@@ -1175,10 +1186,17 @@ component("base") {
   # Used by metrics/crc32
   deps += [ "//third_party/zlib" ]
 
-  deps += [
-    "logging/rust_logger",
-    "//third_party/rust/serde_json_lenient/v0_2/wrapper",
-  ]
+  if (enable_rust) {
+    deps += [ "//third_party/rust/serde_json_lenient/v0_2/wrapper" ]
+  }
+
+  if (enable_rust && !is_qtwebengine) {
+    deps += [ "logging/rust_logger" ]
+    sources += [
+      "logging/rust_logger/print_rust_log_ffi.cc",
+      "logging/rust_logger/print_rust_log_ffi.h",
+    ]
+  }
 
   # `raw_ptr` cannot be made a component due to CRT symbol issues.
   # Its gateway to being a component is through `//base`, so we have
@@ -1223,6 +1241,16 @@ component("base") {
   # Base provides conversions between CXX types and base types (e.g.
   # std::string_view).
   public_deps += [ "//build/rust:cxx_cppdeps" ]
+
+
+  if (!enable_rust) {
+    sources -= [
+      "containers/span_rust.h",
+      "strings/string_view_rust.h",
+    ]
+
+    public_deps -= [ "//build/rust:cxx_cppdeps" ]
+  }
 
   # Needed for <atomic> if using newer C++ library than sysroot, except if
   # building inside the cros_sdk environment - use host_toolchain as a
@@ -1690,8 +1718,6 @@ component("base") {
     "files/scoped_temp_file.h",
     "json/json_file_value_serializer.cc",
     "json/json_file_value_serializer.h",
-    "logging/rust_logger/print_rust_log_ffi.cc",
-    "logging/rust_logger/print_rust_log_ffi.h",
     "memory/discardable_memory.cc",
     "memory/discardable_memory.h",
     "memory/discardable_memory_allocator.cc",
@@ -2084,6 +2110,34 @@ component("base") {
       "win/wrl_module.h",
     ]
 
+    if (is_mingw) {
+      sources -= [
+        "win/atl.h",                # requires <atlbase.h>
+        "win/atl_throw.cc",         # requires <atlbase.h>
+        "win/atl_throw.h",
+        "win/enum_variant.cc",      # requires <wrl/implements.h>
+        "win/enum_variant.h",
+        "win/vector.cc",            # requires <wrl/implements.h>
+        "win/vector.h",
+      ]
+
+      defines += [
+        "STRSAFE_NO_DEPRECATE",
+        "__STRSAFE__NO_INLINE",
+      ]
+    }
+
+    # winternl.h and NTSecAPI.h have different definitions of UNICODE_STRING.
+    # There's only one client of NTSecAPI.h in base but several of winternl.h,
+    # so exclude the NTSecAPI.h one.
+    jumbo_excluded_sources += [
+      "rand_util_win.cc",
+      "process/launch_win.cc",
+    ]
+
+    # lmerrlog.h and pdh.h have different definitions of HLOG.
+    jumbo_excluded_sources += [ "win/win_util.cc" ]
+
     deps += [ "//base/win:base_win_buildflags" ]
 
     if (com_init_check_hook_disabled) {
@@ -2091,20 +2145,20 @@ component("base") {
     }
 
     libs += [
-      "cfgmgr32.lib",
-      "crypt32.lib",
-      "ntdll.lib",
-      "onecore.lib",
-      "pdh.lib",
-      "powrprof.lib",
-      "propsys.lib",
-      "setupapi.lib",
-      "shcore.lib",
-      "tbs.lib",
-      "userenv.lib",
-      "wbemuuid.lib",
-      "winmm.lib",
-      "wintrust.lib",
+      "cfgmgr32",
+      "crypt32",
+      "ntdll",
+      "onecore",
+      "pdh",
+      "powrprof",
+      "propsys",
+      "setupapi",
+      "shcore",
+      "tbs",
+      "userenv",
+      "wbemuuid",
+      "winmm",
+      "wintrust",
     ]
     all_dependent_configs += [
       ":base_win_linker_flags",
@@ -2747,6 +2801,7 @@ if (is_android) {
   }
 }
 
+if (enable_rust) {
 rust_static_library("scoped_refptr") {
   sources = [ "memory/scoped_refptr.rs" ]
   crate_root = "memory/scoped_refptr.rs"
@@ -2979,6 +3034,7 @@ rust_static_library("rust_feature_unittests") {
     "//testing/rust_gtest_interop",
   ]
 }
+}
 
 if (is_linux || is_chromeos) {
   # Split out as a separate target for two reasons:
@@ -3098,6 +3154,7 @@ buildflag_header("feature_buildflags") {
     ]
   } else {
     flags = [ "ENABLE_BANNED_BASE_FEATURE_PREFIX=false" ]
+    flags += [ "ENABLE_RUST=$enable_rust" ]
   }
 }
 
@@ -3503,14 +3560,18 @@ if (is_win) {
   # base/test/data/pe_image.
   shared_library("pe_image_test") {
     sources = [ "win/pe_image_test.cc" ]
-    ldflags = [
-      "/DELAYLOAD:cfgmgr32.dll",
-      "/DELAYLOAD:shell32.dll",
-      "/SUBSYSTEM:WINDOWS",
-    ]
+    if (is_mingw) {
+      ldflags = [ "-mwindows" ]
+    } else {
+      ldflags = [
+        "/DELAYLOAD:cfgmgr32.dll",
+        "/DELAYLOAD:shell32.dll",
+        "/SUBSYSTEM:WINDOWS",
+      ]
+    }
     libs = [
-      "cfgmgr32.lib",
-      "shell32.lib",
+      "cfgmgr32",
+      "shell32",
     ]
   }
 
@@ -4323,6 +4384,17 @@ test("base_unittests") {
   }
 
   deps += [ "//build/rust:cxx_cppdeps" ]
+
+  if (!enable_rust) {
+    sources -= [
+      "containers/span_rust_unittest.cc",
+      "strings/string_piece_rust_unittest.cc",
+    ]
+
+    deps -= [
+      "//build/rust:cxx_cppdeps",
+    ]
+  }
 
   data_deps = [
     "//base/test:immediate_crash_test_helper",

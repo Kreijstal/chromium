@@ -9,7 +9,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/to_v8_traits.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/heap/visitor.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

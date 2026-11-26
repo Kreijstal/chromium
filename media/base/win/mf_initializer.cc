@@ -119,6 +119,9 @@ class MediaFoundationSession {
   bool ResolveMediaFoundationDelayloads() {
     // Mitigate the issues caused by loading DLLs on a background thread; see
     // https://crbug.com/41464781. The DLLs should already be loaded on account
+#if defined(__MINGW32__)
+    return false;  // MF stays off, as with 140's S_OK.
+#else
     // of `LoadMediaFoundationLibraries()`, but it is possible that resolving
     // the imports could lead to hard faults to page in the DLLs.
     SCOPED_MAY_LOAD_LIBRARY_AT_BACKGROUND_PRIORITY();
@@ -137,6 +140,7 @@ class MediaFoundationSession {
       }
     }
     return true;
+#endif
   }
 
   bool has_media_foundation_ = false;

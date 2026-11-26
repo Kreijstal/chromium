@@ -60,7 +60,7 @@
 #include "net/socket/server_socket.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/origin.h"
-#include "v8/include/v8-version-string.h"
+#include "v8-version-string.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/apk_info.h"

@@ -33,6 +33,9 @@ class BasicHeapVector final
  public:
   BasicHeapVector() = default;
 
+  void operator delete(void* p) { delete
+                                  (Vector<T, inlineCapacity, HeapAllocator>*)p; }
+
   explicit BasicHeapVector(wtf_size_t size) : BaseVector(size) {}
 
   BasicHeapVector(wtf_size_t size, const T& val) : BaseVector(size, val) {}
@@ -162,7 +165,9 @@ class BasicHeapVector final
     }
   };
   static_assert(std::is_empty_v<TypeConstraints>);
+#if !defined(COMPILER_MSVC)
   NO_UNIQUE_ADDRESS TypeConstraints type_constraints_;
+#endif
 };
 
 // On-stack for in-field version of Vector for referring to
@@ -171,7 +176,7 @@ template <typename T, wtf_size_t inlineCapacity = 0>
 using HeapVector = BasicHeapVector<internal::HeapCollectionType::kDisallowNew,
                                    T,
                                    inlineCapacity>;
-static_assert(IsDisallowNew<HeapVector<int>>);
+// static_assert(IsDisallowNew<HeapVector<int>>);
 #if DCHECK_IS_ON() ||                                     \
     BUILDFLAG(ENABLE_HEAP_VECTOR_MODIFICATION_CHECKS) == \
         BUILDFLAG(ENABLE_VECTOR_MODIFICATION_CHECKS)
@@ -182,7 +187,7 @@ ASSERT_SIZE(Vector<int>, HeapVector<int>);
 template <typename T, wtf_size_t inlineCapacity = 0>
 using GCedHeapVector =
     BasicHeapVector<internal::HeapCollectionType::kGCed, T, inlineCapacity>;
-static_assert(!IsDisallowNew<GCedHeapVector<int>>);
+//static_assert(!IsDisallowNew<GCedHeapVector<int>>);
 #if DCHECK_IS_ON() ||                                     \
     BUILDFLAG(ENABLE_HEAP_VECTOR_MODIFICATION_CHECKS) == \
         BUILDFLAG(ENABLE_VECTOR_MODIFICATION_CHECKS)

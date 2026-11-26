@@ -68,11 +68,11 @@
 #include "ui/accessibility/ax_tree_update.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-microtask-queue.h"
-#include "v8/include/v8-typed-array.h"
+#include "cppgc/allocation.h"
+#include "v8-context.h"
+#include "v8-cppgc.h"
+#include "v8-microtask-queue.h"
+#include "v8-typed-array.h"
 
 namespace {
 

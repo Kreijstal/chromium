@@ -28,6 +28,7 @@ BASE_EXPORT HRESULT RoActivateInstance(HSTRING class_id,
 // Retrieves an activation factory for the type specified.
 template <typename InterfaceType, wchar_t const* runtime_class_id>
 HRESULT GetActivationFactory(InterfaceType** factory) {
+#if defined(COMPILER_MSVC)
   ScopedHString class_id_hstring = ScopedHString::Create(runtime_class_id);
   if (!class_id_hstring.is_valid()) {
     return E_FAIL;
@@ -35,6 +36,7 @@ HRESULT GetActivationFactory(InterfaceType** factory) {
 
   return base::win::RoGetActivationFactory(class_id_hstring.get(),
                                            IID_PPV_ARGS(factory));
+#endif
 }
 
 }  // namespace base::win

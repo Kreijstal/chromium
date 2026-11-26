@@ -38,7 +38,7 @@
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

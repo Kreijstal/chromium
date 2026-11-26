@@ -23,8 +23,8 @@
 #include "gin/public/context_holder.h"
 #include "gin/public/gin_embedders.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-object.h"
+#include "v8-primitive.h"
 
 namespace extensions {
 

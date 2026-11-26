@@ -9,7 +9,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_PRECOMPILE_CORE_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PRECOMPILE_CORE_H_
 
-#if defined(_MSC_VER)
+#if defined(_WIN32)
 #include "third_party/blink/renderer/build/win/precompile.h"
 #elif defined(__APPLE__)
 #include "third_party/blink/renderer/build/mac/prefix.h"

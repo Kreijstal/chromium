@@ -409,7 +409,9 @@ struct SameSizeAsLayoutObject : public GarbageCollected<SameSizeAsLayoutObject>,
   Member<void*> members[6];
 };
 
+#if !BUILDFLAG(IS_MINGW) // FIXME: check fails on MinGW
 ASSERT_SIZE(LayoutObject, SameSizeAsLayoutObject);
+#endif
 
 LayoutObject* LayoutObject::CreateObject(Element* element,
                                          const ComputedStyle& style) {

@@ -11,8 +11,8 @@
 #include "ui/accessibility/ax_event_generator.h"
 #include "ui/accessibility/platform/automation/automation_tree_manager_owner.h"
 #include "ui/accessibility/platform/automation/v8_handler_function_wrapper.h"
-#include "v8/include/v8-function-callback.h"
-#include "v8/include/v8-value.h"
+#include "v8-function-callback.h"
+#include "v8-value.h"
 
 namespace ui {
 

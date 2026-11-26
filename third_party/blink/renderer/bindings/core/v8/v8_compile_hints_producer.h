@@ -14,8 +14,8 @@
 #include "third_party/blink/renderer/platform/heap/collection_support/heap_vector.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8-traced-handle.h"
-#include "v8/include/v8.h"
+#include "v8-traced-handle.h"
+#include "v8.h"
 
 namespace blink {
 

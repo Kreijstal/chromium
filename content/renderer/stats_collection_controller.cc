@@ -15,9 +15,9 @@
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_view.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-context.h"
+#include "v8-cppgc.h"
 
 namespace content {
 

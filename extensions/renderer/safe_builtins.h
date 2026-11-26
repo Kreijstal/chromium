@@ -10,8 +10,8 @@
 #include <unordered_map>
 
 #include "base/memory/raw_ptr.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "v8-forward.h"
+#include "v8-persistent-handle.h"
 
 namespace extensions {
 class ScriptContext;

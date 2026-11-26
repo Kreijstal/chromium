@@ -5,7 +5,7 @@
 #include "third_party/blink/renderer/core/timing/internals_profiler.h"
 
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
-#include "v8/include/v8-profiler.h"
+#include "v8-profiler.h"
 
 namespace blink {
 

@@ -20,8 +20,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/inspector_protocol/crdtp/protocol_core.h"
 #include "third_party/inspector_protocol/crdtp/serializable.h"
-#include "v8/include/v8-inspector.h"
-#include "v8/include/v8-script.h"
+#include "v8-inspector.h"
+#include "v8-script.h"
 
 namespace blink {
 

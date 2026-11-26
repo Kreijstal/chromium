@@ -37,7 +37,7 @@
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 #include "third_party/blink/renderer/core/frame/frame.h"
 #include "third_party/blink/renderer/platform/bindings/v8_dom_wrapper.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

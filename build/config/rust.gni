@@ -32,6 +32,11 @@ declare_args() {
   # * `enable_rust` should *not* be consulted in other Chromium directories
   #   (including `//base`, `//net`, etc.)
   enable_rust = build_with_chromium
+}
+
+declare_args() {
+  # Are we using an bleeding-edge rust?
+  enable_tetanus = enable_rust
 
   # The chromium prelude crate provides the `chromium::import!` macro which
   # is needed to depend on first-party rust libraries. Third-party libraries
@@ -44,9 +49,7 @@ declare_args() {
   # library GN rules instead. Note that using an explicit crate name is
   # strongly discouraged inside Chromium, and is also discouraged for
   # downstream projects when possible.
-  #
-  # We do not support disabling this flag in Chromium code.
-  enable_chromium_prelude = build_with_chromium
+  enable_chromium_prelude = build_with_chromium && enable_rust
 
   # Chromium provides a Rust toolchain in //third_party/rust-toolchain.
   #
@@ -299,7 +302,7 @@ if (is_linux || is_chromeos) {
   } else if (current_cpu == "x64") {
     rust_abi_target = "x86_64-unknown-fuchsia"
   } else {
-    assert(false, "Architecture not supported")
+    assert(!enable_rust, "Architecture not supported")
   }
 } else if (is_ios) {
   if (current_cpu == "arm64e") {
@@ -351,7 +354,7 @@ if (is_linux || is_chromeos) {
   } else if (current_cpu == "x86") {
     rust_abi_target = "i386-apple-ios"
   } else {
-    assert(false, "Architecture not supported")
+    assert(!enable_rust, "Architecture not supported")
   }
 } else if (is_mac) {
   if (current_cpu == "arm64") {
@@ -359,7 +362,16 @@ if (is_linux || is_chromeos) {
   } else if (current_cpu == "x64") {
     rust_abi_target = "x86_64-apple-darwin"
   } else {
-    assert(false, "Architecture not supported")
+    assert(!enable_rust, "Architecture not supported")
+  }
+} else if (is_mingw) {
+  rust_abi_target = current_cpu + "-pc-windows-gnu"
+  if (current_cpu == "x64") {
+    rust_abi_target = "x86_64-pc-windows-gnu"
+  } else if (current_cpu == "x86") {
+    rust_abi_target = "i686-pc-windows-gnu"
+  } else if (current_cpu == "arm64") {
+    rust_abi_target = "aarch64-pc-windows-gnullvm"
   }
 } else if (is_win) {
   if (current_cpu == "arm64") {
@@ -369,7 +381,7 @@ if (is_linux || is_chromeos) {
   } else if (current_cpu == "x86") {
     rust_abi_target = "i686-pc-windows-msvc"
   } else {
-    assert(false, "Architecture not supported")
+    assert(!enable_rust, "Architecture not supported")
   }
 }
 
@@ -455,7 +467,9 @@ local_rustc_sysroot = "$root_out_dir/local_rustc_sysroot"
 #
 # See the `assert` comments in `cpp_api_from_rust.gni` for explanation of
 # the conditions used here.
-enable_cpp_api_from_rust = enable_rust && build_with_chromium
+# Needs Crubit, which a system Rust toolchain does not ship.
+enable_cpp_api_from_rust =
+    enable_rust && build_with_chromium && rust_crubit_root != ""
 
 declare_args() {
   # Whether it is okay to use `rust_api_from_cpp.gni`.  The default is `false`,

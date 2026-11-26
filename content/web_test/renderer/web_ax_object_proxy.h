@@ -17,7 +17,7 @@
 #include "third_party/blink/public/web/web_ax_context.h"
 #include "third_party/blink/public/web/web_ax_object.h"
 #include "ui/accessibility/ax_event_intent.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 class WebLocalFrame;

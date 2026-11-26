@@ -7,6 +7,7 @@
 #include <stddef.h>
 
 #include <algorithm>
+#include <cstring>
 #include <memory>
 #include <numbers>
 #include <string_view>

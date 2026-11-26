@@ -929,9 +929,11 @@ void MidiManagerWin::SendOnTaskRunner(MidiManagerClient* client,
 }
 
 MidiManager* MidiManager::Create(MidiService* service) {
+#if defined(COMPILER_MSVC)
   if (base::FeatureList::IsEnabled(features::kMidiManagerWinrt)) {
     return new MidiManagerWinrt(service);
   }
+#endif
   return new MidiManagerWin(service);
 }
 

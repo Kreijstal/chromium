@@ -10,7 +10,7 @@
 #include "chrome/common/net_benchmarking.mojom.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 class BenchmarkingBindings final : public gin::Wrappable<BenchmarkingBindings> {
  public:

@@ -6,7 +6,7 @@
 #define CHROME_RENDERER_CONTROLLED_FRAME_WEB_URL_PATTERN_NATIVES_H_
 
 #include "extensions/renderer/object_backed_native_handler.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace controlled_frame {
 

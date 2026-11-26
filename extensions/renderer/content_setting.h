@@ -12,7 +12,7 @@
 #include "extensions/renderer/bindings/argument_spec.h"
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/wrappable.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace gin {
 class Arguments;

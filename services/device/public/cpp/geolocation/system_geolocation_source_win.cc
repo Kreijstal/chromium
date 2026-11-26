@@ -7,8 +7,10 @@
 #include <windows.foundation.h>
 #include <windows.system.h>
 #include <wrl/client.h>
+#if !defined(__MINGW32__)  // No WRL RuntimeClass/event headers on MinGW.
 #include <wrl/event.h>
 #include <wrl/implements.h>
+#endif
 
 #include <optional>
 #include <string_view>
@@ -30,12 +32,14 @@ namespace device {
 
 namespace {
 
+#if !defined(__MINGW32__)
 using ::ABI::Windows::Devices::Geolocation::GeolocationAccessStatus;
 using ::ABI::Windows::Foundation::ITypedEventHandler;
 using ::ABI::Windows::Security::Authorization::AppCapabilityAccess::
     AppCapability;
 using ::ABI::Windows::Security::Authorization::AppCapabilityAccess::
     AppCapabilityAccessChangedEventArgs;
+#endif
 using ::ABI::Windows::Security::Authorization::AppCapabilityAccess::
     IAppCapability;
 using ::ABI::Windows::Security::Authorization::AppCapabilityAccess::
@@ -129,6 +133,7 @@ ComPtr<IAppCapability> CreateAppCapability(std::string_view name) {
   return app_capability;
 }
 
+#if !defined(__MINGW32__)
 class AccessChangedHandler
     : public Microsoft::WRL::RuntimeClass<
           Microsoft::WRL::RuntimeClassFlags<
@@ -155,6 +160,7 @@ class AccessChangedHandler
  private:
   base::RepeatingClosure on_changed_callback_;
 };
+#endif
 
 }  // namespace
 
@@ -206,6 +212,7 @@ SystemGeolocationSourceWin::AccessListenerHelper::AccessListenerHelper(
     return;
   }
 
+#if !defined(__MINGW32__)
   if (base::FeatureList::IsEnabled(
           features::kWinSystemLocationPermissionEventBased)) {
     HRESULT hr = location_capability_->add_AccessChanged(
@@ -221,6 +228,7 @@ SystemGeolocationSourceWin::AccessListenerHelper::AccessListenerHelper(
       location_token_.reset();
     }
   }
+#endif
 
   PollPermissionStatus();
 }
@@ -342,6 +350,9 @@ void SystemGeolocationSourceWin::OnLaunchUriFailure(HRESULT result) {
 }
 
 void SystemGeolocationSourceWin::OpenSystemPermissionSetting() {
+#if defined(__MINGW32__)
+  RecordUmaLaunchSettingsResult(E_NOTIMPL);
+#else
   using ::ABI::Windows::Foundation::IUriRuntimeClass;
   using ::ABI::Windows::Foundation::IUriRuntimeClassFactory;
   using ::ABI::Windows::System::ILauncherStatics;
@@ -399,9 +410,13 @@ void SystemGeolocationSourceWin::OpenSystemPermissionSetting() {
                << logging::SystemErrorCodeToString(hr);
     RecordUmaLaunchSettingsResult(hr);
   }
+#endif
 }
 
 void SystemGeolocationSourceWin::RequestPermission() {
+#if defined(__MINGW32__)
+  RecordUmaRequestAccessResult(E_NOTIMPL);
+#else
   using ::ABI::Windows::Devices::Geolocation::IGeolocatorStatics;
   if (request_location_access_op_) {
     return;
@@ -439,8 +454,10 @@ void SystemGeolocationSourceWin::RequestPermission() {
     return;
   }
   has_pending_system_prompt_ = true;
+#endif
 }
 
+#if !defined(__MINGW32__)
 void SystemGeolocationSourceWin::OnRequestLocationAccessSuccess(
     GeolocationAccessStatus status) {
   RecordUmaRequestAccessResult(S_OK);
@@ -454,5 +471,6 @@ void SystemGeolocationSourceWin::OnRequestLocationAccessFailure(
   RecordUmaRequestAccessResult(result);
   request_location_access_op_.Reset();
 }
+#endif
 
 }  // namespace device

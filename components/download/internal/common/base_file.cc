@@ -304,7 +304,11 @@ DownloadInterruptReason BaseFile::Rename(const base::FilePath& new_path) {
 
     // A simple rename wouldn't work here since we want the file to have
     // permissions / security descriptors that makes sense in the new directory.
+#if BUILDFLAG(IS_MINGW)
+    return DOWNLOAD_INTERRUPT_REASON_NONE;
+#else
     rename_result = MoveFileAndAdjustPermissions(new_path);
+#endif
   }
 
   CONDITIONAL_TRACE(END0("download", "DownloadFileRename"));

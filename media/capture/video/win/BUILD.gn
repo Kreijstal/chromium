@@ -37,6 +37,22 @@ source_set("win") {
     "video_capture_device_win.cc",
     "video_capture_device_win.h",
   ]
+  if (is_mingw) {
+    sources -= [
+      "gpu_memory_buffer_tracker_win.cc",
+      "gpu_memory_buffer_tracker_win.h",
+      "sink_filter_win.cc",
+      "sink_filter_win.h",
+      "sink_input_pin_win.cc",
+      "sink_input_pin_win.h",
+      "video_capture_device_factory_win.cc",
+      "video_capture_device_factory_win.h",
+      "video_capture_device_mf_win.cc",
+      "video_capture_device_mf_win.h",
+      "video_capture_device_win.cc",
+      "video_capture_device_win.h",
+    ]
+  }
 
   public_deps = [
     "//media/capture:capture_base",
@@ -66,17 +82,19 @@ source_set("win") {
   ]
 
   libs = [
-    "mf.lib",
-    "mfplat.lib",
-    "mfreadwrite.lib",
-    "mfuuid.lib",
+    "mf",
+    "mfplat",
+    "mfreadwrite",
+    "mfuuid",
   ]
 
-  ldflags = [
-    "/DELAYLOAD:mf.dll",
-    "/DELAYLOAD:mfplat.dll",
-    "/DELAYLOAD:mfreadwrite.dll",
-  ]
+  if (is_msvc) {
+    ldflags = [
+      "/DELAYLOAD:mf.dll",
+      "/DELAYLOAD:mfplat.dll",
+      "/DELAYLOAD:mfreadwrite.dll",
+    ]
+  }
 }
 
 source_set("win_unittests") {
@@ -109,18 +127,20 @@ source_set("win_unittests") {
   ]
 
   libs = [
-    "mf.lib",
-    "mfplat.lib",
-    "mfreadwrite.lib",
-    "mfuuid.lib",
-    "dxguid.lib",
-    "strmiids.lib",
+    "mf",
+    "mfplat",
+    "mfreadwrite",
+    "mfuuid",
+    "dxguid",
+    "strmiids",
   ]
-  ldflags = [
-    "/DELAYLOAD:mf.dll",
-    "/DELAYLOAD:mfplat.dll",
-    "/DELAYLOAD:mfreadwrite.dll",
-  ]
+  if (is_msvc) {
+    ldflags = [
+      "/DELAYLOAD:mf.dll",
+      "/DELAYLOAD:mfplat.dll",
+      "/DELAYLOAD:mfreadwrite.dll",
+    ]
+  }
 
   testonly = true
 }

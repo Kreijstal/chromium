@@ -199,11 +199,13 @@ D3DDecoderConfigurator::CreateD3D11OutputTexture(ComD3D11Device device,
     return base::unexpected(
         D3DStatus{D3DStatus::Codes::kCreateDecoderOutputTextureFailed, hr});
   }
+#if defined(COMPILER_MSVC)
   hr = SetDebugName(texture.Get(), "D3D11Decoder_ConfiguratorOutput");
   if (FAILED(hr)) {
     return base::unexpected(
         D3DStatus{D3DStatus::Codes::kCreateDecoderOutputTextureFailed, hr});
   }
+#endif
   return texture;
 }
 

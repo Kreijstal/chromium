@@ -12,8 +12,8 @@
 #include "base/values.h"
 #include "components/guest_view/common/guest_view.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "v8-forward.h"
+#include "v8-persistent-handle.h"
 
 namespace content {
 class RenderFrame;

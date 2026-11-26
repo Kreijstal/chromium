@@ -10,10 +10,10 @@
 #include "extensions/renderer/script_context.h"
 #include "third_party/blink/public/common/safe_url_pattern.h"
 #include "third_party/blink/public/web/web_url_pattern_to_safe_url_pattern.h"
-#include "v8/include/v8-container.h"
-#include "v8/include/v8-exception.h"
-#include "v8/include/v8-function-callback.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-container.h"
+#include "v8-exception.h"
+#include "v8-function-callback.h"
+#include "v8-isolate.h"
 
 namespace controlled_frame {
 

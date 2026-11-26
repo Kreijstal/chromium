@@ -267,6 +267,18 @@
 #define BUILDFLAG_INTERNAL_IS_WIN() (0)
 #endif
 
+#if defined(OS_WIN) && defined(__GNUC__)
+#define BUILDFLAG_INTERNAL_IS_MINGW() (1)
+#else
+#define BUILDFLAG_INTERNAL_IS_MINGW() (0)
+#endif
+
+#if defined(OS_WIN) && defined(_MSC_VER)
+#define BUILDFLAG_INTERNAL_IS_MSVC() (1)
+#else
+#define BUILDFLAG_INTERNAL_IS_MSVC() (0)
+#endif
+
 #if defined(USE_OZONE)
 #define BUILDFLAG_INTERNAL_IS_OZONE() (1)
 #else
@@ -424,6 +436,21 @@
 #if !defined(HAVE_MIPS_MSA_INTRINSICS)
 #if defined(__mips_msa) && defined(__mips_isa_rev) && (__mips_isa_rev >= 5)
 #define HAVE_MIPS_MSA_INTRINSICS 1
+#endif
+#endif
+
+#if defined(OS_WIN) && defined(COMPILER_GCC)
+#undef __try
+#if defined(__EXCEPTIONS)
+#define __try try
+#else
+#define __try if (true)
+#endif
+#undef __except
+#if defined(__EXCEPTIONS)
+#define __except(x) catch(...)
+#else
+#define __except(x) if (false)
 #endif
 #endif
 

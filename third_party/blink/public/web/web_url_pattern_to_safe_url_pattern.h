@@ -6,7 +6,7 @@
 #define THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_URL_PATTERN_TO_SAFE_URL_PATTERN_H_
 
 #include "third_party/blink/public/platform/web_common.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-local-handle.h"
 
 namespace v8 {
 class Isolate;

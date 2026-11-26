@@ -103,7 +103,11 @@ static_library("discovery") {
       "discovery_network_list_win.cc",
       "discovery_network_list_win.h",
     ]
-    libs = [ "iphlpapi.lib" ]
+    if (is_msvc) {
+      libs = [ "iphlpapi.lib" ]
+    } else {
+      libs = [ "iphlpapi" ]
+    }
   }
 }
 

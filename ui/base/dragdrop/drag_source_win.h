@@ -6,7 +6,11 @@
 #define UI_BASE_DRAGDROP_DRAG_SOURCE_WIN_H_
 
 #include <objidl.h>
+#if defined(__MINGW32__)
+#include <wrl/client.h>
+#else
 #include <wrl/implements.h>
+#endif
 
 #include "base/component_export.h"
 #include "base/memory/raw_ptr.h"
@@ -19,10 +23,15 @@ class OSExchangeData;
 // drag-drop operation as the user mouses over other drop targets on their
 // system. This object tells Windows whether or not the drag should continue,
 // and supplies the appropriate cursors.
+#if defined(__MINGW32__)
+// mingw-w64 has no WRL RuntimeClass; implement IUnknown directly.
+class DragSourceWin : public IDropSource {
+#else
 class DragSourceWin
     : public Microsoft::WRL::RuntimeClass<
           Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
           IDropSource> {
+#endif
  public:
   // Factory method to avoid exporting the class and all it derives from.
   static COMPONENT_EXPORT(
@@ -36,7 +45,16 @@ class DragSourceWin
   DragSourceWin(const DragSourceWin&) = delete;
   DragSourceWin& operator=(const DragSourceWin&) = delete;
 
+#if defined(__MINGW32__)
+  virtual ~DragSourceWin() = default;
+
+  // IUnknown implementation:
+  HRESULT __stdcall QueryInterface(REFIID iid, void** object) override;
+  ULONG __stdcall AddRef() override;
+  ULONG __stdcall Release() override;
+#else
   ~DragSourceWin() override = default;
+#endif
 
   // Stop the drag operation at the next chance we get.  This doesn't
   // synchronously stop the drag (since Windows is controlling that),
@@ -63,6 +81,9 @@ class DragSourceWin
   bool cancel_drag_ = false;
 
   raw_ptr<const OSExchangeData> data_ = nullptr;
+#if defined(__MINGW32__)
+  LONG ref_count_ = 0;
+#endif
 };
 
 }  // namespace ui

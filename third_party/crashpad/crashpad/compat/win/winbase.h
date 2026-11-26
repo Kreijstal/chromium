@@ -15,8 +15,12 @@
 #ifndef CRASHPAD_COMPAT_WIN_WINBASE_H_
 #define CRASHPAD_COMPAT_WIN_WINBASE_H_
 
+#ifdef _MSC_VER
 // include_next <winbase.h>
 #include <../um/winbase.h>
+#else
+#include_next <winbase.h>
+#endif
 
 // 10.0.15063.0 SDK
 

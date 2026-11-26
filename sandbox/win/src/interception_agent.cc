@@ -43,7 +43,7 @@ InterceptionAgent* InterceptionAgent::GetInterceptionAgent() {
 
     size_t array_bytes = g_interceptions->num_intercepted_dlls * sizeof(void*);
     s_singleton = reinterpret_cast<InterceptionAgent*>(
-        new (NT_ALLOC) char[array_bytes + sizeof(InterceptionAgent)]);
+        new char[array_bytes + sizeof(InterceptionAgent)]);
 
     bool success = s_singleton->Init(g_interceptions);
     if (!success) {
@@ -108,7 +108,7 @@ bool InterceptionAgent::OnDllLoad(const UNICODE_STRING* full_path,
   size_t buffer_bytes = offsetof(DllInterceptionData, thunks) +
                         dll_info->num_functions * sizeof(ThunkData);
   UNSAFE_TODO(dlls_[i]) = reinterpret_cast<DllInterceptionData*>(
-      new (NT_PAGE, base_address) char[buffer_bytes]);
+      new char[buffer_bytes]);
 
   DCHECK_NT(UNSAFE_TODO(dlls_[i]));
   if (!UNSAFE_TODO(dlls_[i])) {

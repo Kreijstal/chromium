@@ -8,8 +8,10 @@ import("//build/toolchain/toolchain.gni")
 import("//testing/libfuzzer/fuzzer_test.gni")
 import("//testing/test.gni")
 
-if (is_win) {
+if (is_win && !is_mingw) {
   import("//build/config/win/visual_studio_version.gni")
+} else if(is_mingw) {
+  visual_studio_path = ""
 }
 
 # Breakpad executables are only built with the system allocator toolchains,
@@ -1090,6 +1092,9 @@ if (is_win) {
         "$visual_studio_path/DIA SDK/include",
         "breakpad/src",
       ]
+      if (is_mingw) {
+        include_dirs -= [ "$visual_studio_path/DIA SDK/include" ]
+      }
 
       sources = [
         "breakpad/src/tools/windows/converter/ms_symbol_server_converter.cc",
@@ -1097,7 +1102,11 @@ if (is_win) {
 
       deps = [ "//third_party/breakpad:common_windows" ]
 
-      libs = [ "Pathcch.lib" ]
+      if (is_mingw) {
+        libs = [ "pathcch" ]
+      } else {
+        libs = [ "Pathcch.lib" ]
+      }
     }
 
     executable("dump_syms") {
@@ -1112,17 +1121,22 @@ if (is_win) {
 
       deps = [ "//third_party/breakpad:common_windows" ]
 
-      lib_dirs = []
-      if (current_cpu == "x64") {
-        lib_dirs += [ "$visual_studio_path/DIA SDK/lib/amd64" ]
+      if (is_mingw) {
+        include_dirs -= [ "$visual_studio_path/DIA SDK/include" ]
+        libs = [ "imagehlp" ]
       } else {
-        lib_dirs += [ "$visual_studio_path/DIA SDK/lib" ]
-      }
+        lib_dirs = []
+        if (current_cpu == "x64") {
+          lib_dirs += [ "$visual_studio_path/DIA SDK/lib/amd64" ]
+        } else {
+          lib_dirs += [ "$visual_studio_path/DIA SDK/lib" ]
+        }
 
-      libs = [
-        "diaguids.lib",
-        "imagehlp.lib",
-      ]
+        libs = [
+          "diaguids.lib",
+          "imagehlp.lib",
+        ]
+      }
 
       if (is_clang) {
         # clang complains about microsoft-specific goto extensions. Instead of
@@ -1138,18 +1152,23 @@ if (is_win) {
       ]
       sources = [ "breakpad/src/tools/windows/symupload/symupload.cc" ]
       deps = [ "//third_party/breakpad:common_windows" ]
-      ldflags = [ "/LARGEADDRESSAWARE" ]
-      lib_dirs = []
-      if (current_cpu == "x64") {
-        lib_dirs += [ "$visual_studio_path/DIA SDK/lib/amd64" ]
-      } else {
-        lib_dirs += [ "$visual_studio_path/DIA SDK/lib" ]
-      }
 
-      libs = [
-        "diaguids.lib",
-        "imagehlp.lib",
-      ]
+      if (is_mingw) {
+        libs = [ "imagehlp" ]
+      } else {
+        ldflags = [ "/LARGEADDRESSAWARE" ]
+        lib_dirs = []
+        if (current_cpu == "x64") {
+          lib_dirs += [ "$visual_studio_path/DIA SDK/lib/amd64" ]
+        } else {
+          lib_dirs += [ "$visual_studio_path/DIA SDK/lib" ]
+        }
+
+        libs = [
+          "diaguids.lib",
+          "imagehlp.lib",
+        ]
+      }
 
       if (is_clang) {
         # clang complains about microsoft-specific goto extensions. Instead of
@@ -1179,23 +1198,29 @@ if (is_win) {
         "//third_party/breakpad:ms_symbol_server_converter",
       ]
 
-      ldflags = [
-        "/DELAYLOAD:dbghelp.dll",
-        "/DELAYLOAD:dwmapi.dll",
-        "/DELAYLOAD:uxtheme.dll",
-      ]
 
-      lib_dirs = []
-      if (current_cpu == "x64") {
-        lib_dirs += [ "$visual_studio_path/DIA SDK/lib/amd64" ]
+      if (is_mingw) {
+        include_dirs -= [ "$visual_studio_path/DIA SDK/include" ]
+        libs = [ "imagehlp" ]
       } else {
-        lib_dirs += [ "$visual_studio_path/DIA SDK/lib" ]
-      }
+        ldflags = [
+          "/DELAYLOAD:dbghelp.dll",
+          "/DELAYLOAD:dwmapi.dll",
+          "/DELAYLOAD:uxtheme.dll",
+        ]
 
-      libs = [
-        "diaguids.lib",
-        "imagehlp.lib",
-      ]
+        lib_dirs = []
+        if (current_cpu == "x64") {
+          lib_dirs += [ "$visual_studio_path/DIA SDK/lib/amd64" ]
+        } else {
+          lib_dirs += [ "$visual_studio_path/DIA SDK/lib" ]
+        }
+
+        libs = [
+          "diaguids.lib",
+          "imagehlp.lib",
+        ]
+      }
 
       if (is_clang) {
         # clang complains about microsoft-specific goto extensions. Instead of

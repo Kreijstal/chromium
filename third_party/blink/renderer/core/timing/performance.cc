@@ -103,7 +103,7 @@
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
-#include "v8/include/v8-metrics.h"
+#include "v8-metrics.h"
 
 namespace blink {
 

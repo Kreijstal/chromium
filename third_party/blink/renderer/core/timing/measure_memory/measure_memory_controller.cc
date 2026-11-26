@@ -32,7 +32,7 @@
 #include "third_party/blink/renderer/platform/instrumentation/resource_coordinator/document_resource_coordinator.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using performance_manager::mojom::blink::WebMemoryAttribution;
 using performance_manager::mojom::blink::WebMemoryAttributionPtr;

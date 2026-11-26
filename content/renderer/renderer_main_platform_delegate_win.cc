@@ -57,16 +57,20 @@ void RendererMainPlatformDelegate::PlatformInitialize() {
     std::unique_ptr<icu::TimeZone> zone(icu::TimeZone::createDefault());
   }
 
+#if defined(COMPILER_MSVC)
   // Fallback to only DWrite if running in single process mode, since there can
   // only be a single font manager and the browser process always has a DWrite
   // one.
   if (command_line.HasSwitch(switches::kSingleProcess)) {
     InitializeDWriteFontProxy();
   }
+#endif
 }
 
 void RendererMainPlatformDelegate::PlatformUninitialize() {
+#if defined(COMPILER_MSVC)
   UninitializeDWriteFontProxy();
+#endif
 }
 
 bool RendererMainPlatformDelegate::EnableSandbox() {

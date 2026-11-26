@@ -13,7 +13,11 @@ component("proxy_resolver_win") {
     "winhttp_api_wrapper_impl.h",
   ]
 
-  libs = [ "winhttp.lib" ]
+  if (is_msvc) {
+    libs = [ "winhttp.lib" ]
+  } else {
+    libs = [ "winhttp" ]
+  }
 
   deps = [
     "//base",

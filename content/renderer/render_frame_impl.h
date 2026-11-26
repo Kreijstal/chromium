@@ -126,7 +126,7 @@
 #include "ui/gfx/range/range.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "content/common/gin_java_bridge.mojom.h"

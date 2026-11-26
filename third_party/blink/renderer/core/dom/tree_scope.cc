@@ -66,6 +66,7 @@
 #include "third_party/blink/renderer/core/svg/svg_text_content_element.h"
 #include "third_party/blink/renderer/core/svg/svg_tree_scope_resources.h"
 #include "third_party/blink/renderer/platform/bindings/dom_wrapper_world.h"
+#include "third_party/blink/renderer/platform/heap/heap_vector_holder.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
@@ -133,7 +134,7 @@ Element* TreeScope::getElementById(const AtomicString& element_id) const {
 
 const HeapVector<Member<Element>>& TreeScope::GetAllElementsById(
     const AtomicString& element_id) const {
-  using Holder = DisallowNewWrapper<HeapVector<Member<Element>>>;
+  using Holder = HeapVectorHolder<Member<Element>>;
   DEFINE_STATIC_LOCAL(Persistent<Holder>, empty_holder,
                       (MakeGarbageCollected<Holder>()));
   if (element_id.empty())

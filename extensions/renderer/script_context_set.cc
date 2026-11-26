@@ -28,8 +28,8 @@
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/origin.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-object.h"
+#include "v8-isolate.h"
+#include "v8-object.h"
 
 namespace extensions {
 

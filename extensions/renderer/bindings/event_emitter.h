@@ -12,8 +12,8 @@
 #include "extensions/renderer/bindings/js_runner.h"
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/wrappable.h"
-#include "v8/include/cppgc/prefinalizer.h"
-#include "v8/include/v8.h"
+#include "cppgc/prefinalizer.h"
+#include "v8.h"
 
 namespace gin {
 class Arguments;

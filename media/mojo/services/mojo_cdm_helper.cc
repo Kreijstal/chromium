@@ -61,7 +61,7 @@ url::Origin MojoCdmHelper::GetCdmOrigin() {
   return cdm_origin;
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void MojoCdmHelper::GetMediaFoundationCdmData(
     GetMediaFoundationCdmDataCB callback) {
   ConnectToCdmDocumentService();
@@ -77,7 +77,7 @@ void MojoCdmHelper::GetContentProtectionWindow(
     GetContentProtectionWindowCB callback) {
   frame_interfaces_->GetContentProtectionWindow(std::move(callback));
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 cdm::Buffer* MojoCdmHelper::CreateCdmBuffer(size_t capacity) {
   return GetAllocator()->CreateCdmBuffer(capacity);

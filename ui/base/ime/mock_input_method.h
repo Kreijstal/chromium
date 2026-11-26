@@ -38,7 +38,7 @@ class COMPONENT_EXPORT(UI_BASE_IME) MockInputMethod : public InputMethod {
   void OnFocus() override;
   void OnBlur() override;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   bool OnUntranslatedIMEMessage(const CHROME_MSG event,
                                 NativeEventResult* result) override;
   void OnInputLocaleChanged() override;

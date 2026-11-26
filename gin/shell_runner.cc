@@ -11,7 +11,7 @@
 #include "gin/per_context_data.h"
 #include "gin/public/context_holder.h"
 #include "gin/try_catch.h"
-#include "v8/include/v8-script.h"
+#include "v8-script.h"
 
 namespace gin {
 

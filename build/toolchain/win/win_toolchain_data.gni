@@ -4,6 +4,21 @@
 
 import("//build/config/win/visual_studio_version.gni")
 
+if (is_mingw) {
+  # No MSVC toolchain on MinGW: empty data for code that reads it.
+  _mingw_toolchain_data = {
+    include_flags_I_list = []
+    include_flags_imsvc = ""
+    include_flags_imsvc_list = []
+    libpath_lldlink_flags = ""
+    msvc_dir = ""
+    vc_bin_dir = ""
+    windows_kits_dir = ""
+  }
+  win_toolchain_data_x86 = _mingw_toolchain_data
+  win_toolchain_data_x64 = _mingw_toolchain_data
+  win_toolchain_data_arm64 = _mingw_toolchain_data
+} else {
 declare_args() {
   win_toolchain_data_x86 =
       exec_script("//build/toolchain/win/setup_toolchain.py",
@@ -41,6 +56,8 @@ declare_args() {
                     ],
                     "scope")
   }
+}
+
 }
 
 if (current_cpu == "x86") {

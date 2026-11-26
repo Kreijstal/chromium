@@ -17,7 +17,7 @@
 #include "gin/public/context_holder.h"
 #include "gin/public/isolate_holder.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 class Extension;

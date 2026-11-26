@@ -113,6 +113,7 @@ std::unique_ptr<ui::Event> PenEventProcessor::GenerateEvent(
   }
 
   std::optional<ui::StylusHandwritingPropertiesWin> handwriting_properties;
+#if !defined(__MINGW32__)  // No ShellHandwriting.h: no stroke ids.
   if (stylus_handwriting::win::IsStylusHandwritingWinEnabled() &&
       message == WM_POINTERDOWN) {
     handwriting_properties.emplace(
@@ -120,6 +121,7 @@ std::unique_ptr<ui::Event> PenEventProcessor::GenerateEvent(
         display::win::GetScreenWin()->GetPixelsPerInchForPointerDevice(
             pointer_pen_info.pointerInfo.sourceDevice));
   }
+#endif
 
   return GenerateTouchEvent(message, pointer_id, pointer_pen_info.pointerInfo,
                             point, pointer_details, handwriting_properties,
@@ -241,9 +243,11 @@ std::unique_ptr<ui::Event> PenEventProcessor::GenerateTouchEvent(
   event->latency()->AddLatencyNumberWithTimestamp(
       ui::INPUT_EVENT_LATENCY_ORIGINAL_COMPONENT, event_time);
   event->set_source_device_id(device_id);
+#if !defined(__MINGW32__)
   if (handwriting_properties.has_value()) {
     ui::SetStylusHandwritingProperties(*event, handwriting_properties.value());
   }
+#endif
   return event;
 }
 

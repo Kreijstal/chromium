@@ -291,7 +291,7 @@ std::unique_ptr<NetworkChangeNotifier> NetworkChangeNotifier::CreateIfNeeded(
         initial_type, initial_subtype);
   }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   std::unique_ptr<NetworkChangeNotifierWin> network_change_notifier =
       std::make_unique<NetworkChangeNotifierWin>();
   network_change_notifier->WatchForAddressChange();

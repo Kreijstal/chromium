@@ -37,9 +37,9 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_message_port_converter.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8.h"
 
 namespace {
 

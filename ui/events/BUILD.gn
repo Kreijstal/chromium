@@ -302,6 +302,10 @@ component("events") {
       "win/stylus_handwriting_properties_win.cc",
       "win/system_event_state_lookup.cc",
     ]
+
+    if (is_mingw) {
+      sources -= [ "win/stylus_handwriting_properties_win.cc" ] # requires ShellHandwriting.h
+    }
   }
 
   if (is_mac) {
@@ -555,6 +559,10 @@ component("gesture_detection") {
   ]
 
   defines = [ "GESTURE_DETECTION_IMPLEMENTATION" ]
+
+  if (is_mingw && is_clang) {
+    cflags_cc = [ "-Wno-vla-cxx-extension" ]
+  }
 
   if (is_android) {
     sources += [ "gesture_detection/gesture_configuration_android.cc" ]

@@ -65,7 +65,7 @@
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rect_f.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 /*
  This file holds empty Client stubs for use by WebCore.

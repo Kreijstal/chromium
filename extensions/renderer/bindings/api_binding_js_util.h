@@ -9,7 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "gin/wrappable.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace gin {
 class Arguments;

@@ -13,7 +13,7 @@
 #include "base/numerics/safe_conversions.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/bindings/v8_external_memory_accounter.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace cc {
 template <typename T>

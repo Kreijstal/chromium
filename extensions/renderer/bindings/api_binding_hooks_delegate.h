@@ -6,7 +6,7 @@
 #define EXTENSIONS_RENDERER_BINDINGS_API_BINDING_HOOKS_DELEGATE_H_
 
 #include "extensions/renderer/bindings/api_binding_hooks.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class APITypeReferenceMap;

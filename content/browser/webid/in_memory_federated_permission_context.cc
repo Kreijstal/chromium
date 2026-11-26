@@ -9,6 +9,7 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
+#include "content/public/browser/webid/identity_request_dialog_controller.h"
 #include "content/browser/webid/flags.h"
 #include "content/public/browser/webid/constants.h"
 #include "content/public/common/content_features.h"

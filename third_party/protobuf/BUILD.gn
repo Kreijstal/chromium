@@ -74,6 +74,36 @@ config("using_proto") {
   defines = [ "PROTOBUF_MESSAGE_GLOBALS_TEMPORARY_OPTOUT" ]
 }
 
+if (qtwebengine_private_tool_dir != "") {
+  config("system_protobuf_lite_config") {
+    defines = [
+      "GOOGLE_PROTOBUF_NO_RTTI",
+      "NOMINMAX",
+      "PROTOBUF_USE_DLLS",
+    ]
+    libs = [ "protobuf-lite" ]
+  }
+
+  config("system_protobuf_full_config") {
+    defines = [
+      "GOOGLE_PROTOBUF_NO_RTTI",
+      "NOMINMAX",
+      "PROTOBUF_USE_DLLS",
+    ]
+    libs = [ "protobuf" ]
+  }
+
+  source_set("protobuf_lite") {
+    public = protobuf_headers
+    public_configs = [ ":system_protobuf_lite_config" ]
+  }
+
+  source_set("protobuf_full") {
+    public = protobuf_headers
+    public_configs = [ ":system_protobuf_full_config" ]
+    public_deps = [ ":protobuf_lite" ]
+  }
+} else {
 # Configs to remove from the main protobuf libraries (lite and full)
 #
 # Remove coverage and Sanitizers other than ASan for a performance boost when
@@ -241,6 +271,7 @@ group("protobuf_full") {
     public_deps = [ ":protobuf_full_library" ]
   }
 }
+}  # qtwebengine_private_tool_dir
 
 # Only compile the compiler for the host architecture.
 if (current_toolchain == host_toolchain) {

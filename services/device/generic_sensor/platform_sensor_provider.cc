@@ -63,7 +63,9 @@ std::unique_ptr<PlatformSensorProvider> PlatformSensorProvider::Create() {
   return std::make_unique<PlatformSensorProviderMac>();
 #elif BUILDFLAG(IS_ANDROID)
   return std::make_unique<PlatformSensorProviderAndroid>();
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MINGW)
+  return std::make_unique<PlatformSensorProviderWin>();
+#elif BUILDFLAG(IS_MSVC)
   if (PlatformSensorProvider::UseWindowsWinrt()) {
     return std::make_unique<PlatformSensorProviderWinrt>();
   } else {

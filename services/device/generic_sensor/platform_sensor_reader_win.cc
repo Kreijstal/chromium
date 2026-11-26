@@ -8,7 +8,9 @@
 
 #include <Sensors.h>
 #include <comdef.h>
+#if defined(COMPILER_MSVC)
 #include <wrl/implements.h>
+#endif
 
 #include <iomanip>
 
@@ -256,6 +258,7 @@ std::unique_ptr<ReaderInitParams> CreateReaderInitParamsForSensor(
 
 }  // namespace
 
+#if defined(COMPILER_MSVC)
 // Class that implements ISensorEvents used by the ISensor interface to dispatch
 // state and data change events.
 //
@@ -387,6 +390,7 @@ class PlatformSensorReaderWin32::EventListener
   SensorReading last_sensor_reading_
       GUARDED_BY_CONTEXT(com_sta_sequence_checker_);
 };
+#endif
 
 // static
 ScopedPlatformSensorReaderWinBase PlatformSensorReaderWin32::Create(
@@ -421,6 +425,7 @@ ScopedPlatformSensorReaderWinBase PlatformSensorReaderWin32::Create(
   if (FAILED(hr))
     return no_reader;
 
+#if defined(COMPILER_MSVC)
   auto reader = base::WrapUnique(
       new PlatformSensorReaderWin32(sensor, std::move(params)));
   // Take the runner the reader captured at construction, so that the reader and
@@ -430,6 +435,9 @@ ScopedPlatformSensorReaderWinBase PlatformSensorReaderWin32::Create(
   return ScopedPlatformSensorReaderWinBase(
       reader.release(),
       base::OnTaskRunnerDeleter(std::move(com_sta_task_runner)));
+#else
+  return no_reader;
+#endif
 }
 
 // static
@@ -450,6 +458,7 @@ Microsoft::WRL::ComPtr<ISensor> PlatformSensorReaderWin32::GetSensorForType(
   return sensor;
 }
 
+#if defined(COMPILER_MSVC)
 PlatformSensorReaderWin32::PlatformSensorReaderWin32(
     Microsoft::WRL::ComPtr<ISensor> sensor,
     std::unique_ptr<ReaderInitParams> params)
@@ -463,6 +472,7 @@ PlatformSensorReaderWin32::PlatformSensorReaderWin32(
   DCHECK(init_params_->reader_func);
   DCHECK(sensor_);
 }
+#endif
 
 void PlatformSensorReaderWin32::SetClient(Client* client) {
   base::AutoLock autolock(lock_);

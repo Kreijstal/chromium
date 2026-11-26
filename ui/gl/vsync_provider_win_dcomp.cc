@@ -28,6 +28,7 @@ void VSyncProviderWinDComp::GetVSyncParameters(UpdateVSyncCallback callback) {
 bool VSyncProviderWinDComp::GetVSyncParametersIfAvailable(
     base::TimeTicks* out_timebase,
     base::TimeDelta* out_interval) {
+#if !defined(COMPILER_GCC)
   TRACE_EVENT0("gpu", "VSyncProviderWinDComp::GetVSyncParametersIfAvailable");
   HRESULT hr = S_OK;
 
@@ -59,6 +60,9 @@ bool VSyncProviderWinDComp::GetVSyncParametersIfAvailable(
   *out_timebase = base::TimeTicks::FromQPCValue(stats.startTime);
   *out_interval = base::TimeDelta::FromQPCValue(stats.framePeriod);
   return true;
+#else
+  return false;
+#endif
 }
 
 bool VSyncProviderWinDComp::SupportGetVSyncParametersIfAvailable() const {

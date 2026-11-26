@@ -16,7 +16,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/platform/web_string.h"
-#include "v8/include/cppgc/persistent.h"
+#include "cppgc/persistent.h"
 
 namespace content {
 class RenderFrame;

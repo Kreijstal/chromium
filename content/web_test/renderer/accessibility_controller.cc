@@ -17,8 +17,8 @@
 #include "third_party/blink/public/web/web_settings.h"
 #include "third_party/blink/public/web/web_view.h"
 #include "ui/accessibility/ax_mode.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 namespace content {
 

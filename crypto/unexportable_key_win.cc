@@ -350,6 +350,7 @@ std::optional<std::vector<uint8_t>> GetP256ECDSASPKI(NCRYPT_KEY_HANDLE key) {
     return std::nullopt;
   }
 
+#if !defined(COMPILER_GCC) // FIXME: missing NCRYPT_ECC_CURVE_NAME_PROPERTY
   // Sometimes NCrypt will return a generic dwMagic even when asked for a P-256
   // key. In that case, do extra validation to make sure that `key` is in fact
   // a P-256 key.
@@ -359,6 +360,7 @@ std::optional<std::vector<uint8_t>> GetP256ECDSASPKI(NCRYPT_KEY_HANDLE key) {
       return std::nullopt;
     }
   }
+#endif
 
   std::array<uint8_t, 1 + 32 + 32> x962 = {POINT_CONVERSION_UNCOMPRESSED};
   base::span(x962).last<64>().copy_from(key_bytes);

@@ -47,7 +47,7 @@ source_set("lib") {
       "QuartzCore.framework",
       "Vision.framework",
     ]
-  } else if (is_win) {
+  } else if (is_msvc) {
     sources += [
       "detection_utils_win.cc",
       "detection_utils_win.h",

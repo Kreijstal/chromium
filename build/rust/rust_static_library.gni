@@ -1,3 +1,4 @@
+import("//build/config/rust.gni")
 # Copyright 2021 The Chromium Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -188,11 +189,17 @@ import("//build/rust/gni_impl/rust_target.gni")
 # This template is intended to serve the same purpose as 'rustc_library'
 # in Fuchsia.
 template("rust_static_library") {
+  if (!enable_rust) {
+    # Rust is off (MinGW GCC): keep the label so GN resolves dependents.
+    group(target_name) {
+      forward_variables_from(invoker, [ "testonly", "visibility" ])
+      not_needed(invoker, "*")
+    }
+  } else {
   if (defined(invoker.crate_name)) {
     assert_crate_name_allowed(target_name) {
     }
   }
-
   _target_name = target_name
 
   _configs = []
@@ -259,6 +266,7 @@ template("rust_static_library") {
     library_configs = _configs
     all_dependent_configs = _all_dependent_configs
     target_type = "rust_library"
+  }
   }
 }
 

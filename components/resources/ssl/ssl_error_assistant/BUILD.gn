@@ -30,8 +30,11 @@ action("make_ssl_error_assistant_protobuf") {
 
   outputs = [ "$output_dir/$output_basename" ]
 
-  args = [
-    "-w",
+  args = []
+  if (qtwebengine_private_tool_dir == "") {
+    args += [ "-w" ]
+  }
+  args += [
     "-i",
     rebase_path(input_filename, root_build_dir),
     "-d",

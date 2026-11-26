@@ -17,7 +17,7 @@
 #include "media/mojo/services/android_mojo_media_client.h"  // nogncheck
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "media/mojo/services/media_foundation_mojo_media_client.h"
 #endif
 
@@ -28,7 +28,7 @@ std::unique_ptr<MediaService> CreateMediaService(
 #if BUILDFLAG(IS_ANDROID)
   return std::make_unique<MediaService>(
       std::make_unique<AndroidMojoMediaClient>(), std::move(receiver));
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   return std::make_unique<MediaService>(
       std::make_unique<MediaFoundationMojoMediaClient>(), std::move(receiver));
 #else

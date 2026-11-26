@@ -10,9 +10,9 @@
 #include "third_party/blink/renderer/platform/wtf/hash_traits.h"
 #include "third_party/blink/renderer/platform/wtf/type_traits.h"
 #include "third_party/blink/renderer/platform/wtf/vector_traits.h"
-#include "v8/include/cppgc/cross-thread-persistent.h"
-#include "v8/include/cppgc/persistent.h"  // IWYU pragma: export
-#include "v8/include/cppgc/source-location.h"
+#include "cppgc/cross-thread-persistent.h"
+#include "cppgc/persistent.h"  // IWYU pragma: export
+#include "cppgc/source-location.h"
 
 // Required to optimize away locations for builds that do not need them to avoid
 // binary size blowup.

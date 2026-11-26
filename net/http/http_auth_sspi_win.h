@@ -17,7 +17,9 @@
 
 // security.h needs to be included for CredHandle. Unfortunately CredHandle
 // is a typedef and can't be forward declared.
+#ifndef SECURITY_WIN32
 #define SECURITY_WIN32 1
+#endif
 #include <security.h>
 
 #include <optional>

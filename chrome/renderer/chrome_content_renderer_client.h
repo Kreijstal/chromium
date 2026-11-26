@@ -31,7 +31,7 @@
 #include "services/service_manager/public/cpp/local_interface_provider.h"
 #include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
 #include "third_party/blink/public/common/tokens/tokens.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/common/conflicts/remote_module_watcher_win.h"

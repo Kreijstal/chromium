@@ -499,9 +499,9 @@ viz_component("service") {
     ]
 
     libs = [
-      "d3d11.lib",
-      "dxgi.lib",
-      "dcomp.lib",
+      "d3d11",
+      "dxgi",
+      "dcomp",
     ]
 
     ldflags = [

@@ -11,7 +11,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/v8_code_cache.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_compile_hints_consumer.h"
 #include "third_party/blink/renderer/core/core_export.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

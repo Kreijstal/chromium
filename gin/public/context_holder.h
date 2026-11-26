@@ -7,10 +7,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "gin/gin_export.h"
-#include "v8/include/cppgc/persistent.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "cppgc/persistent.h"
+#include "v8-context.h"
+#include "v8-forward.h"
+#include "v8-persistent-handle.h"
 
 namespace gin {
 

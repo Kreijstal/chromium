@@ -21,7 +21,7 @@
 #include "extensions/renderer/script_context_set.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/platform/web_url.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 using blink::WebString;
 using blink::WebURL;

@@ -9,7 +9,9 @@ import("//build/config/compiler/compiler.gni")
 import("//build/config/rust.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//build/config/win/control_flow_guard.gni")
-import("//build/config/win/visual_studio_version.gni")
+if(is_win && !is_mingw && !is_robolectric) {
+  import("//build/config/win/visual_studio_version.gni")
+}
 import("//build/timestamp.gni")
 import("//build/toolchain/rbe.gni")
 import("//build/toolchain/toolchain.gni")
@@ -48,6 +50,12 @@ declare_args() {
 # is applied to all targets. It is here to separate out the logic that is
 # Windows-only.
 config("compiler") {
+  if (is_mingw) {
+    cflags = [ "-Wa,-mbig-obj" ]
+    if (current_cpu == "x86" || current_cpu == "x64") {
+      cflags += [ "-msse3" ]
+    }
+  } else {
   if (current_cpu == "x86") {
     asmflags = [
       # When /safeseh is specified, the linker will only produce an image if it
@@ -82,13 +90,24 @@ config("compiler") {
   # modes.
   cflags_c = [ "/TC" ]
 
+  cflags_cc = [ "/TP" ]
+  if (is_msvc && !is_clang) {
+    cflags += [
+      "/Zc:preprocessor",
+      "/wd5105",
+      "/Zc:__cplusplus",
+    ]
+  }
+
   if (is_clang) {
     # Required to make the 19041 SDK compatible with clang-cl.
     # See https://crbug.com/1089996 issue #2 for details.
     cflags += [ "/D__WRL_ENABLE_FUNCTION_STATICS__" ]
 
     # Tell clang which version of MSVC to emulate.
-    cflags += [ "-fmsc-version=1934" ]
+    if (is_mingw || is_robolectric) {
+      cflags += [ "-fmsc-version=1934" ]
+    }
 
     if (is_component_build) {
       cflags += [
@@ -192,8 +211,9 @@ config("compiler") {
   } else {
     ldflags += [ "/pdbpagesize:8192" ]
   }
+  }
 
-  if (!is_debug && !is_component_build) {
+  if (!is_debug && !is_component_build && !is_mingw) {
     # Enable standard linker optimizations like GC (/OPT:REF) and ICF in static
     # release builds.
     # Release builds always want these optimizations, so enable them explicitly.
@@ -222,13 +242,15 @@ config("compiler") {
   # set for executable and shared library targets so arflags must be set
   # elsewhere. Since this is relatively contained, we just apply them in this
   # more general config and they will only have an effect on static libraries.
-  arflags = [
-    # "No public symbols found; archive member will be inaccessible." This
-    # means that one or more object files in the library can never be
-    # pulled in to targets that link to this library. It's just a warning that
-    # the source file is a no-op.
-    "/ignore:4221",
-  ]
+  if(!is_mingw) {
+    arflags = [
+      # "No public symbols found; archive member will be inaccessible." This
+      # means that one or more object files in the library can never be
+      # pulled in to targets that link to this library. It's just a warning that
+      # the source file is a no-op.
+      "/ignore:4221",
+    ]
+  }
 }
 
 # This is included by reference in the //build/config/compiler:runtime_library
@@ -317,7 +339,7 @@ config("winver") {
 
 # Linker flags for Windows SDK setup, this is applied only to EXEs and DLLs.
 config("sdk_link") {
-  if (current_cpu == "x86") {
+  if (is_msvc && current_cpu == "x86") {
     ldflags = [
       "/SAFESEH",  # Not compatible with x64 so use only for x86.
       "/largeaddressaware",
@@ -329,6 +351,13 @@ config("sdk_link") {
 # targets who want different library configurations can remove this and specify
 # their own.
 config("common_linker_setup") {
+  if (is_mingw) {
+    # Enable DEP and ASLR
+    ldflags = [
+      "-Wl,-dynamicbase",
+      "-Wl,-nxcompat",
+    ]
+  } else {
   ldflags = [
     "/FIXED:NO",
     "/ignore:4199",
@@ -343,6 +372,7 @@ config("common_linker_setup") {
       "/verbose:incr",
     ]
   }
+  }
 }
 
 config("default_cfg_compiler") {
@@ -351,12 +381,16 @@ config("default_cfg_compiler") {
   # with CFG enabled, such as system libraries.
   # The CFG guards are only emitted if |win_enable_cfg_guards| is enabled.
   if (win_enable_cfg_guards) {
-    if (is_clang) {
+    if (is_clang && !is_mingw) {
       cflags = [ "/guard:cf" ]
+    } else if (is_mingw) {
+      if (current_cpu != "arm64") {
+        cflags = [ "-fcf-protection" ]
+      }
     }
     rustflags = [ "-Ccontrol-flow-guard" ]
   } else {
-    if (is_clang) {
+    if (is_clang && is_msvc) {
       cflags = [ "/guard:cf,nochecks" ]
     }
     rustflags = [ "-Ccontrol-flow-guard=nochecks" ]
@@ -369,7 +403,7 @@ config("disable_guards_cfg_compiler") {
   # Emit table of address-taken functions for Control-Flow Guard (CFG).
   # This is needed to allow functions to be called by code that is built
   # with CFG enabled, such as system libraries.
-  if (is_clang) {
+  if (is_clang && is_msvc) {
     cflags = [ "/guard:cf,nochecks" ]
   }
   rustflags = [ "-Ccontrol-flow-guard=nochecks" ]
@@ -383,7 +417,7 @@ config("cfi_linker") {
   # ASan and CFG leads to slow process startup. Chromium's test runner uses
   # lots of child processes, so this means things are really slow. Disable CFG
   # for now. https://crbug.com/846966
-  if (!is_debug && !is_asan) {
+  if (!is_debug && !is_asan && !is_mingw) {
     # Turn on CFG bitmap generation and CFG load config.
     ldflags = [ "/guard:cf" ]
   }
@@ -416,6 +450,7 @@ config("cfi_linker") {
 #
 # This config applies to chrome.exe, chrome.dll, chrome_elf.dll (& others).
 config("delayloads_except_dbghelp") {
+  if (is_msvc) {
   ldflags = [
     "/DELAYLOAD:api-ms-win-core-synch-l1-2-0.dll",
     "/DELAYLOAD:api-ms-win-core-winrt-error-l1-1-0.dll",
@@ -475,12 +510,15 @@ config("delayloads_except_dbghelp") {
     "/DELAYLOAD:wsock32.dll",
     "/DELAYLOAD:wtsapi32.dll",
   ]
+  }
 }
 
 # Production binaries should use this config.
 config("delayloads") {
   configs = [ ":delayloads_except_dbghelp" ]
-  ldflags = [ "/DELAYLOAD:dbghelp.dll" ]
+  if (is_msvc) {
+    ldflags = [ "/DELAYLOAD:dbghelp.dll" ]
+  }
 }
 
 # This config should also be used for any test binary whose goal is to run
@@ -492,12 +530,14 @@ config("delayloads_for_tests") {
 # This config (along with `:delayloads`) applies to chrome.exe & chrome_elf.dll.
 # Entries should not appear in both configs.
 config("delayloads_not_for_child_dll") {
+  if (is_msvc) {
   ldflags = [
     "/DELAYLOAD:crypt32.dll",
     "/DELAYLOAD:dwrite.dll",
     "/DELAYLOAD:winmm.dll",
     "/DELAYLOAD:ws2_32.dll",
   ]
+  }
 }
 
 # ACLs are placed on the filesystem in order to allow chrome to launch
@@ -505,12 +545,12 @@ config("delayloads_not_for_child_dll") {
 group("maybe_set_appcontainer_acls") {
   # Exclude setting ACLs when build is not happening on chromium, or with a
   # different toolchain.
-  if (build_with_chromium && current_cpu == target_cpu && host_os == "win") {
+  if (build_with_chromium && current_cpu == target_cpu && is_msvc) {
     deps = [ ":set_appcontainer_acls" ]
   }
 }
 
-if (build_with_chromium && current_cpu == target_cpu && host_os == "win") {
+if (build_with_chromium && current_cpu == target_cpu && is_msvc) {
   action("set_appcontainer_acls") {
     script = "//build/win/set_appcontainer_acls.py"
     stamp_file = "$target_out_dir/acls.stamp"
@@ -553,7 +593,7 @@ config("default_crt") {
 # when the debug CRT is part of the bottleneck. This also avoids *implicitly*
 # defining _DEBUG.
 config("release_crt") {
-  if (is_component_build) {
+  if (is_msvc && is_component_build) {
     cflags = [ "/MD" ]
 
     # /MD specifies msvcrt.lib as the CRT library, which is the dynamic+release
@@ -565,7 +605,7 @@ config("release_crt") {
       # standard library, which libc++ needs for exception_ptr internals.
       ldflags = [ "/DEFAULTLIB:msvcprt.lib" ]
     }
-  } else {
+  } else if (!is_mingw) {
     cflags = [ "/MT" ]
 
     # /MT specifies libcmt.lib as the CRT library, which is the static+release
@@ -580,7 +620,7 @@ config("release_crt") {
 }
 
 config("dynamic_crt") {
-  if (is_debug) {
+  if (is_msvc && is_debug) {
     # This pulls in the DLL debug CRT and defines _DEBUG
     cflags = [ "/MDd" ]
 
@@ -596,7 +636,7 @@ config("dynamic_crt") {
     if (use_custom_libcxx) {
       ldflags = [ "/DEFAULTLIB:msvcprtd.lib" ]
     }
-  } else {
+  } else if (!is_mingw) {
     cflags = [ "/MD" ]
 
     # /MD specifies msvcrt.lib as the CRT library, which is the dynamic+release
@@ -610,7 +650,7 @@ config("dynamic_crt") {
 }
 
 config("static_crt") {
-  if (is_debug) {
+  if (is_msvc && is_debug) {
     # This pulls in the static debug CRT and defines _DEBUG
     cflags = [ "/MTd" ]
 
@@ -627,7 +667,7 @@ config("static_crt") {
     if (use_custom_libcxx) {
       ldflags = [ "/DEFAULTLIB:libcpmtd.lib" ]
     }
-  } else {
+  } else if (!is_mingw) {
     cflags = [ "/MT" ]
 
     # /MT specifies libcmt.lib as the CRT library, which is the static+release
@@ -646,14 +686,28 @@ config("static_crt") {
 # This is appended to the subsystem to specify a minimum version.
 # The number after the comma is the minimum required OS version.
 # Set to 10.0 since we only support >= Win10 since M110.
-subsystem_version_suffix = ",10.0"
+if (is_mingw && current_cpu == "x64") {
+    subsystem_version_suffix = "5.02"
+} else if (is_mingw && current_cpu == "arm64") {
+    subsystem_version_suffix = "6.02"
+} else {
+    subsystem_version_suffix = "10.0"
+}
 
 config("console") {
-  ldflags = [ "/SUBSYSTEM:CONSOLE$subsystem_version_suffix" ]
+  if (is_mingw) {
+    ldflags = [ "-Wl,--subsystem,console:$subsystem_version_suffix"]
+  } else {
+    ldflags = [ "/SUBSYSTEM:CONSOLE,$subsystem_version_suffix" ]
+  }
 }
 
 config("windowed") {
-  ldflags = [ "/SUBSYSTEM:WINDOWS$subsystem_version_suffix" ]
+  if (is_mingw) {
+    ldflags = [ "-Wl,--subsystem,windows:$subsystem_version_suffix"]
+  } else {
+    ldflags = [ "/SUBSYSTEM:WINDOWS,$subsystem_version_suffix" ]
+  }
 }
 
 # Incremental linking ----------------------------------------------------------
@@ -663,23 +717,25 @@ config("default_incremental_linking") {
   # Enable incremental linking for debug builds and all component builds - any
   # builds where performance is not job one.
   # TODO(thakis): Always turn this on with lld, no reason not to.
-  if (is_debug || is_component_build) {
-    ldflags = [ "/INCREMENTAL" ]
-    if (use_lld) {
-      # lld doesn't use ilk files and doesn't really have an incremental link
-      # mode; the only effect of the flag is that the .lib file timestamp isn't
-      # updated if the .lib doesn't change.
-      # TODO(thakis): Why pass /OPT:NOREF for lld, but not otherwise?
-      # TODO(thakis): /INCREMENTAL is on by default in link.exe, but not in
-      # lld.
-      ldflags += [ "/OPT:NOREF" ]
+  if (!is_mingw) {
+    if (is_debug || is_component_build) {
+      ldflags = [ "/INCREMENTAL" ]
+      if (use_lld) {
+        # lld doesn't use ilk files and doesn't really have an incremental link
+        # mode; the only effect of the flag is that the .lib file timestamp isn't
+        # updated if the .lib doesn't change.
+        # TODO(thakis): Why pass /OPT:NOREF for lld, but not otherwise?
+        # TODO(thakis): /INCREMENTAL is on by default in link.exe, but not in
+        # lld.
+        ldflags += [ "/OPT:NOREF" ]
 
-      # TODO(crbug.com/40267564): Mixing incrememntal and icf produces an error
-      # in lld-link.
-      ldflags += [ "/OPT:NOICF" ]
+        # TODO(crbug.com/40267564): Mixing incrememntal and icf produces an error
+        # in lld-link.
+        ldflags += [ "/OPT:NOICF" ]
+      }
+    } else {
+      ldflags = [ "/INCREMENTAL:NO" ]
     }
-  } else {
-    ldflags = [ "/INCREMENTAL:NO" ]
   }
 }
 

@@ -44,7 +44,6 @@ static_library("common") {
     "../util:net",
   ]
   if (crashpad_is_win) {
-    cflags = [ "/wd4201" ]  # nonstandard extension used : nameless struct/union
   }
 }
 
@@ -111,8 +110,6 @@ if (!crashpad_is_ios) {
     ]
 
     if (crashpad_is_win) {
-      cflags =
-          [ "/wd4201" ]  # nonstandard extension used : nameless struct/union
     }
   }
 
@@ -309,7 +306,9 @@ if (crashpad_is_win) {
 
     sources = [ "win/crashy_signal.cc" ]
 
-    cflags = [ "/wd4702" ]  # Unreachable code.
+    if (is_msvc) {
+      cflags = [ "/wd4702" ]  # Unreachable code.
+    }
 
     deps = [
       "../client",

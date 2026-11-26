@@ -40,7 +40,7 @@ group("wpt_tests_isolate") {
   if (!is_ios) {
     data_deps += [ ":wpt_tests_mojo_bindings" ]
   }
-  if (is_win) {
+  if (is_msvc) {
     data_deps += [ "//build/win:copy_cdb_to_output" ]
   }
 }

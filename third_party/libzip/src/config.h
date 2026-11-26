@@ -33,6 +33,8 @@
 #define HAVE_FILENO
 #if !BUILDFLAG(IS_WIN)
 #define HAVE_FCHMOD
+#endif
+#if !BUILDFLAG(IS_WIN) || defined(__MINGW32__)
 #define HAVE_FSEEKO
 #define HAVE_FTELLO
 #endif

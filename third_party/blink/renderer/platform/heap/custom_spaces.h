@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "third_party/blink/renderer/platform/platform_export.h"
-#include "v8/include/cppgc/custom-space.h"
+#include "cppgc/custom-space.h"
 
 namespace blink {
 

@@ -62,11 +62,12 @@ const char kOldQueryWebAndAppActivityUrl[] =
 const char kNewQueryWebAndAppActivityUrl[] =
     "https://footprints-pa.googleapis.com/v1/get_facs";
 
-const char kQueryOtherFormsOfBrowsingHistoryUrlSuffix[] = "/historystatus";
-
 const char kPostDataMimeType[] = "text/plain";
 
+#if !defined(TOOLKIT_QT)
+const char kQueryOtherFormsOfBrowsingHistoryUrlSuffix[] = "/historystatus";
 const char kSyncProtoMimeType[] = "application/octet-stream";
+#endif
 
 // The maximum number of retries for the SimpleURLLoader requests.
 const size_t kMaxRetries = 1;

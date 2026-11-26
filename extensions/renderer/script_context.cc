@@ -37,12 +37,12 @@
 #include "third_party/blink/public/mojom/service_worker/service_worker_registration.mojom.h"
 #include "third_party/blink/public/web/web_document_loader.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-debug.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-microtask-queue.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-context.h"
+#include "v8-debug.h"
+#include "v8-function.h"
+#include "v8-isolate.h"
+#include "v8-microtask-queue.h"
+#include "v8-primitive.h"
 
 namespace extensions {
 

@@ -221,7 +221,7 @@ component("modules") {
   public_deps = sub_modules
   allow_circular_includes_from = sub_modules
 
-  if (is_win) {
+  if (is_msvc) {
     cflags =
         [ "/wd4334" ]  # Result of 32-bit shift implicitly converted to 64 bits.
   }

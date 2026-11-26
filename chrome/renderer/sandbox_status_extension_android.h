@@ -13,7 +13,7 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace gin {
 class Arguments;

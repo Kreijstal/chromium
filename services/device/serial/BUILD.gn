@@ -12,8 +12,12 @@ if (is_win || ((is_linux || is_chromeos) && use_udev) || is_mac || is_android) {
   config("platform_support") {
     visibility = [ ":serial" ]
     if (is_win) {
-      libs = [ "setupapi.lib" ]
-      ldflags = [ "/DELAYLOAD:setupapi.dll" ]
+      if (is_msvc) {
+        libs = [ "setupapi.lib" ]
+        ldflags = [ "/DELAYLOAD:setupapi.dll" ]
+      } else {
+        libs = [ "setupapi" ]
+      }
     }
   }
 

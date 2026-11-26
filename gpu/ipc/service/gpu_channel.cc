@@ -609,8 +609,12 @@ void GpuChannelMessageFilter::CopyToGpuMemoryBufferAsync(
           std::move(callback).Run(false);
           return;
         }
+#if BUILDFLAG(IS_MSVC)
         channel->shared_image_stub()->CopyToGpuMemoryBufferAsync(
             mailbox, std::move(callback));
+#else
+        std::move(callback).Run(false);
+#endif
       },
       gpu_channel_->AsWeakPtr(), mailbox,
       base::BindPostTask(base::SequencedTaskRunner::GetCurrentDefault(),

@@ -181,7 +181,7 @@ component("services") {
     deps += [ "//media/cdm:cdm_api" ]
   }
 
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "media_foundation_gpu_info_monitor.cc",
       "media_foundation_gpu_info_monitor.h",

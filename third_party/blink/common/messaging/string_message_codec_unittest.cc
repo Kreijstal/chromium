@@ -15,7 +15,7 @@
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/functional/overload.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 namespace {

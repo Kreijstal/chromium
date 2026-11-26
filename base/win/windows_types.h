@@ -11,6 +11,8 @@
 // Needed for function prototypes.
 #include <sal.h>
 #include <specstrings.h>
+#include <share.h> // for _SH_DENYNO
+#include <stdint.h>
 
 #include "base/win/win_handle_types.h"
 
@@ -22,8 +24,8 @@ extern "C" {
 
 typedef unsigned long DWORD;  // NOLINT(runtime/int)
 typedef long LONG;            // NOLINT(runtime/int)
-typedef __int64 LONGLONG;
-typedef unsigned __int64 ULONGLONG;
+typedef int64_t LONGLONG;
+typedef uint64_t ULONGLONG;
 
 #define VOID void
 typedef char CHAR;
@@ -32,7 +34,7 @@ typedef long LONG;    // NOLINT(runtime/int)
 typedef int INT;
 typedef unsigned int UINT;
 typedef unsigned int* PUINT;
-typedef unsigned __int64 UINT64;
+typedef uint64_t UINT64;
 typedef void* LPVOID;
 typedef void* PVOID;
 typedef void* HANDLE;
@@ -45,11 +47,11 @@ typedef WORD UWORD;
 typedef WORD ATOM;
 
 #if defined(_WIN64)
-typedef __int64 INT_PTR, *PINT_PTR;
-typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+typedef int64_t INT_PTR, *PINT_PTR;
+typedef uint64_t UINT_PTR, *PUINT_PTR;
 
-typedef __int64 LONG_PTR, *PLONG_PTR;
-typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
+typedef int64_t LONG_PTR, *PLONG_PTR;
+typedef uint64_t ULONG_PTR, *PULONG_PTR;
 #else
 typedef __w64 int INT_PTR, *PINT_PTR;
 typedef __w64 unsigned int UINT_PTR, *PUINT_PTR;
@@ -206,10 +208,29 @@ struct CHROME_MSG {
 // Work around there being two slightly different definitions in the SDK.
 #define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
 #endif
+#ifndef TLS_OUT_OF_INDEXES
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
+#endif
 #define HTNOWHERE 0
 #define MAX_PATH 260
 #define CS_GLOBALCLASS 0x4000
+
+#ifndef _MSC_VER
+#undef ERROR_SUCCESS
+#undef ERROR_FILE_NOT_FOUND
+#undef ERROR_ACCESS_DENIED
+#undef ERROR_INVALID_HANDLE
+#undef ERROR_SHARING_VIOLATION
+#undef ERROR_LOCK_VIOLATION
+#undef ERROR_MORE_DATA
+#undef REG_BINARY
+#undef REG_NONE
+#undef READ_CONTROL
+#undef SYNCHRONIZE
+#undef HKEY_CLASSES_ROOT
+#undef HKEY_LOCAL_MACHINE
+#undef HKEY_CURRENT_USER
+#endif
 
 #define ERROR_SUCCESS 0L
 #define ERROR_FILE_NOT_FOUND 2L
@@ -226,8 +247,12 @@ struct CHROME_MSG {
 #define STATUS_PENDING ((DWORD   )0x00000103L)
 #endif  // STATUS_PENDING
 #define STILL_ACTIVE STATUS_PENDING
+#ifndef SUCCEEDED
 #define SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
+#endif
+#ifndef FAILED
 #define FAILED(hr) (((HRESULT)(hr)) < 0)
+#endif
 
 #define HKEY_CLASSES_ROOT (( HKEY ) (ULONG_PTR)((LONG)0x80000000) )
 #define HKEY_LOCAL_MACHINE (( HKEY ) (ULONG_PTR)((LONG)0x80000002) )
@@ -248,7 +273,9 @@ struct CHROME_MSG {
 
 #define STANDARD_RIGHTS_READ (READ_CONTROL)
 #define STANDARD_RIGHTS_WRITE (READ_CONTROL)
+#ifndef STANDARD_RIGHTS_ALL
 #define STANDARD_RIGHTS_ALL (0x001F0000L)
+#endif
 
 #define KEY_READ                ((STANDARD_RIGHTS_READ       |\
                                   KEY_QUERY_VALUE            |\
@@ -285,18 +312,28 @@ struct CHROME_MSG {
 
 // Define some macros needed when prototyping Windows functions.
 
+#ifndef DECLSPEC_IMPORT
 #define DECLSPEC_IMPORT __declspec(dllimport)
+#endif
 #define WINBASEAPI DECLSPEC_IMPORT
 #define WINUSERAPI DECLSPEC_IMPORT
 #define WINAPI __stdcall
+#ifndef APIENTRY
 #define APIENTRY WINAPI
+#endif
+#ifndef CALLBACK
 #define CALLBACK __stdcall
+#endif
 #define NTAPI __stdcall
 
 typedef INT_PTR(WINAPI* FARPROC)();
 
 // Needed for LockImpl.
+#ifdef _MSC_VER
 WINBASEAPI _Releases_exclusive_lock_(*SRWLock) VOID WINAPI
+#else
+VOID WINAPI
+#endif
     ReleaseSRWLockExclusive(_Inout_ PSRWLOCK SRWLock);
 WINBASEAPI BOOLEAN WINAPI TryAcquireSRWLockExclusive(_Inout_ PSRWLOCK SRWLock);
 
@@ -361,6 +398,29 @@ inline MSG* ChromeToWindowsType(CHROME_MSG* p) {
 // cases where it is easier to have the macro defined everywhere rather than
 // undefined everywhere. As windows.h is removed from more source files we may
 // be able to shorten this list.
+
+#ifndef _MSC_VER
+#undef CopyFile
+#undef CreateDirectory
+#undef CreateFile
+#undef CreateService
+#undef DeleteFile
+#undef DispatchMessage
+#undef DrawText
+#undef FindFirstFile
+#undef FindNextFile
+#undef GetClassName
+#undef GetCurrentDirectory
+#undef GetCurrentTime
+#undef GetFileAttributes
+#undef GetMessage
+#undef LoadIcon
+#undef PostMessage
+#undef ReplaceFile
+#undef SendMessage
+#undef SendMessageCallback
+#undef SetCurrentDirectory
+#endif
 
 #define CopyFile CopyFileW
 #define CreateDirectory CreateDirectoryW

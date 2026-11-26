@@ -15,7 +15,7 @@
 #include "third_party/blink/renderer/platform/heap/self_keep_alive.h"
 #include "third_party/blink/renderer/platform/scheduler/public/post_cancellable_task.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

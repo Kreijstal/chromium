@@ -20,7 +20,7 @@
 #include "ui/accessibility/platform/automation/automation_api_util.h"
 #include "ui/accessibility/platform/automation/automation_ax_tree_wrapper.h"
 #include "ui/gfx/geometry/point.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace ui {
 class AutomationV8Bindings;

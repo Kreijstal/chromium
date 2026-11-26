@@ -1157,7 +1157,7 @@ group("content_shell_crash_test") {
       "//components/crash/content/tools/dmp2minidump.py",
     ]
   }
-  if (is_win) {
+  if (is_msvc) {
     data_deps += [ "//build/win:copy_cdb_to_output" ]
   }
   if (is_posix) {

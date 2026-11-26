@@ -20,7 +20,7 @@
 #include "third_party/blink/renderer/core/testing/dummy_modulator.h"
 #include "third_party/blink/renderer/core/testing/module_test_base.h"
 #include "third_party/blink/renderer/platform/testing/task_environment.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

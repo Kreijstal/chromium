@@ -12,8 +12,8 @@ declare_args() {
 }
 
 # Ensure that the handle verifier is always used in a single module mode for the
-# component builds.
-if (is_component_build) {
+# component builds and for consumers of a component-built SDK.
+if (is_component_build || chromium_base_sdk_gni != "") {
   single_module_mode_handle_verifier = true
 }
 

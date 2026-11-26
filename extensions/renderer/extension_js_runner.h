@@ -10,7 +10,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "extensions/renderer/bindings/js_runner.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 class ScriptContext;

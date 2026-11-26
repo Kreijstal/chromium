@@ -7,7 +7,7 @@ import("//build/config/chrome_build.gni")
 
 import("//testing/test.gni")
 
-if (is_win) {
+if (is_msvc) {
   source_set("metainstaller_utils") {
     sources = [
       "delete_after_reboot_helper.cc",
@@ -119,7 +119,7 @@ static_library("with_no_strings") {
     "//third_party/abseil-cpp:absl",
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "additional_parameters.cc",
       "additional_parameters.h",
@@ -275,7 +275,9 @@ if (is_win) {
       "//chrome/install_static:install_static_util",
     ]
   }
+}
 
+if (is_msvc) {
   source_set("did_run_support") {
     public = [ "update_did_run_state.h" ]
 

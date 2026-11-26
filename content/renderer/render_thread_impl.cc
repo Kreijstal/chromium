@@ -172,7 +172,7 @@
 #include "ui/base/ui_base_switches_util.h"
 #include "ui/display/display_switches.h"
 #include "ui/native_theme/native_theme.h"
-#include "v8/include/v8-extension.h"
+#include "v8-extension.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include <cpu-features.h>

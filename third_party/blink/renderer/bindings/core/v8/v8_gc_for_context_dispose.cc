@@ -37,7 +37,7 @@
 #include "third_party/blink/renderer/platform/instrumentation/histogram.h"
 #include "third_party/blink/renderer/platform/instrumentation/memory_pressure_listener.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 namespace {

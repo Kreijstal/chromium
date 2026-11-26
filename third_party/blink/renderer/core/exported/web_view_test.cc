@@ -183,7 +183,7 @@
 #include "ui/events/keycodes/dom/dom_key.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if BUILDFLAG(ENABLE_UNHANDLED_TAP)
 #include "third_party/blink/public/mojom/unhandled_tap_notifier/unhandled_tap_notifier.mojom-blink.h"

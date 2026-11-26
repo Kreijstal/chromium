@@ -86,7 +86,11 @@
 #define HAVE_NEON 0
 #define HAVE_NEON_DOTPROD 0
 #define HAVE_NEON_I8MM 0
+#ifdef __MINGW32__
+#define HAVE_PTHREAD_H 1
+#else
 #define HAVE_PTHREAD_H  0
+#endif
 #define HAVE_PTHREAD_SETNAME_NP 1
 #define HAVE_RVV 0
 #define HAVE_SIMD128 0

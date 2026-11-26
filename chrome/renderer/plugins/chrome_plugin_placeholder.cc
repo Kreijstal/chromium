@@ -49,8 +49,8 @@
 #include "ui/gfx/geometry/size.h"
 #include "url/origin.h"
 #include "url/url_util.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 using base::UserMetricsAction;
 using content::RenderThread;

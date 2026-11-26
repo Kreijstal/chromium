@@ -104,7 +104,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/geometry/vector2d_conversions.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if defined(PDF_ENABLE_XFA)
 #include "gin/public/cppgc.h"

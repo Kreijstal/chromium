@@ -1551,18 +1551,25 @@ bool DesktopWindowTreeHostWin::HandleIMEMessage(UINT message,
     }
   }
 
+#if BUILDFLAG(IS_MSVC)
   CHROME_MSG msg = {};
   msg.hwnd = GetHWND();
   msg.message = message;
   msg.wParam = w_param;
   msg.lParam = l_param;
   return GetInputMethod()->OnUntranslatedIMEMessage(msg, result);
+#else
+  // MinGW uses InputMethodMinimal, which has no native IME hooks.
+  return false;
+#endif
 }
 
 void DesktopWindowTreeHostWin::HandleInputLanguageChange(
     DWORD character_set,
     HKL input_language_id) {
+#if BUILDFLAG(IS_MSVC)
   GetInputMethod()->OnInputLocaleChanged();
+#endif
 }
 
 void DesktopWindowTreeHostWin::HandlePaintAccelerated(

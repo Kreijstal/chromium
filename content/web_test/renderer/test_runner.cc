@@ -101,9 +101,9 @@
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/prefinalizer.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "cppgc/prefinalizer.h"
+#include "v8-cppgc.h"
 
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 #include "third_party/blink/public/platform/web_font_render_style.h"

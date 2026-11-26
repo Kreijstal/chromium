@@ -22,9 +22,13 @@
 #include "base/win/scoped_co_mem.h"
 #include "base/win/shortcut.h"
 #include "ui/base/l10n/l10n_util.h"
+#if !defined(__MINGW32__)
 #include "ui/shell_dialogs/auto_close_dialog_event_handler_win.h"
+#endif
 #include "ui/shell_dialogs/base_shell_dialog_win.h"
+#if !defined(__MINGW32__)
 #include "ui/shell_dialogs/safe_accept_file_dialog_event_handler_win.h"
+#endif
 #include "ui/shell_dialogs/select_file_utils_win.h"
 #include "ui/strings/grit/ui_strings.h"
 
@@ -192,18 +196,20 @@ bool RunSaveFileDialog(HWND owner,
 
   // Set up event handlers for the dialog.
   std::optional<ScopedFileDialogEvents> auto_close_event;
+  std::optional<ScopedFileDialogEvents> safe_accept_event;
+#if !defined(__MINGW32__)  // The handlers need WRL's RuntimeClass.
   if (owner && base::FeatureList::IsEnabled(kAutoCloseFileDialogs)) {
     auto_close_event.emplace(
         file_save_dialog.Get(),
         Microsoft::WRL::Make<AutoCloseDialogEventHandler>(owner).Get());
   }
 
-  std::optional<ScopedFileDialogEvents> safe_accept_event;
   if (base::FeatureList::IsEnabled(kSafeAcceptFileDialogs)) {
     safe_accept_event.emplace(
         file_save_dialog.Get(),
         Microsoft::WRL::Make<SafeAcceptFileDialogEventHandler>().Get());
   }
+#endif
 
   // Never consider the current scope as hung. The hang watching deadline (if
   // any) is not valid since the user can take unbounded time to choose the
@@ -269,18 +275,20 @@ bool RunOpenFileDialog(HWND owner,
 
   // Set up event handlers for the dialog.
   std::optional<ScopedFileDialogEvents> auto_close_event;
+  std::optional<ScopedFileDialogEvents> safe_accept_event;
+#if !defined(__MINGW32__)  // The handlers need WRL's RuntimeClass.
   if (owner && base::FeatureList::IsEnabled(kAutoCloseFileDialogs)) {
     auto_close_event.emplace(
         file_open_dialog.Get(),
         Microsoft::WRL::Make<AutoCloseDialogEventHandler>(owner).Get());
   }
 
-  std::optional<ScopedFileDialogEvents> safe_accept_event;
   if (base::FeatureList::IsEnabled(kSafeAcceptFileDialogs)) {
     safe_accept_event.emplace(
         file_open_dialog.Get(),
         Microsoft::WRL::Make<SafeAcceptFileDialogEventHandler>().Get());
   }
+#endif
 
   // Never consider the current scope as hung. The hang watching deadline (if
   // any) is not valid since the user can take unbounded time to choose the

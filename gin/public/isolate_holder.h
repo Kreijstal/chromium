@@ -11,11 +11,11 @@
 #include "base/memory/scoped_refptr.h"
 #include "gin/gin_export.h"
 #include "gin/public/v8_idle_task_runner.h"
-#include "v8/include/v8-array-buffer.h"
-#include "v8/include/v8-callbacks.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-array-buffer.h"
+#include "v8-callbacks.h"
+#include "v8-cppgc.h"
+#include "v8-forward.h"
+#include "v8-isolate.h"
 
 namespace base {
 class SingleThreadTaskRunner;

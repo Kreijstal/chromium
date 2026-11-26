@@ -6,7 +6,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_TESTING_MAIN_THREAD_ISOLATE_H_
 
 #include "base/memory/raw_ptr.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink::test {
 

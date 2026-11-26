@@ -15,7 +15,7 @@
 #include "third_party/blink/renderer/modules/wake_lock/wake_lock_test_utils.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/testing/task_environment.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

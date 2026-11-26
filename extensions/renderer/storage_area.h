@@ -9,7 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace gin {
 class Arguments;

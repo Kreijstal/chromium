@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "third_party/blink/renderer/platform/platform_export.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink {
 class FrameScheduler;

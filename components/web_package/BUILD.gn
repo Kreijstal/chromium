@@ -2,6 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//build/config/rust.gni")
 import("//testing/libfuzzer/fuzzer_test.gni")
 
 source_set("web_package_headers") {
@@ -38,12 +39,6 @@ source_set("web_package_headers") {
 source_set("web_package_rust_impl") {
   visibility = [ ":*" ]
   public = []
-  sources = [
-    "signed_web_bundles/integrity_block_parser.cc",
-    "signed_web_bundles/signed_web_bundle_signature_verifier.cc",
-    "signed_web_bundles/signed_web_bundle_utils.cc",
-    "web_bundle_parser.cc",
-  ]
   deps = [
     ":mojom_mapped_types",
     ":web_package_headers",
@@ -51,12 +46,37 @@ source_set("web_package_rust_impl") {
     "//components/base32",
     "//components/cbor",
     "//components/web_package/mojom",
-    "//components/web_package/rust:web_package_rust_bindings",
-    "//components/web_package/signed_web_bundles/rust:signed_web_bundles_rust_bindings",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/mojom",
   ]
+  if (enable_cpp_api_from_rust) {
+    sources = [
+      "signed_web_bundles/integrity_block_parser.cc",
+      "signed_web_bundles/signed_web_bundle_signature_verifier.cc",
+      "signed_web_bundles/signed_web_bundle_utils.cc",
+      "web_bundle_parser.cc",
+    ]
+    deps += [
+      "//components/web_package/rust:web_package_rust_bindings",
+      "//components/web_package/signed_web_bundles/rust:signed_web_bundles_rust_bindings",
+    ]
+  } else {
+    # No Crubit: the C++ parser from Chromium 140.
+    sources = [
+      "input_reader.cc",
+      "input_reader.h",
+      "signed_web_bundles/attribute_map_parser.cc",
+      "signed_web_bundles/attribute_map_parser.h",
+      "signed_web_bundles/integrity_block_parser_cpp.cc",
+      "signed_web_bundles/integrity_block_parser_cpp.h",
+      "signed_web_bundles/signature_entry_parser.cc",
+      "signed_web_bundles/signature_entry_parser.h",
+      "signed_web_bundles/signed_web_bundle_signature_verifier_cpp.cc",
+      "signed_web_bundles/signed_web_bundle_utils_cpp.cc",
+      "web_bundle_parser_cpp.cc",
+    ]
+  }
 }
 
 static_library("web_package") {
@@ -108,17 +128,24 @@ source_set("mojom_mapped_types_headers") {
 source_set("mojom_mapped_types_rust_impl") {
   visibility = [ ":*" ]
   public = []
-  sources = [
-    "signed_web_bundles/ecdsa_p256_sha256_signature.cc",
-    "signed_web_bundles/ed25519_signature.cc",
-  ]
   deps = [
     ":mojom_mapped_types_headers",
     "//base",
-    "//components/web_package/signed_web_bundles/rust:signed_web_bundles_rust_bindings",
     "//crypto",
     "//mojo/public/cpp/bindings",
   ]
+  if (enable_cpp_api_from_rust) {
+    sources = [
+      "signed_web_bundles/ecdsa_p256_sha256_signature.cc",
+      "signed_web_bundles/ed25519_signature.cc",
+    ]
+    deps += [ "//components/web_package/signed_web_bundles/rust:signed_web_bundles_rust_bindings" ]
+  } else {
+    sources = [
+      "signed_web_bundles/ecdsa_p256_sha256_signature_cpp.cc",
+      "signed_web_bundles/ed25519_signature_cpp.cc",
+    ]
+  }
 }
 
 source_set("mojom_mapped_types") {
@@ -159,13 +186,18 @@ source_set("unit_tests") {
     ":web_package",
     "//base/test:test_support",
     "//components/cbor",
-    "//components/web_package/rust:web_package_rust_unittests",
-    "//components/web_package/signed_web_bundles/rust:signed_web_bundles_rust_unittests",
     "//components/web_package/test_support",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/test_support:test_utils",
     "//testing/gtest",
   ]
+
+  if (enable_cpp_api_from_rust) {
+    deps += [
+      "//components/web_package/rust:web_package_rust_unittests",
+      "//components/web_package/signed_web_bundles/rust:signed_web_bundles_rust_unittests",
+    ]
+  }
 
   if (is_ios) {
     deps += [ "//components/test:web_package_test_bundle_data" ]

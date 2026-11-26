@@ -10,6 +10,7 @@ import("//media/media_options.gni")
 import("//third_party/blink/public/public_features.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//third_party/webrtc/webrtc.gni")
+import("//ui/base/ui_features.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -722,7 +723,7 @@ source_set("browser_sources") {
     sources += [ "ax_inspect_factory_fuchsia.cc" ]
   }
 
-  if (is_win) {
+  if (is_win && has_platform_accessibility_support) {
     sources += [ "ax_inspect_factory_win.cc" ]
   }
 

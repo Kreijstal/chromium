@@ -352,7 +352,11 @@ if (!is_cronet_build || is_ios) {
         "system_session_analyzer/system_session_analyzer_win.cc",
       ]
       public += [ "system_session_analyzer/system_session_analyzer_win.h" ]
-      libs = [ "wevtapi.lib" ]
+      if (is_msvc) {
+        libs = [ "wevtapi.lib" ]
+      } else {
+        libs = [ "wevtapi" ]
+      }
     } else {
       sources += [ "machine_id_provider_nonwin.cc" ]
     }

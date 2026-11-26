@@ -11,7 +11,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace web_distiller {
 

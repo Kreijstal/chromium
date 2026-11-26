@@ -11,7 +11,11 @@
 #include "base/win/windows_undefines.inc"
 // clang-format on
 
+#if defined(COMPILER_MSVC)
 #include <propvarutil.h>
+#else
+#include_next <propvarutil.h>
+#endif
 
 // Undefine the poisonous defines
 #include "base/win/windows_undefines.inc"  // NOLINT(build/include)

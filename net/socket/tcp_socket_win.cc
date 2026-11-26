@@ -1103,6 +1103,7 @@ int TCPSocketWin::DoConnect() {
     return ERR_ADDRESS_INVALID;
   }
 
+#if !defined(COMPILER_GCC) // FIXME: missing SO_RANDOMIZE_PORT
   // Set option to choose a random port, if the socket is not already bound.
   // Ignore failures, which may happen if the socket was already bound.
   if (UseTcpPortRandomization()) {
@@ -1111,6 +1112,7 @@ int TCPSocketWin::DoConnect() {
                reinterpret_cast<const char*>(&randomize_port),
                sizeof(randomize_port));
   }
+#endif
 
   // Disable SYN retransmissions for loopback connections.
   // Windows retransmits the SYN packet multiple times before reporting

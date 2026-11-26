@@ -128,10 +128,25 @@ source_set("generic_sensor") {
       "platform_sensor_win.h",
     ]
 
-    libs = [
-      "portabledeviceguids.lib",
-      "sensorsapi.lib",
-    ]
+    if (is_mingw) {
+      mingw_sources = sources
+      sources = []
+      sources += filter_exclude(mingw_sources, [
+        "platform_sensor_provider_winrt.cc",
+        "platform_sensor_provider_winrt.h",
+        "platform_sensor_reader_winrt.cc",
+        "platform_sensor_reader_winrt.h",
+      ])
+      libs = [
+        "portabledeviceguids",
+        "sensorsapi",
+      ]
+    } else {
+      libs = [
+        "portabledeviceguids.lib",
+        "sensorsapi.lib",
+      ]
+    }
   }
 }
 

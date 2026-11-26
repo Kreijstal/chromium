@@ -39,10 +39,14 @@ constexpr size_t kExtraNumberOfChars = 20;
 
 std::unique_ptr<VirtualKeyboardController> CreateKeyboardController(
     HWND attached_window_handle) {
+#if defined(COMPILER_MSVC)
   if (base::win::GetVersion() >= base::win::Version::WIN10_RS4) {
     return std::make_unique<OnScreenKeyboardDisplayManagerInputPane>(
         attached_window_handle);
   } else {
+#else
+  if (base::win::GetVersion() >= base::win::Version::WIN8) {
+#endif
     return std::make_unique<OnScreenKeyboardDisplayManagerTabTip>(
         attached_window_handle);
   }

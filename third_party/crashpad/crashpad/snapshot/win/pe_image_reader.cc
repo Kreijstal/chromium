@@ -425,8 +425,8 @@ bool PEImageReader::ImageDataDirectoryEntryT(
   }
 
   if (nt_headers.FileHeader.SizeOfOptionalHeader <
-          offsetof(decltype(nt_headers.OptionalHeader), DataDirectory[index]) +
-              sizeof(nt_headers.OptionalHeader.DataDirectory[index]) ||
+          offsetof(decltype(nt_headers.OptionalHeader), DataDirectory) +
+              (index + 1) * sizeof(IMAGE_DATA_DIRECTORY) ||
       nt_headers.OptionalHeader.NumberOfRvaAndSizes <= index) {
     return false;
   }

@@ -7,7 +7,7 @@ import("//build/config/clang/clang.gni")
 import("//build/config/sysroot.gni")
 import("//buildtools/third_party/libc++/libcxx_headers.gni")
 import("//buildtools/third_party/libc++/modules.gni")
-if (is_win) {
+if (is_win && !is_mingw) {
   import("//build/toolchain/win/win_toolchain_data.gni")
 }
 if (is_ios && current_toolchain == default_toolchain) {

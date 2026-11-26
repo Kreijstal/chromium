@@ -207,7 +207,7 @@
 #include "ui/gfx/geometry/point_conversions.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/image/canvas_image_source.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

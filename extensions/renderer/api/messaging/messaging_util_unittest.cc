@@ -23,7 +23,7 @@
 #include "extensions/renderer/native_extension_bindings_system_test_base.h"
 #include "extensions/renderer/script_context.h"
 #include "gin/converter.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 

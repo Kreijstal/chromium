@@ -19,7 +19,9 @@
 #include "build/build_config.h"
 #include "partition_alloc/oom.h"
 #include "third_party/blink/common/crash_helpers.h"
+#if !BUILDFLAG(IS_QTWEBENGINE) && !defined(BLINK_COMMON_NO_RUST)
 #include "third_party/blink/common/rust_crash/src/lib.rs.h"
+#endif
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_WIN)
@@ -150,7 +152,9 @@ NOINLINE void MaybeTriggerAsanError(const GURL& url) {
     // Ensure that ASAN works even in Rust code.
     LOG(ERROR) << "Intentionally causing ASAN heap overflow in Rust"
                << " because user navigated to " << url.spec();
+#if !BUILDFLAG(IS_QTWEBENGINE) && !defined(BLINK_COMMON_NO_RUST)
     crash_in_rust_with_overflow();
+#endif
   }
 }
 #endif  // ADDRESS_SANITIZER
@@ -170,7 +174,9 @@ void HandleChromeDebugURL(const GURL& url) {
   } else if (url == kChromeUICrashRustURL) {
     // Cause a typical crash in Rust code, so we can test that call stack
     // collection and symbol mangling work across the language boundary.
+#if !BUILDFLAG(IS_QTWEBENGINE) && !defined(BLINK_COMMON_NO_RUST)
     crash_in_rust();
+#endif
   } else if (url == kChromeUIDumpURL) {
     // This URL will only correctly create a crash dump file if content is
     // hosted in a process that has correctly called

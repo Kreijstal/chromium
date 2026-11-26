@@ -128,7 +128,7 @@ source_set("cdm") {
     public_deps += [ "//components/crash/core/common:crash_key" ]
   }
 
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "media_foundation_cdm_data.cc",
       "media_foundation_cdm_data.h",

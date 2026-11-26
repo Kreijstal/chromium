@@ -9,7 +9,7 @@
 
 #include "base/location.h"
 #include "gin/gin_export.h"
-#include "v8/include/v8-platform.h"
+#include "v8-platform.h"
 
 namespace gin {
 

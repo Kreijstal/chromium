@@ -11,7 +11,7 @@
 #include "content/public/renderer/worker_thread.h"
 #include "extensions/renderer/script_context_set_iterable.h"
 #include "url/gurl.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 

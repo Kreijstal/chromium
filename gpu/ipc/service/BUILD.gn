@@ -106,11 +106,19 @@ component("service") {
         "dawn_texture_solid_color_pool.h",
       ]
     }
-    libs += [
-      "d3d11.lib",
-      "dcomp.lib",
-      "dxguid.lib",
-    ]
+    if (is_msvc) {
+      libs += [
+        "d3d11",
+        "dcomp",
+        "dxguid.lib",
+      ]
+    } else {
+      libs += [
+        "d3d11",
+        "dcomp",
+        "dxguid",
+      ]
+    }
 
     if (enable_ml_internal) {
       deps += [ "//services/webnn/public/mojom:features" ]

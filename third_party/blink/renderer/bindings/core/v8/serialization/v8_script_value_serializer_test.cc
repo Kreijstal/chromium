@@ -78,7 +78,7 @@
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkSurface.h"
-#include "v8/include/v8-cppgc.h"
+#include "v8-cppgc.h"
 
 namespace blink {
 namespace {

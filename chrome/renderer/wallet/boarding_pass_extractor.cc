@@ -14,7 +14,7 @@
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace wallet {
 

@@ -19,7 +19,7 @@
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/skia/include/core/SkRefCnt.h"
 #include "ui/gfx/geometry/size_f.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

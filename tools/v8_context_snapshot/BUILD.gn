@@ -118,7 +118,7 @@ if (use_v8_context_snapshot) {
   # disable it while taking a V8 snapshot.
   config("disable_icf") {
     visibility = [ ":*" ]  # Only targets in this file can depend on this.
-    if (is_win) {
+    if (is_msvc) {
       ldflags = [ "/OPT:NOICF" ]  # link.exe, but also lld-link.exe.
     } else if (is_apple && !use_lld) {
       ldflags = [ "-Wl,-no_deduplicate" ]  # ld64.

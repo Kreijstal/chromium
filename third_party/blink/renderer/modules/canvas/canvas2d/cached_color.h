@@ -12,8 +12,8 @@
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-local-handle.h"
+#include "v8-primitive.h"
 
 namespace blink {
 

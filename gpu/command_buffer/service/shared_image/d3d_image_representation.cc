@@ -89,6 +89,7 @@ void GLTexturePassthroughD3DImageRepresentation::EndAccess() {
   d3d_image_backing->EndAccessD3D(d3d11_device_);
 }
 
+#if BUILDFLAG(USE_DAWN)
 DawnD3DImageRepresentation::DawnD3DImageRepresentation(
     SharedImageManager* manager,
     SharedImageBacking* backing,
@@ -164,6 +165,7 @@ void DawnD3DBufferRepresentation::EndAccess() {
   // with other backings).
   buffer_ = nullptr;
 }
+#endif  // BUILDFLAG(USE_DAWN)
 
 WebNND3DTensorRepresentation::WebNND3DTensorRepresentation(
     SharedImageManager* manager,
@@ -380,6 +382,7 @@ D3D11TextureAndArrayIndex D3D11VideoImageCopyRepresentation::GetD3D11Texture()
   return D3D11TextureAndArrayIndex(dest_texture_, /*array_index=*/0);
 }
 
+#if BUILDFLAG(USE_DAWN)
 // D3DSkiaGraphiteDawnImageRepresentation
 
 D3DSkiaGraphiteDawnImageRepresentation::
@@ -423,5 +426,6 @@ D3DSkiaGraphiteDawnImageRepresentation::WrapBackendTextures(
   return d3d_image_backing->CreateGraphiteTextureHolders(
       GetDevice(), std::move(texture), std::move(backend_textures));
 }
+#endif  // BUILDFLAG(USE_DAWN)
 
 }  // namespace gpu

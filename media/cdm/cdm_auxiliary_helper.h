@@ -115,7 +115,7 @@ class MEDIA_EXPORT CdmAuxiliaryHelper : public CdmAllocator,
                          const std::string& challenge,
                          ChallengePlatformCB callback) override;
   void GetStorageId(uint32_t version, StorageIdCB callback) override;
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   void GetMediaFoundationCdmData(GetMediaFoundationCdmDataCB callback) override;
   void OnCdmEvent(CdmEvent event, HRESULT hresult) override;
 
@@ -125,7 +125,7 @@ class MEDIA_EXPORT CdmAuxiliaryHelper : public CdmAllocator,
   using GetContentProtectionWindowCB = base::OnceCallback<void(uint32_t hwnd)>;
   virtual void GetContentProtectionWindow(
       GetContentProtectionWindowCB callback);
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 };
 
 }  // namespace media

@@ -8,7 +8,9 @@
 
 #include <shobjidl.h>
 
-#include <coml2api.h>
+#if !defined(__MINGW32__)
+#include <coml2api.h>  // mingw-w64 declares these in objidl.h.
+#endif
 #include <objidl.h>
 #include <shlobj.h>
 #include <stdint.h>

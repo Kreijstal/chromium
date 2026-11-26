@@ -67,7 +67,7 @@ void MockInputMethod::OnBlur() {
   observer_list_.Notify(&InputMethodObserver::OnBlur);
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 bool MockInputMethod::OnUntranslatedIMEMessage(const CHROME_MSG event,
                                                NativeEventResult* result) {
   if (result)

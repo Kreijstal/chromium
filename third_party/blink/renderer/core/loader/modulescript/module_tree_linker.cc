@@ -20,7 +20,7 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loading_log.h"
 #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 // <specdef label="IMSGF"
 // href="https://html.spec.whatwg.org/C/#internal-module-script-graph-fetching-procedure">

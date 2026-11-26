@@ -14,9 +14,9 @@
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/public/wrapper_info.h"
 #include "gin/wrappable.h"
-#include "v8/include/v8-exception.h"
+#include "v8-exception.h"
 #include "v8/include/v8-object.h"
-#include "v8/include/v8-template.h"
+#include "v8-template.h"
 
 namespace gin {
 

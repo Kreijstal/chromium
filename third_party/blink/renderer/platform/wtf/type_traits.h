@@ -30,7 +30,7 @@
 
 #include "base/compiler_specific.h"
 #include "build/build_config.h"
-#include "v8/include/cppgc/type-traits.h"  // nogncheck
+#include "cppgc/type-traits.h"  // nogncheck
 
 namespace blink {
 

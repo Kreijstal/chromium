@@ -6,7 +6,7 @@
 #define EXTENSIONS_RENDERER_BINDINGS_GET_PER_CONTEXT_DATA_H_
 
 #include "gin/per_context_data.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 

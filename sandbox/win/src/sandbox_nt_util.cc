@@ -17,6 +17,7 @@
 #include "base/containers/span.h"
 #include "base/win/pe_image.h"
 #include "base/win/win_util.h"
+#include "build/build_config.h"
 #include "sandbox/win/src/internal_types.h"
 #include "sandbox/win/src/nt_internals.h"
 #include "sandbox/win/src/sandbox_factory.h"
@@ -33,7 +34,7 @@ namespace {
 
 // Uses value of FILE_INFORMATION_CLASS defined in Wdm.h but not in user-mode.
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ne-wdm-_file_information_class
-constexpr uint32_t FileRenameInformation = 10;
+constexpr uint32_t kFileRenameInformation = 10;
 
 #if defined(_WIN64)
 // Align a pointer to the next allocation granularity boundary.
@@ -325,7 +326,9 @@ NTSTATUS CopyData(void* destination, const void* source, size_t bytes) {
   __try {
     UNSAFE_TODO(GetNtExports()->memcpy(destination, source, bytes));
   } __except (EXCEPTION_EXECUTE_HANDLER) {
+#ifdef _MSC_VER
     ret = (NTSTATUS)GetExceptionCode();
+#endif
   }
   return ret;
 }
@@ -428,7 +431,7 @@ UNICODE_STRING* AnsiToUnicode(const char* string) {
       ansi_string.MaximumLength * sizeof(wchar_t) + sizeof(UNICODE_STRING);
 
   UNICODE_STRING* out_string =
-      reinterpret_cast<UNICODE_STRING*>(new (NT_ALLOC) char[name_bytes]);
+      reinterpret_cast<UNICODE_STRING*>(new char[name_bytes]);
   if (!out_string)
     return nullptr;
 
@@ -511,7 +514,7 @@ UNICODE_STRING* GetBackingFilePath(PVOID address) {
 
   for (;;) {
     MEMORY_SECTION_NAME* section_name = reinterpret_cast<MEMORY_SECTION_NAME*>(
-        new (NT_ALLOC) char[buffer_bytes]);
+        new char[buffer_bytes]);
 
     if (!section_name)
       return nullptr;
@@ -565,7 +568,7 @@ UNICODE_STRING* ExtractModuleName(const UNICODE_STRING* module_path) {
   // Because module_path is a UNICODE_STRING, size_bytes will be small enough
   // to make the static_cast below safe.
   DCHECK_NT(UINT16_MAX > size_bytes);
-  char* str_buffer = new (NT_ALLOC) char[size_bytes + sizeof(UNICODE_STRING)];
+  char* str_buffer = new char[size_bytes + sizeof(UNICODE_STRING)];
   if (!str_buffer)
     return nullptr;
 
@@ -636,7 +639,7 @@ NTSTATUS AutoProtectMemory::RevertProtection() {
 bool IsSupportedRenameCall(FILE_RENAME_INFORMATION* file_info,
                            DWORD length,
                            uint32_t file_info_class) {
-  if (FileRenameInformation != file_info_class)
+  if (kFileRenameInformation != file_info_class)
     return false;
 
   if (length < sizeof(FILE_RENAME_INFORMATION))

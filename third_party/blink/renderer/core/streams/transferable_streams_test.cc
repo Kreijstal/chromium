@@ -31,7 +31,7 @@
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/testing/task_environment.h"
 #include "third_party/blink/renderer/platform/testing/unit_test_helpers.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

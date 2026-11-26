@@ -27,8 +27,13 @@ namespace views {
 // a separate unique value, which is ultimately returned.
 class VIEWS_EXPORT PenIdHandler {
  public:
+#if defined(__MINGW32__)
+  // MinGW's WinRT headers lack IPenDeviceStatics.
+  using GetPenDeviceStatics = void* (*)();
+#else
   using GetPenDeviceStatics = Microsoft::WRL::ComPtr<
       ABI::Windows::Devices::Input::IPenDeviceStatics> (*)();
+#endif
   class VIEWS_EXPORT [[maybe_unused, nodiscard]] ScopedPenIdStaticsForTesting {
    public:
     explicit ScopedPenIdStaticsForTesting(

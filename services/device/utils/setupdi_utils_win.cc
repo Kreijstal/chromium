@@ -31,7 +31,7 @@ std::optional<std::wstring> GetDeviceStringProperty(
     device_event_log::LogType log_type) {
   DEVPROPTYPE property_type;
   DWORD required_size;
-  if (SetupDiGetDeviceProperty(dev_info, dev_info_data, &property,
+  if (SetupDiGetDevicePropertyW(dev_info, dev_info_data, &property,
                                &property_type, /*PropertyBuffer=*/nullptr,
                                /*PropertyBufferSize=*/0, &required_size,
                                /*Flags=*/0)) {
@@ -60,7 +60,7 @@ std::optional<std::wstring> GetDeviceStringProperty(
   }
 
   std::wstring buffer;
-  if (!SetupDiGetDeviceProperty(
+  if (!SetupDiGetDevicePropertyW(
           dev_info, dev_info_data, &property, &property_type,
           reinterpret_cast<PBYTE>(base::WriteInto(&buffer, required_size)),
           required_size, /*RequiredSize=*/nullptr, /*Flags=*/0)) {
@@ -79,7 +79,7 @@ std::optional<std::vector<std::wstring>> GetDeviceStringListProperty(
     device_event_log::LogType log_type) {
   DEVPROPTYPE property_type;
   DWORD required_size;
-  if (SetupDiGetDeviceProperty(dev_info, dev_info_data, &property,
+  if (SetupDiGetDevicePropertyW(dev_info, dev_info_data, &property,
                                &property_type, /*PropertyBuffer=*/nullptr,
                                /*PropertyBufferSize=*/0, &required_size,
                                /*Flags=*/0)) {
@@ -110,7 +110,7 @@ std::optional<std::vector<std::wstring>> GetDeviceStringListProperty(
   }
 
   std::wstring buffer;
-  if (!SetupDiGetDeviceProperty(
+  if (!SetupDiGetDevicePropertyW(
           dev_info, dev_info_data, &property, &property_type,
           reinterpret_cast<PBYTE>(base::WriteInto(&buffer, required_size)),
           required_size, /*RequiredSize=*/nullptr, /*Flags=*/0)) {
@@ -131,7 +131,7 @@ std::optional<uint32_t> GetDeviceUint32Property(
     device_event_log::LogType log_type) {
   DEVPROPTYPE property_type;
   uint32_t buffer;
-  if (!SetupDiGetDeviceProperty(dev_info, dev_info_data, &property,
+  if (!SetupDiGetDevicePropertyW(dev_info, dev_info_data, &property,
                                 &property_type,
                                 reinterpret_cast<PBYTE>(&buffer),
                                 sizeof(buffer), /*RequiredSize=*/nullptr,
@@ -161,7 +161,7 @@ std::optional<std::string> GetDeviceGuidProperty(
     device_event_log::LogType log_type) {
   DEVPROPTYPE property_type;
   GUID buffer;
-  if (!SetupDiGetDeviceProperty(dev_info, dev_info_data, &property,
+  if (!SetupDiGetDevicePropertyW(dev_info, dev_info_data, &property,
                                 &property_type,
                                 reinterpret_cast<PBYTE>(&buffer),
                                 sizeof(buffer), /*RequiredSize=*/nullptr,

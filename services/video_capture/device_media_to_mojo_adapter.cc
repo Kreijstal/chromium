@@ -160,15 +160,15 @@ void DeviceMediaToMojoAdapter::StartInternal(
     TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("video_and_image_capture"),
                  "CreateVideoCaptureBufferPoolImpl");
     // Create a dedicated buffer pool for the device usage session.
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
     buffer_pool = base::MakeRefCounted<media::VideoCaptureBufferPoolImpl>(
         requested_settings.buffer_type, max_buffer_pool_buffer_count(),
         std::make_unique<media::VideoCaptureBufferTrackerFactoryImpl>(
             dxgi_device_manager_));
-#else   // BUILDFLAG(IS_WIN)
+#else   // BUILDFLAG(IS_MSVC)
     buffer_pool = base::MakeRefCounted<media::VideoCaptureBufferPoolImpl>(
         requested_settings.buffer_type, max_buffer_pool_buffer_count());
-#endif  // !BUILDFLAG(IS_WIN)
+#endif  // !BUILDFLAG(IS_MSVC)
   }
 
 #if BUILDFLAG(IS_CHROMEOS)

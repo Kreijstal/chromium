@@ -80,7 +80,7 @@ declare_args() {
   #
   # WARNING: Bringing your own C++ standard library is deprecated and will not
   # be supported in the future. This flag will be removed.
-  use_safe_libstdcxx = is_linux && !use_custom_libcxx
+  use_safe_libstdcxx = (is_linux || is_mingw) && !use_custom_libcxx
 
   # Use explicit Clang header modules for libc++.
   # We'll gradually expand supported platform of modules

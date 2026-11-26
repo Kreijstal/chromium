@@ -6,7 +6,7 @@
 #define CHROME_RENDERER_LOADTIMES_BINDINGS_H_
 
 #include "gin/wrappable.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 // LoadTimesBindings installs the chrome.loadTimes() and chrome.csi()
 // functions on the chrome object.

@@ -372,6 +372,7 @@ bool TryDisableDesktopPlane(IDXGIDecodeSwapChain* decode_swap_chain,
   RECT original_target_rect;
   CHECK_EQ(decode_swap_chain->GetTargetRect(&original_target_rect), S_OK);
 
+#if !defined(COMPILER_GCC)
   // Set the target region to the specified rectangle if necessary.
   RECT target_region = target_rect.ToRECT();
   if (target_region != original_target_rect) {
@@ -384,6 +385,7 @@ bool TryDisableDesktopPlane(IDXGIDecodeSwapChain* decode_swap_chain,
       return false;
     }
   }
+#endif
 
   return true;
 }

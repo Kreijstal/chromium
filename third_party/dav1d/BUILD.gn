@@ -80,7 +80,7 @@ config("dav1d_config") {
     "libdav1d/include/dav1d",
     platform_config_root,
   ]
-  if (is_win && !is_clang) {
+  if (is_msvc && !is_clang) {
     include_dirs += [ "libdav1d/include/compat/msvc" ]
   }
 }
@@ -90,7 +90,7 @@ dav1d_copts = [
   "-D_POSIX_C_SOURCE=200112L",
 ]
 
-if (is_win) {
+if (is_msvc) {
   if (!is_clang) {
     dav1d_copts += [
       "/wd4028",  # parameter different from declaration
@@ -104,7 +104,7 @@ if (is_win) {
   if (is_apple) {
     dav1d_copts += [ "-D_DARWIN_C_SOURCE" ]
   }
-  if (is_linux || is_chromeos || is_android || current_os == "aix") {
+  if (is_linux || is_chromeos || is_android || is_mingw || current_os == "aix") {
     if (!is_clang) {
       dav1d_copts += [ "-D_GNU_SOURCE" ]
     }
@@ -113,7 +113,7 @@ if (is_win) {
 
 if (is_clang && (current_cpu == "arm" || current_cpu == "arm64" ||
                  current_cpu == "arm64e")) {
-  if (is_win) {
+  if (is_msvc) {
     dav1d_copts += [ "/clang:-fno-align-functions" ]
   } else {
     dav1d_copts += [ "-fno-align-functions" ]
@@ -243,11 +243,13 @@ if (current_cpu == "x86" || current_cpu == "x64") {
       "libdav1d/src/arm/cpu.h",
     ]
 
-    # These are not template based so should only be built once.
-    if (current_cpu == "arm") {
-      sources += arm32_asm_sources
-    } else if (current_cpu == "arm64" || current_cpu == "arm64e") {
-      sources += arm64_asm_sources
+    if (!is_msvc || is_clang) {
+      # These are not template based so should only be built once.
+      if (current_cpu == "arm") {
+        sources += arm32_asm_sources
+      } else if (current_cpu == "arm64" || current_cpu == "arm64e") {
+        sources += arm64_asm_sources
+      }
     }
 
     configs -= [ "//build/config/compiler:chromium_code" ]

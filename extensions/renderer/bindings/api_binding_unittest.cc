@@ -36,12 +36,12 @@
 #include "gin/public/context_holder.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/garbage-collected.h"
-#include "v8/include/cppgc/persistent.h"
-#include "v8/include/cppgc/prefinalizer.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8.h"
+#include "cppgc/allocation.h"
+#include "cppgc/garbage-collected.h"
+#include "cppgc/persistent.h"
+#include "cppgc/prefinalizer.h"
+#include "v8-cppgc.h"
+#include "v8.h"
 
 namespace extensions {
 

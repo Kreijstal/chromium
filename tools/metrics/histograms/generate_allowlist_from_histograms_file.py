@@ -4,10 +4,13 @@
 # found in the LICENSE file.
 
 import argparse
+import os
 import pathlib
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
+
+sys.path.insert(0, os.path.dirname(__file__))
 
 import setup_modules  # pylint: disable=unused-import
 

@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "extensions/renderer/source_map.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 

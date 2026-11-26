@@ -2,6 +2,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//build/config/rust.gni")
+
 source_set("private_verification_tokens") {
   visibility = [
     ":*",
@@ -70,7 +72,12 @@ source_set("impl") {
 
 source_set("browser_tests") {
   testonly = true
-  sources = [ "private_verification_tokens_service_browsertest.cc" ]
+
+  # The tests issue tokens through the Crubit ATHM bindings.
+  sources = []
+  if (enable_cpp_api_from_rust) {
+    sources += [ "private_verification_tokens_service_browsertest.cc" ]
+  }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   deps = [
     ":private_verification_tokens",
@@ -84,20 +91,25 @@ source_set("browser_tests") {
     "//components/private_verification_tokens/common:private_verification_tokens_database",
     "//components/private_verification_tokens/common:private_verification_tokens_issuer_config",
     "//components/private_verification_tokens/common:test_support",
-    "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings",
     "//components/search_engines",
     "//net:test_support",
     "//services/network:test_support",
     "//url",
   ]
+  if (enable_cpp_api_from_rust) {
+    deps += [ "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings" ]
+  }
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [
-    "private_verification_tokens_service_unittest.cc",
-    "private_verification_tokens_url_loader_throttle_unittest.cc",
-  ]
+  sources = []
+  if (enable_cpp_api_from_rust) {
+    sources += [
+      "private_verification_tokens_service_unittest.cc",
+      "private_verification_tokens_url_loader_throttle_unittest.cc",
+    ]
+  }
   deps = [
     ":private_verification_tokens",
     "//base",
@@ -112,7 +124,6 @@ source_set("unit_tests") {
     "//components/private_verification_tokens/common:private_verification_tokens_metrics",
     "//components/private_verification_tokens/common:private_verification_tokens_parameters",
     "//components/private_verification_tokens/common:test_support",
-    "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings",
     "//content/test:test_support",
     "//net",
     "//services/network:test_support",
@@ -121,4 +132,7 @@ source_set("unit_tests") {
     "//third_party/blink/public/common",
     "//url",
   ]
+  if (enable_cpp_api_from_rust) {
+    deps += [ "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings" ]
+  }
 }

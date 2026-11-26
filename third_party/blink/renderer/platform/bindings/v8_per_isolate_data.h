@@ -44,11 +44,11 @@
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8-callbacks.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "v8-callbacks.h"
+#include "v8-forward.h"
+#include "v8-isolate.h"
+#include "v8-local-handle.h"
+#include "v8-persistent-handle.h"
 
 namespace base {
 class SingleThreadTaskRunner;

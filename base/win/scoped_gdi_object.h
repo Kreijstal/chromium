@@ -45,7 +45,7 @@ struct BASE_EXPORT ScopedGDIObjectTraits {
 // `#include`s this one.
 #define DECLARE_TRAIT_SPECIALIZATION(T) \
   template <>                           \
-  void ScopedGDIObjectTraits<T>::Free(T object);
+  BASE_EXPORT void ScopedGDIObjectTraits<T>::Free(T object);
 DECLARE_TRAIT_SPECIALIZATION(HBITMAP)
 DECLARE_TRAIT_SPECIALIZATION(HBRUSH)
 DECLARE_TRAIT_SPECIALIZATION(HFONT)

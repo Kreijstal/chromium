@@ -13,7 +13,7 @@
 #include "build/build_config.h"
 #include "gin/gin_features.h"
 #include "gin/public/v8_platform.h"
-#include "v8/include/cppgc/platform.h"
+#include "cppgc/platform.h"
 
 namespace gin {
 

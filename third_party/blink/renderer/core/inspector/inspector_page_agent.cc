@@ -109,7 +109,7 @@
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #include "third_party/inspector_protocol/crdtp/protocol_core.h"
 #include "ui/display/screen_info.h"
-#include "v8/include/v8-inspector.h"
+#include "v8-inspector.h"
 
 namespace blink {
 

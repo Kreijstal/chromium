@@ -13,7 +13,7 @@
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/bindings/v8_value_or_script_wrappable_adapter.h"
 #include "third_party/blink/renderer/platform/scheduler/public/task_attribution_tracker.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

@@ -16,7 +16,7 @@
 #include "content/public/renderer/render_thread_observer.h"
 #include "gin/public/wrappable_pointer_tags.h"
 #include "third_party/blink/public/mojom/context_menu/context_menu.mojom.h"
-#include "v8/include/cppgc/persistent.h"
+#include "cppgc/persistent.h"
 
 class ChromePluginPlaceholder final
     : public gin::Wrappable<ChromePluginPlaceholder>,

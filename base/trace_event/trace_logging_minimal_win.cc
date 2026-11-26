@@ -11,6 +11,18 @@
 #include "base/logging.h"
 #include "base/numerics/checked_math.h"
 
+#if defined(__MINGW32__)
+#ifndef EventProviderSetTraits
+#define EventProviderSetTraits static_cast<EVENT_INFO_CLASS>(2)
+#endif
+#ifndef EVENT_DATA_DESCRIPTOR_TYPE_EVENT_METADATA
+#define EVENT_DATA_DESCRIPTOR_TYPE_EVENT_METADATA 1
+#endif
+#ifndef EVENT_DATA_DESCRIPTOR_TYPE_PROVIDER_METADATA
+#define EVENT_DATA_DESCRIPTOR_TYPE_PROVIDER_METADATA 2
+#endif
+#endif
+
 TlmProvider::TlmProvider() noexcept = default;
 
 TlmProvider::~TlmProvider() {

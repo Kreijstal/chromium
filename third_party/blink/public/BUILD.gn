@@ -1,3 +1,4 @@
+import("//v8/system_v8/args.gni")
 # Copyright 2014 The Chromium Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -473,6 +474,10 @@ source_set("blink_headers") {
     "//ui/base",
     "//v8:v8_headers",
   ]
+
+  if (use_system_v8) {
+    public_deps += [ "//v8:v8_headers" ]
+  }
 }
 
 blink_python_runner("runtime_features_for_public") {

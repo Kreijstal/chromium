@@ -78,7 +78,7 @@
 #include "third_party/blink/renderer/platform/runtime_feature_state/runtime_feature_state_override_context.h"
 #include "third_party/blink/renderer/platform/weborigin/reporting_disposition.h"
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

@@ -13,8 +13,12 @@
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "components/private_verification_tokens/common/private_verification_tokens_buildflags.h"
+
+#if BUILDFLAG(ENABLE_ATHM_FFI)
 #include "components/private_verification_tokens/common/athm_ffi/athm_ffi.h"
 #include "third_party/crubit/support/rs_std/slice_ref.h"
+#endif
 
 namespace private_verification_tokens::test {
 
@@ -31,6 +35,7 @@ inline FutureExpiration GetFutureExpiration(
           base::NumberToString(future_seconds.InSeconds())};
 }
 
+#if BUILDFLAG(ENABLE_ATHM_FFI)
 inline std::optional<PrivacyPassAthmIssuer> CreateTestIssuer(
     uint8_t num_buckets,
     std::string_view deployment_id) {
@@ -42,6 +47,7 @@ inline std::optional<PrivacyPassAthmIssuer> CreateTestIssuer(
   }
   return std::nullopt;
 }
+#endif
 
 }  // namespace private_verification_tokens::test
 

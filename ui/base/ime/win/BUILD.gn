@@ -28,6 +28,22 @@ component("win") {
     "virtual_keyboard_debounce_timer.cc",
     "virtual_keyboard_debounce_timer.h",
   ]
+  if (is_mingw) {
+    sources -= [
+      "input_method_win_tsf.cc",
+      "input_method_win_tsf.h",
+      "on_screen_keyboard_display_manager_input_pane.cc", # requires <wrl/event.h>
+      "on_screen_keyboard_display_manager_input_pane.h",
+      "tsf_bridge.cc",
+      "tsf_bridge.h",
+      "tsf_event_router.cc",
+      "tsf_event_router.h",
+      "tsf_input_scope.cc",
+      "tsf_input_scope.h",
+      "tsf_text_store.cc",
+      "tsf_text_store.h",
+    ]
+  }
 
   defines = [ "IS_UI_BASE_IME_WIN_IMPL" ]
 

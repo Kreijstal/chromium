@@ -81,7 +81,7 @@ class GPU_IPC_CLIENT_EXPORT ClientSharedImageInterface
       const SharedImageInfo& si_info) override;
   void CopyToGpuMemoryBuffer(std::vector<SyncToken> sync_tokens,
                              const Mailbox& mailbox) override;
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   void CopyToGpuMemoryBufferAsync(
       std::vector<SyncToken> sync_tokens,
       const Mailbox& mailbox,

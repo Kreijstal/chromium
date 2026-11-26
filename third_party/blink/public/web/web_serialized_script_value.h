@@ -35,7 +35,7 @@
 #include "third_party/blink/public/common/messaging/cloneable_message.h"
 #include "third_party/blink/public/platform/web_common.h"
 #include "third_party/blink/public/platform/web_private_ptr.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-local-handle.h"
 
 namespace v8 {
 class Isolate;

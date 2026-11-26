@@ -9,11 +9,17 @@ import("//build/rust/gni_impl/rust_target.gni")
 # dynamic library that is loaded during compilation and used to generate Rust
 # code for compilation.
 template("rust_macro") {
+  if (!enable_rust) {
+    # Rust is off (MinGW GCC): keep the label so GN resolves dependents.
+    group(target_name) {
+      forward_variables_from(invoker, [ "testonly", "visibility" ])
+      not_needed(invoker, "*")
+    }
+  } else {
   if (defined(invoker.crate_name)) {
     assert_crate_name_allowed(target_name) {
     }
   }
-
   rust_target(target_name) {
     forward_variables_from(invoker,
                            "*",
@@ -34,6 +40,7 @@ template("rust_macro") {
     # TODO(crbug.com/472338477): Stop disabling Clippy - this depends on
     # figuring out cross-toolchain dependencies on `*.rustflags.json` files.
     no_clippy = true
+  }
   }
 }
 

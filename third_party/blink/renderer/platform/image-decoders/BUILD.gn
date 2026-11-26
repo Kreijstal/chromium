@@ -2,6 +2,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//skia/skia.gni")
+import("//build/config/rust.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//media/media_options.gni")
 import("//testing/test.gni")
@@ -82,13 +84,21 @@ component("image_decoders") {
     "//ui/gfx/geometry:geometry_skia",
   ]
 
-  if (enable_dav1d_decoder) {
+  if (enable_dav1d_decoder && enable_crabbyavif) {
+    # The AVIF decoder is CrabbyAVIF (Rust); without it there is no AVIF.
     sources += [
       "avif/avif_image_decoder.cc",
       "avif/avif_image_decoder.h",
     ]
-
     deps += [ "//third_party/crabbyavif" ]
+    defines = [ "BLINK_CRABBYAVIF" ]
+  }
+
+  if (enable_rust_png) {
+    sources += [
+      "png/skia_png_rust_image_decoder.cc",
+      "png/skia_png_rust_image_decoder.h",
+    ]
   }
 
   if (enable_jxl_decoder) {

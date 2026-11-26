@@ -74,7 +74,7 @@
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #include "third_party/webrtc/api/peer_connection_interface.h"
 #include "third_party/webrtc/api/rtc_error.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

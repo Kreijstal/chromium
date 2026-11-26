@@ -119,6 +119,9 @@ source_set("decompress") {
   if (current_cpu == "x64" && !is_win) {
     sources += [ "src/lib/decompress/huf_decompress_amd64.S" ]
   }
+  if (is_mingw) {
+    defines = [ "ZSTD_DISABLE_ASM" ]
+  }
   configs -= [
     "//build/config/compiler:chromium_code",
     "//build/config/compiler:default_optimization",

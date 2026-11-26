@@ -14,7 +14,7 @@
 #include "third_party/blink/renderer/platform/wtf/hash_table.h"
 #include "third_party/blink/renderer/platform/wtf/key_value_pair.h"
 #include "third_party/blink/renderer/platform/wtf/type_traits.h"
-#include "v8/include/cppgc/trace-trait.h"
+#include "cppgc/trace-trait.h"
 
 namespace blink {
 

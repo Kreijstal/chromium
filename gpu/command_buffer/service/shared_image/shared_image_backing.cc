@@ -24,7 +24,7 @@
 #include "third_party/skia/include/core/SkAlphaType.h"
 #include "third_party/skia/include/core/SkColorSpace.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "ui/gfx/win/d3d_shared_fence.h"
 #endif
 

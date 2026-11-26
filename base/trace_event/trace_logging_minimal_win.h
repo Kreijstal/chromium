@@ -262,11 +262,6 @@ class BASE_EXPORT TlmProvider {
   template <class... FieldTys>
   struct DataDescCountSum;  // undefined
 
-  template <>
-  struct DataDescCountSum<> {
-    static constexpr uint8_t value = 0;
-  };
-
   template <class FieldTy1, class... FieldTyRest>
   struct DataDescCountSum<FieldTy1, FieldTyRest...> {
     static constexpr uint8_t value =
@@ -323,6 +318,11 @@ class BASE_EXPORT TlmProvider {
   uint64_t reg_handle_ = 0;
   base::RepeatingCallback<void(EventControlCode)> on_updated_callback_;
   char provider_metadata_[kMaxProviderMetadataSize] = {};
+};
+
+template <>
+struct TlmProvider::DataDescCountSum<> {
+  static constexpr uint8_t value = 0;
 };
 
 // Base class for field types.

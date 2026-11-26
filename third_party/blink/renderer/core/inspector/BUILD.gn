@@ -113,7 +113,7 @@ source_set("generated") {
                "//third_party/blink/renderer/core:core_include_dirs",
              ]
 
-  if (is_win) {
+  if (is_msvc) {
     cflags = [ "/wd4702" ]  # Unreachable code.
   }
 

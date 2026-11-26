@@ -10,7 +10,12 @@ import("//build/config/win/visual_studio_version.gni")
 import("//build/toolchain/cc_wrapper.gni")
 import("//build/toolchain/rbe.gni")
 import("//build/toolchain/toolchain.gni")
-import("//build/toolchain/win/win_toolchain_data.gni")
+
+if (is_mingw) {
+  import("//build/toolchain/gcc_toolchain.gni")
+} else {
+  import("//build/toolchain/win/win_toolchain_data.gni")
+}
 
 assert(is_win, "Should only be running on Windows")
 
@@ -964,6 +969,31 @@ template("win_toolchains") {
       is_clang = true
       current_os = "win"
       current_cpu = rust_host_toolchain_arch
+    }
+  }
+}
+
+if (is_mingw) {
+  template("mingw_toolchain") {
+    gcc_toolchain("mingw_" + target_name) {
+      forward_variables_from(invoker, "*")
+      if (is_clang) {
+        cc = "clang"
+        cxx = "clang++"
+      } else {
+        cc = "gcc"
+        cxx = "g++"
+      }
+      ld = cxx
+      nm = "nm"
+      ar = "ar"
+      rc = "windres"
+      strip = "strip"
+      enable_linker_map = false
+      toolchain_args = {
+        current_os = "win"
+        current_cpu = toolchain_arch
+      }
     }
   }
 }

@@ -14,7 +14,7 @@
 #include "third_party/blink/renderer/platform/scheduler/public/main_thread.h"
 #include "third_party/blink/renderer/platform/scheduler/public/main_thread_scheduler.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 namespace {

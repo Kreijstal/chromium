@@ -62,7 +62,7 @@
 #include "third_party/blink/public/platform/websocket_handshake_throttle_provider.h"
 #include "ui/base/resource/resource_scale_factor.h"
 #include "ui/gl/angle_implementation.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-local-handle.h"
 
 class GURL;
 class SkCanvas;

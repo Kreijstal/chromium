@@ -80,7 +80,7 @@ if (is_win && enable_resource_allowlist_generation) {
   _chrome_resource_allowlist = "$target_gen_dir/chrome_resource_allowlist.txt"
 }
 
-if (is_win) {
+if (is_msvc) {
   action("reorder_imports") {
     script = "//build/win/reorder-imports.py"
 
@@ -103,6 +103,10 @@ if (is_win) {
       current_cpu,
     ]
     deps = [ ":chrome_initial" ]
+  }
+} else if (is_win) {
+  # MinGW links chrome.exe directly; no PDB to reorder.
+  group("reorder_imports") {
   }
 }
 
@@ -237,6 +241,12 @@ if (!is_android && !is_mac) {
         "//sandbox/policy/mojom",
         "//third_party/crashpad/crashpad/util",
       ]
+      if (is_mingw) {
+        deps -= [
+          ":copy_first_run",
+          "//chrome/installer/util:did_run_support",
+        ]
+      }
 
       data_deps += [
         "//chrome/app/version_assembly:version_assembly_manifest",
@@ -480,9 +490,11 @@ if (is_win) {
     }
   }
 
-  copy("copy_first_run") {
-    sources = [ "app/FirstRun" ]
-    outputs = [ "$root_out_dir/First Run" ]
+  if (is_msvc) {
+    copy("copy_first_run") {
+      sources = [ "app/FirstRun" ]
+      outputs = [ "$root_out_dir/First Run" ]
+    }
   }
 
   copy("copy_minibranch") {

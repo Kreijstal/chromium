@@ -11,10 +11,10 @@
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "extensions/renderer/native_handler.h"
-#include "v8/include/cppgc/persistent.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-persistent-handle.h"
-#include "v8/include/v8-util.h"
+#include "cppgc/persistent.h"
+#include "v8-forward.h"
+#include "v8-persistent-handle.h"
+#include "v8-util.h"
 
 namespace extensions {
 class ScriptContext;

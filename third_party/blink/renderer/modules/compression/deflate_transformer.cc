@@ -22,7 +22,7 @@
 #include "third_party/blink/renderer/modules/compression/compression_format.h"
 #include "third_party/blink/renderer/modules/compression/zlib_partition_alloc.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

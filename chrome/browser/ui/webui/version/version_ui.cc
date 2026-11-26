@@ -44,7 +44,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
-#include "v8/include/v8-version-string.h"
+#include "v8-version-string.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/android_info.h"

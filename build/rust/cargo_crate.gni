@@ -1,3 +1,4 @@
+import("//build/config/rust.gni")
 # Copyright 2021 The Chromium Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -107,6 +108,13 @@ import("//build/rust/rust_static_library.gni")
 #    command line tool help)
 
 template("cargo_crate") {
+  if (!enable_rust) {
+    # Rust is off (MinGW GCC): keep the label so GN resolves dependents.
+    group(target_name) {
+      forward_variables_from(invoker, [ "testonly", "visibility" ])
+      not_needed(invoker, "*")
+    }
+  } else {
   _orig_target_name = target_name
 
   _crate_name = _orig_target_name
@@ -638,6 +646,7 @@ template("cargo_crate") {
                  "_name_specific_output_dir",
                  "_orig_target_name",
                ])
+  }
   }
 }
 

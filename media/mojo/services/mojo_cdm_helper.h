@@ -55,11 +55,11 @@ class MEDIA_MOJO_EXPORT MojoCdmHelper final : public CdmAuxiliaryHelper,
 #if BUILDFLAG(ENABLE_CDM_STORAGE_ID)
   void GetStorageId(uint32_t version, StorageIdCB callback) final;
 #endif  // BUILDFLAG(ENABLE_CDM_STORAGE_ID)
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   void GetMediaFoundationCdmData(GetMediaFoundationCdmDataCB callback) final;
   void OnCdmEvent(CdmEvent event, HRESULT hresult) final;
   void GetContentProtectionWindow(GetContentProtectionWindowCB callback) final;
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
   // MojoCdmFileIO::Delegate implementation.
   void CloseCdmFileIO(MojoCdmFileIO* cdm_file_io) final;

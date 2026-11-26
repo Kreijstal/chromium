@@ -271,7 +271,11 @@ def GetGitTopDirectory(source_dir):
     Returns:
       The output of "git rev-parse --show-toplevel" as a string
     """
-    return _RunGitCommand(source_dir, ['rev-parse', '--show-toplevel'])
+    top_dir = _RunGitCommand(source_dir, ['rev-parse', '--show-toplevel'])
+    if sys.platform == 'win32' and 'MINGW' in sys.version and top_dir:
+        # MSYS git prints a POSIX path.
+        return subprocess.check_output(["cygpath", "-w", top_dir]).strip(b"\n").decode()
+    return top_dir
 
 
 def WriteIfChanged(file_name, contents):

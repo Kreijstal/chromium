@@ -9,6 +9,7 @@ import("//media/media_options.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//printing/buildflags/buildflags.gni")
 import("//services/screen_ai/buildflags/features.gni")
+import("//ui/gl/features.gni")
 
 source_set("utility") {
   visibility = [
@@ -59,7 +60,6 @@ source_set("utility") {
     "//services/data_decoder:lib",
     "//services/data_decoder/public/cpp",
     "//services/network:network_service",
-    "//services/on_device_model:on_device_model_service",
     "//services/on_device_model/public/cpp",
     "//services/on_device_model/public/mojom",
     "//services/screen_ai/buildflags",
@@ -154,6 +154,12 @@ source_set("utility") {
       "//content/services/isolated_xr_device:lib",
       "//device/vr/public/mojom:isolated_xr_service",
     ]
+  }
+
+  if (use_dawn) {
+    # The on-device model service runs on Dawn.
+    defines = [ "CONTENT_UTILITY_ON_DEVICE_MODEL" ]
+    deps += [ "//services/on_device_model:on_device_model_service" ]
   }
 
   if (is_win) {

@@ -19,7 +19,9 @@
 #include "media/capture/video/linux/v4l2_gpu_memory_buffer_tracker.h"
 #elif BUILDFLAG(IS_WIN)
 #include "media/capture/video/win/d3d11_shared_image_buffer_tracker.h"
+#if BUILDFLAG(IS_MSVC)
 #include "media/capture/video/win/gpu_memory_buffer_tracker_win.h"
+#endif
 #endif
 
 namespace media {
@@ -46,7 +48,7 @@ VideoCaptureBufferTrackerFactoryImpl::CreateTracker(
       return std::make_unique<GpuMemoryBufferTrackerApple>();
 #elif BUILDFLAG(IS_LINUX)
       return std::make_unique<V4L2GpuMemoryBufferTracker>();
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
       if (!dxgi_device_manager_) {
         return nullptr;
       }
@@ -66,7 +68,7 @@ VideoCaptureBufferTrackerFactoryImpl::CreateTracker(
       return nullptr;
 #endif
     default:
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+#if BUILDFLAG(IS_MSVC) || BUILDFLAG(IS_MAC)
       // Since Windows and macOS capturer outputs NV12 only for GMBs and I420
       // for software frames, the pixel format is used to choose between shmem
       // and gmb trackers. Therefore I420 shmem trackers must not be reusable
@@ -89,7 +91,7 @@ VideoCaptureBufferTrackerFactoryImpl::CreateTrackerForExternalBuffer(
   gfx::GpuMemoryBufferHandle handle = std::move(buffer.handle);
 #if BUILDFLAG(IS_APPLE)
   return std::make_unique<GpuMemoryBufferTrackerApple>(handle.io_surface());
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   if (handle.type != gfx::DXGI_SHARED_HANDLE) {
     return nullptr;
   }

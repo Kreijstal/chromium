@@ -18,11 +18,11 @@
 #include "gin/persistent.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/visitor.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-microtask-queue.h"
+#include "cppgc/allocation.h"
+#include "cppgc/visitor.h"
+#include "v8-context.h"
+#include "v8-cppgc.h"
+#include "v8-microtask-queue.h"
 
 void SupervisedUserErrorPageController::Install(
     content::RenderFrame* render_frame,

@@ -12,7 +12,7 @@
 #include "gin/v8_platform_page_allocator.h"
 #include "gin/v8_platform_thread_isolated_allocator.h"
 #include "partition_alloc/buildflags.h"
-#include "v8/include/v8-platform.h"
+#include "v8-platform.h"
 
 namespace gin {
 

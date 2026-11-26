@@ -32,7 +32,7 @@
 #include "ui/accessibility/ax_position.h"
 #include "ui/accessibility/ax_tree_observer.h"
 #include "ui/accessibility/ax_tree_update_forward.h"
-#include "v8/include/cppgc/persistent.h"
+#include "cppgc/persistent.h"
 
 namespace content {
 class RenderFrame;

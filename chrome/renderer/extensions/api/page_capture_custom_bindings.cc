@@ -9,7 +9,7 @@
 #include "extensions/renderer/ipc_message_sender.h"
 #include "extensions/renderer/script_context.h"
 #include "third_party/blink/public/web/web_blob.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 

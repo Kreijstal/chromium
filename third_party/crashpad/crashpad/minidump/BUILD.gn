@@ -81,9 +81,8 @@ crashpad_static_library("minidump") {
     "../util",
   ]
 
-  if (crashpad_is_win) {
+  if (crashpad_is_win && is_msvc) {
     cflags = [
-      "/wd4201",  # nonstandard extension used : nameless struct/union
       "/wd4324",  # 'struct' : structure was padded due to __declspec(align())
     ]
   }
@@ -142,8 +141,7 @@ static_library("test_support") {
     "../util",
   ]
 
-  if (crashpad_is_win) {
-    cflags = [ "/wd4201" ]  # nonstandard extension used : nameless struct/union
+  if (crashpad_is_win && is_msvc) {
   }
 }
 
@@ -186,7 +184,6 @@ source_set("minidump_test") {
     "../util",
   ]
 
-  if (crashpad_is_win) {
-    cflags = [ "/wd4201" ]  # nonstandard extension used : nameless struct/union
+  if (crashpad_is_win && is_msvc) {
   }
 }

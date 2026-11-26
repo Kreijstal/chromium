@@ -101,6 +101,13 @@ component("shell_dialogs") {
       "select_file_dialog_win.h",
       "select_file_utils_win.h",
     ]
+    if (is_mingw) {
+      # Needs WRL's RuntimeClass; dialogs just don't auto-close with the owner.
+      sources -= [
+        "auto_close_dialog_event_handler_win.cc",
+        "auto_close_dialog_event_handler_win.h",
+      ]
+    }
   }
 
   if (use_aura) {

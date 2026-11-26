@@ -13,7 +13,7 @@
 #include "extensions/renderer/resource_request_policy.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "ui/base/page_transition_types.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-local-handle.h"
 
 namespace content {
 class RenderFrame;

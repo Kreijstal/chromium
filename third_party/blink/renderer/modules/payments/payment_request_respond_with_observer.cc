@@ -19,7 +19,7 @@
 #include "third_party/blink/renderer/modules/service_worker/service_worker_global_scope.h"
 #include "third_party/blink/renderer/modules/service_worker/wait_until_observer.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 namespace {

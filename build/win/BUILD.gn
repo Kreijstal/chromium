@@ -16,7 +16,7 @@ windows_manifest("default_exe_manifest") {
   ]
 }
 
-if (is_win) {
+if (is_win && !is_mingw) {
   assert(host_os != "mac" || target_cpu != "x86",
          "Windows cross-builds from Mac must be 64-bit.")
 
@@ -80,5 +80,9 @@ if (is_win) {
         data += [ "$clang_base_path/lib/clang/$clang_version/lib/windows/clang_rt.asan_dynamic-x86_64.dll" ]
       }
     }
+  }
+} else {
+  group("runtime_libs") {
+    data = []
   }
 }

@@ -143,7 +143,8 @@ def main():
     )
     (options, args) = parser.parse_args()
 
-    if "linux" not in sys.platform:
+    # port: MinGW (win32 python) runs pkg-config too.
+    if "linux" not in sys.platform and sys.platform != "win32":
         if (
             sys.platform == 'darwin'
             and options.sysroot
@@ -158,7 +159,7 @@ def main():
             os.environ.pop('PKG_CONFIG_SYSROOT_DIR', None)
             os.environ['PKG_CONFIG_SYSTEM_INCLUDE_PATH'] = '/usr/include'
             os.environ['PKG_CONFIG_SYSTEM_LIBRARY_PATH'] = '/usr/lib:/lib'
-        else:
+        elif sys.platform != 'darwin':  # port: host pkg-config on macOS
             # Otherwise, just return nothing and indicate success. This allows
             # us to "kind of emulate" a Linux build from other platforms.
             if options.dridriverdir or options.libdir:

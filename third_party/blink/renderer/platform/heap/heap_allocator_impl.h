@@ -16,11 +16,11 @@
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/partition_allocator.h"
-#include "v8/include/cppgc/explicit-management.h"
-#include "v8/include/cppgc/heap-consistency.h"
-#include "v8/include/cppgc/internal/api-constants.h"
-#include "v8/include/cppgc/trace-trait.h"
-#include "v8/include/cppgc/visitor.h"
+#include "cppgc/explicit-management.h"
+#include "cppgc/heap-consistency.h"
+#include "cppgc/internal/api-constants.h"
+#include "cppgc/trace-trait.h"
+#include "cppgc/visitor.h"
 
 namespace blink {
 

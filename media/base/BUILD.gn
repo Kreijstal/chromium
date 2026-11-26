@@ -731,7 +731,7 @@ source_set("unit_tests") {
       "//ui/events:test_support",
     ]
     libs = [
-      "d3d11.lib",
+      "d3d11",
       "mfplat.lib",
     ]
   }

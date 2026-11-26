@@ -30,9 +30,9 @@
 #include "ui/accessibility/platform/automation/automation_tree_manager_owner.h"
 #include "ui/accessibility/platform/automation/automation_v8_router.h"
 #include "ui/gfx/geometry/rect_conversions.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-function-callback.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8-function-callback.h"
 
 namespace ui {
 

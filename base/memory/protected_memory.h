@@ -90,6 +90,24 @@
 #include "base/thread_annotations.h"
 #include "build/build_config.h"
 
+#if defined(__MINGW32__)
+// lld in MinGW mode folds the prot$ subsections into .data, so the protected
+// section is never mapped read-only and the initializer CHECKs abort every
+// renderer. Override the prebuilt buildflag header, which -thirdparty
+// generates and core reuses.
+#undef BUILDFLAG_INTERNAL_PROTECTED_MEMORY_ENABLED
+#define BUILDFLAG_INTERNAL_PROTECTED_MEMORY_ENABLED() (0)
+#endif
+
+#if defined(__MINGW32__)
+// lld in MinGW mode folds the prot$ subsections into .data, so the protected
+// section is never mapped read-only and the initializer CHECKs abort every
+// renderer. Override the prebuilt buildflag header, which -thirdparty
+// generates and core reuses.
+#undef BUILDFLAG_INTERNAL_PROTECTED_MEMORY_ENABLED
+#define BUILDFLAG_INTERNAL_PROTECTED_MEMORY_ENABLED() (0)
+#endif
+
 #if BUILDFLAG(PROTECTED_MEMORY_ENABLED)
 #if BUILDFLAG(IS_WIN)
 // Define a read-write prot section. The $a, $mem, and $z 'sub-sections' are

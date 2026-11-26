@@ -6,7 +6,7 @@
 
 #include "base/containers/span.h"
 #include "third_party/blink/renderer/core/streams/writable_stream_default_controller.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

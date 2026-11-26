@@ -75,13 +75,13 @@
 #include "gpu/command_buffer/service/shared_image/iosurface_image_backing_factory.h"
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "gpu/command_buffer/service/dxgi_shared_handle_manager.h"
 #include "gpu/command_buffer/service/shared_image/d3d_image_backing_factory.h"
 #include "gpu/command_buffer/service/shared_image/dcomp_image_backing_factory.h"
 #include "ui/gl/direct_composition_support.h"
 #include "ui/gl/gl_angle_util_win.h"
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(IS_FUCHSIA)
 #include <lib/zx/channel.h>
@@ -208,7 +208,7 @@ const char* SharedImageFactory::GmbTypeToString(gfx::GpuMemoryBufferType type) {
     case gfx::NATIVE_PIXMAP:
       return "platform";
 #endif
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
     case gfx::DXGI_SHARED_HANDLE:
       return "platform";
 #endif
@@ -291,7 +291,7 @@ SharedImageFactory::SharedImageFactory(
     factories_.push_back(std::move(gl_texture_backing_factory));
   }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   if (gl::DirectCompositionSupported()) {
     factories_.push_back(
         std::make_unique<DCompImageBackingFactory>(context_state_));
@@ -320,7 +320,7 @@ SharedImageFactory::SharedImageFactory(
             /*supports_cpu_upload=*/true);
     factories_.push_back(std::move(gl_texture_backing_factory));
   }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(ENABLE_VULKAN)
   // If Chrome and ANGLE are sharing the same vulkan device queue, AngleVulkan
@@ -567,7 +567,7 @@ void SharedImageFactory::DestroyAllSharedImages(bool have_context) {
   shared_images_.clear();
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 bool SharedImageFactory::IsD3DSharedImageSupported() const {
   if (!context_state_) {
     return false;
@@ -576,7 +576,7 @@ bool SharedImageFactory::IsD3DSharedImageSupported() const {
   return D3DImageBackingFactory::IsD3DSharedImageSupported(
       context_state_->GetD3D11Device().Get(), gpu_preferences_);
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(IS_FUCHSIA)
 void SharedImageFactory::RegisterSysmemBufferCollection(
@@ -639,7 +639,7 @@ bool SharedImageFactory::CopyNativeBufferToSharedMemoryAsync(
 #endif
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 bool SharedImageFactory::CopyToGpuMemoryBufferAsync(
     const Mailbox& mailbox,
     base::OnceCallback<void(bool)> callback) {
@@ -698,7 +698,7 @@ gpu::SharedImageCapabilities SharedImageFactory::MakeCapabilities() {
   shared_image_caps.supports_scanout_shared_images =
       shared_image_manager_->SupportsScanoutImages();
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   // Scanout for software video frames is supported on Windows except on D3D9.
   shared_image_caps.supports_scanout_shared_images_for_software_video_frames =
       gl::QueryD3D11DeviceObjectFromANGLE();
@@ -758,13 +758,13 @@ gpu::SharedImageCapabilities SharedImageFactory::MakeCapabilities() {
         !context_state_->is_drdc_enabled();
   }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   shared_image_caps.shared_image_d3d = IsD3DSharedImageSupported();
   shared_image_caps.shared_image_swap_chain =
       shared_image_caps.shared_image_d3d &&
       D3DImageBackingFactory::IsSwapChainSupported(
           gpu_preferences_, context_state_->dawn_context_provider());
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
   return shared_image_caps;
 }

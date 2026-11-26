@@ -100,6 +100,11 @@ component("platform") {
     "//ui/display",
   ]
 
+  if (is_win && !has_native_accessibility) {
+    # ax_platform_text_boundary.h includes the MIDL-generated IA2 header.
+    public_deps += [ "//third_party/iaccessible2" ]
+  }
+
   if (enable_extensions || is_fuchsia) {
     sources += [
       # Use by the Automation API and the Accessibility service.

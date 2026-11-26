@@ -38,7 +38,7 @@ if (!is_android) {
       "//components/policy/core/browser",
     ]
 
-    if (is_linux || is_win || is_mac) {
+    if (is_linux || is_msvc || is_mac) {
       public += [ "updater_data_collector.h" ]
       public_deps += [
         "//chrome/updater:public_sources",
@@ -82,7 +82,7 @@ if (!is_android) {
       ]
     }
 
-    if (is_linux || is_win || is_mac) {
+    if (is_linux || is_msvc || is_mac) {
       sources += [ "updater_data_collector.cc" ]
       deps += [ "//chrome/updater:public_sources" ]
     }
@@ -118,7 +118,7 @@ if (!is_android) {
       deps += [ "//chromeos/ash/components/system" ]
     }
 
-    if (is_linux || is_win || is_mac) {
+    if (is_linux || is_msvc || is_mac) {
       sources += [ "updater_data_collector_unittest.cc" ]
       deps += [ "//chrome/updater:public_sources" ]
     }

@@ -44,14 +44,14 @@
 #include "ui/gfx/geometry/rect_conversions.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/skia_span_util.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-container.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-primitive.h"
+#include "cppgc/allocation.h"
+#include "v8-container.h"
+#include "v8-context.h"
+#include "v8-cppgc.h"
+#include "v8-isolate.h"
+#include "v8-local-handle.h"
+#include "v8-object.h"
+#include "v8-primitive.h"
 
 namespace content {
 

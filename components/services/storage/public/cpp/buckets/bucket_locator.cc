@@ -4,6 +4,8 @@
 
 #include "components/services/storage/public/cpp/buckets/bucket_locator.h"
 
+#include <tuple>
+
 namespace storage {
 
 BucketLocator::BucketLocator(BucketId id,
@@ -28,6 +30,20 @@ BucketLocator::BucketLocator(const BucketLocator&) = default;
 BucketLocator::BucketLocator(BucketLocator&&) noexcept = default;
 BucketLocator& BucketLocator::operator=(const BucketLocator&) = default;
 BucketLocator& BucketLocator::operator=(BucketLocator&&) noexcept = default;
+
+bool operator==(const BucketLocator& lhs, const BucketLocator& rhs) {
+  return std::tie(lhs.id, lhs.storage_key, lhs.is_default) ==
+         std::tie(rhs.id, rhs.storage_key, rhs.is_default);
+}
+
+bool operator!=(const BucketLocator& lhs, const BucketLocator& rhs) {
+  return !(lhs == rhs);
+}
+
+bool operator<(const BucketLocator& lhs, const BucketLocator& rhs) {
+  return std::tie(lhs.id, lhs.storage_key, lhs.is_default) <
+         std::tie(rhs.id, rhs.storage_key, rhs.is_default);
+}
 
 bool BucketLocator::IsEquivalentTo(const BucketLocator& other) const {
   return *this == other ||

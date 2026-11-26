@@ -8,7 +8,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/script_value.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_testing.h"
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

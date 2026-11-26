@@ -5,6 +5,31 @@
 #ifndef CONTENT_BROWSER_RENDERER_HOST_LEGACY_RENDER_WIDGET_HOST_WIN_H_
 #define CONTENT_BROWSER_RENDERER_HOST_LEGACY_RENDER_WIDGET_HOST_WIN_H_
 
+#if defined(__MINGW32__)
+// No legacy child HWND on MinGW (.cc not built). Create() fails, which callers
+// handle.
+#include <oleacc.h>
+#include <windows.h>
+
+#include "ui/gfx/geometry/rect.h"
+
+namespace content {
+class RenderWidgetHostViewAura;
+class LegacyRenderWidgetHostHWND {
+ public:
+  static LegacyRenderWidgetHostHWND* Create(HWND, RenderWidgetHostViewAura*) {
+    return nullptr;
+  }
+  void Destroy() {}
+  HWND hwnd() { return nullptr; }
+  void UpdateParent(HWND) {}
+  IAccessible* window_accessible() { return nullptr; }
+  void Show() {}
+  void Hide() {}
+  void SetBounds(const gfx::Rect&) {}
+};
+}  // namespace content
+#else
 #include <oleacc.h>
 #include <wrl/client.h>
 
@@ -209,5 +234,7 @@ class CONTENT_EXPORT LegacyRenderWidgetHostHWND
 };
 
 }  // namespace content
+
+#endif  // defined(__MINGW32__)
 
 #endif  // CONTENT_BROWSER_RENDERER_HOST_LEGACY_RENDER_WIDGET_HOST_WIN_H_

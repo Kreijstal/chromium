@@ -61,8 +61,8 @@
 #include "third_party/blink/renderer/platform/wtf/cross_thread_functional.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
-#include "v8/include/v8-inspector.h"
-#include "v8/include/v8.h"
+#include "v8-inspector.h"
+#include "v8.h"
 
 namespace blink {
 

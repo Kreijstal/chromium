@@ -78,7 +78,7 @@
 #include "third_party/blink/renderer/platform/weborigin/referrer.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace network {
 class SharedURLLoaderFactory;

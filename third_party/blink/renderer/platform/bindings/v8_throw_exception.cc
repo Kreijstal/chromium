@@ -25,7 +25,7 @@
 #include "third_party/blink/renderer/platform/bindings/v8_throw_exception.h"
 
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
-#include "v8/include/v8-exception.h"
+#include "v8-exception.h"
 
 namespace blink {
 

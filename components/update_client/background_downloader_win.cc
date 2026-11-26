@@ -8,7 +8,7 @@
 
 #include <windows.h>
 
-#include <shlobj_core.h>
+#include <shlobj.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <winerror.h>

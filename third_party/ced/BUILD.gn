@@ -54,7 +54,7 @@ static_library("ced") {
 
   public_configs = [ ":ced_config" ]
 
-  if (is_win) {
+  if (is_msvc) {
     defines = [ "COMPILER_MSVC" ]
     cflags = [
       "/wd4005",  # Macro defined twice.
@@ -79,7 +79,7 @@ test("ced_unittests") {
 
   configs += [ ":ced_config_private" ]
 
-  if (is_win) {
+  if (is_msvc) {
     defines = [ "COMPILER_MSVC" ]
     cflags = [
       "/wd4310",  # Truncation of constant value.

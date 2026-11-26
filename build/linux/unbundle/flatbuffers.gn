@@ -25,9 +25,20 @@ source_set("flatbuffers") {
   public_configs = [ ":flatbuffers_config" ]
 }
 
-copy("flatc") {
-  sources = [ "/usr/bin/flatc" ]
-  outputs = [ "$root_out_dir/flatc" ]
+if (is_win) {
+  action("flatc") {
+    script = "//build/linux/unbundle/copy_system_tool.py"
+    outputs = [ "$root_out_dir/flatc.exe" ]
+    args = [
+      "flatc",
+      rebase_path(outputs[0], root_build_dir),
+    ]
+  }
+} else {
+  copy("flatc") {
+    sources = [ "/usr/bin/flatc" ]
+    outputs = [ "$root_out_dir/flatc" ]
+  }
 }
 
 source_set("flatbuffers_unittests") {

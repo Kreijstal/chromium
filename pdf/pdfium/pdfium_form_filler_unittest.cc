@@ -19,7 +19,7 @@
 #include "third_party/pdfium/public/fpdf_formfill.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/size.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace chrome_pdf {
 

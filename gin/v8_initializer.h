@@ -15,7 +15,7 @@
 #include "gin/gin_export.h"
 #include "gin/public/isolate_holder.h"
 #include "gin/public/v8_platform.h"
-#include "v8/include/v8-callbacks.h"
+#include "v8-callbacks.h"
 
 #if defined(V8_USE_EXTERNAL_STARTUP_DATA)
 #include "gin/public/v8_snapshot_file_type.h"

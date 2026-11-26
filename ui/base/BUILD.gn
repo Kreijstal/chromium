@@ -290,11 +290,19 @@ component("base") {
       "win/window_event_target.cc",
       "win/window_event_target.h",
     ]
-    ldflags = [ "/DELAYLOAD:dwmapi.dll" ]
-    libs += [
-      "dwmapi.lib",
-      "wtsapi32.lib",
-    ]
+    if (is_mingw) {
+      cflags_cc = [ "-Wno-sign-conversion" ]
+      libs += [
+        "dwmapi",
+        "wtsapi32",
+      ]
+    } else {
+      ldflags = [ "/DELAYLOAD:dwmapi.dll" ]
+      libs += [
+        "dwmapi.lib",
+        "wtsapi32.lib",
+      ]
+    }
   }
 
   if (is_mac) {

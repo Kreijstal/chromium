@@ -22,7 +22,9 @@
 #include <stdlib.h>
 #elif BUILDFLAG(IS_WIN)
 #include <malloc.h>
+#if BUILDFLAG(IS_MSVC)
 #include <xutility>
+#endif
 #endif  // BUILDFLAG(IS_POSIX)
 
 namespace {
@@ -34,8 +36,10 @@ void ThrowBadAlloc() {
 #if BUILDFLAG(IS_POSIX) || defined(_LIBCPP_STD_VER)
   // This works with both libc++ and libstdc++.
   std::__throw_bad_alloc();
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   std::_Xbad_alloc();
+#elif BUILDFLAG(IS_MINGW)
+  std::bad_alloc();
 #endif  // BUILDFLAG(IS_POSIX)
 }
 

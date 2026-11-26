@@ -67,6 +67,12 @@ absl_source_set("symbolize") {
     "//third_party/abseil-cpp/absl/strings",
     "//third_party/abseil-cpp/absl/strings:string_view",
   ]
+
+  if (is_mingw) {
+    libs = [
+      "dbghelp"
+    ]
+  }
 }
 
 # symbolize_test is excluded because defines its own main function

@@ -47,7 +47,7 @@
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_drag_status.h"
 #include "third_party/blink/public/web/web_input_method_controller.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace gfx {
 class PointF;

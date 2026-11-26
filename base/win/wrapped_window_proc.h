@@ -13,6 +13,7 @@
 #include <windows.h>
 
 #include "base/base_export.h"
+#include "build/build_config.h"
 
 namespace base {
 namespace win {

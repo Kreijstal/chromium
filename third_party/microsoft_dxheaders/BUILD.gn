@@ -5,8 +5,44 @@
 # Clients should add "//third_party/microsoft_dxheaders:dxguids" as a
 # dependency if they will be using any GUIDs that are present in the
 # dependency but not in the Windows SDK.
-source_set("dxguids") {
-  include_dirs = [ "src/include" ]
+if (is_mingw) {
+  # Use the system DirectX-Headers; keep the in-tree include paths working.
+  _dx_headers = [
+    "composition/dcomp-preview.h",
+    "directx/DirectML.h",
+    "directx/d3d12.h",
+    "directx/d3d12video.h",
+    "directx/d3dx12_barriers.h",
+    "directx/d3dx12_core.h",
+    "directx/dxcore.h",
+  ]
+  action("dxheaders_shim") {
+    script = "//tools/generate_shim_headers/generate_shim_headers.py"
+    args = [
+             "--generate",
+             "--headers-root",
+             rebase_path("src/include"),
+             "--output-directory",
+             rebase_path(root_gen_dir),
+           ] + _dx_headers
+    outputs = []
+    foreach(h, _dx_headers) {
+      outputs += [ "$target_gen_dir/src/include/$h" ]
+    }
+  }
 
-  sources = [ "src/src/dxguids.cpp" ]
+  config("dxguids_config") {
+    libs = [ "DirectX-Guids" ]
+  }
+
+  group("dxguids") {
+    public_deps = [ ":dxheaders_shim" ]
+    public_configs = [ ":dxguids_config" ]
+  }
+} else {
+  source_set("dxguids") {
+    include_dirs = [ "src/include" ]
+
+    sources = [ "src/src/dxguids.cpp" ]
+  }
 }

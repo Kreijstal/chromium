@@ -72,7 +72,7 @@ segment_heap_manifest = "//build/win/segment_heap.manifest"
 #     ...
 #   }
 
-if (is_win) {
+if (is_win && !is_mingw) {
   template("windows_manifest") {
     config_name = "${target_name}__config"
 
@@ -113,6 +113,7 @@ if (is_win) {
       assert(invoker.sources != "")
       assert(!defined(invoker.deps) || invoker.deps != "")
       assert(!defined(invoker.visibility) || invoker.visibility != "")
+      forward_variables_from(invoker, [ "public_deps" ])
     }
   }
 }

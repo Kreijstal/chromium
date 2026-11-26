@@ -37,6 +37,7 @@
 #include "third_party/blink/renderer/core/html/html_map_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/platform/heap/heap_vector_holder.h"
 #include "third_party/blink/renderer/platform/heap/disallow_new_wrapper.h"
 #include "third_party/blink/renderer/platform/heap/persistent.h"
 
@@ -155,7 +156,7 @@ const HeapVector<Member<Element>>& TreeOrderedMap::GetAllElementsById(
     const AtomicString& key,
     const TreeScope& scope) const {
   DCHECK(key);
-  using Holder = DisallowNewWrapper<HeapVector<Member<Element>>>;
+  using Holder = HeapVectorHolder<Member<Element>>;
   DEFINE_STATIC_LOCAL(Persistent<Holder>, empty_holder,
                       (MakeGarbageCollected<Holder>()));
 

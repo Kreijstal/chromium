@@ -107,6 +107,6 @@
 
 #define __USE_MINGW_ANSI_STDIO 1
 
-#define fseeko _fseeki64
+// #define fseeko _fseeki64
 
-#define ftello _ftelli64
+// #define ftello _ftelli64

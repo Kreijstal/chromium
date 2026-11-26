@@ -5,7 +5,8 @@
 #ifndef DEVICE_GAMEPAD_GAMEPAD_EXPORT_H_
 #define DEVICE_GAMEPAD_GAMEPAD_EXPORT_H_
 
-#if defined(COMPONENT_BUILD) && defined(WIN32)
+#if defined(COMPONENT_BUILD)
+#if defined(WIN32)
 
 #if defined(DEVICE_GAMEPAD_IMPLEMENTATION)
 #define DEVICE_GAMEPAD_EXPORT __declspec(dllexport)
@@ -13,9 +14,11 @@
 #define DEVICE_GAMEPAD_EXPORT __declspec(dllimport)
 #endif
 
-#elif defined(COMPONENT_BUILD) && !defined(WIN32)
+#else // !defined(WIN32)
 
 #define DEVICE_GAMEPAD_EXPORT __attribute__((visibility("default")))
+
+#endif  // defined(WIN32)
 
 #else
 #define DEVICE_GAMEPAD_EXPORT

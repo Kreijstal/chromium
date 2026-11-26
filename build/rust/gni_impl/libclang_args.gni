@@ -21,7 +21,7 @@
 import("//build/config/clang/clang.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 
-if (is_win) {
+if (is_win && !is_mingw) {
   import("//build/toolchain/win/win_toolchain_data.gni")
 }
 
@@ -41,7 +41,7 @@ _libclang_extra_args += [
   rebase_path(clang_base_path + "/lib/clang/" + clang_version, root_build_dir),
 ]
 
-if (is_win) {
+if (is_win && !is_mingw) {
   # On Windows we fall back to using system headers from a sysroot from
   # depot_tools. This is negotiated by python scripts and the result is
   # available in //build/toolchain/win/win_toolchain_data.gni. From there
@@ -65,13 +65,13 @@ if (is_win) {
 # Prefix for GCC-style Clang flags.  With `--driver-mode=cl` (Windows), such
 # flags must be spelled `/clang:<flag>`, otherwise clang-cl interprets some
 # of them differently (e.g. `-MD` means `/MD`).
-if (is_win) {
+if (is_win && !is_mingw) {
   clang_flag_prefix = "/clang:"
 } else {
   clang_flag_prefix = ""
 }
 
-if (is_win) {
+if (is_win && !is_mingw) {
   # On Windows, libclang adds arguments that it then fails to understand
   # (-fno-spell-checking, -fallow-editor-placeholders).
   # Replace these two arguments with a version that clang-cl can parse.

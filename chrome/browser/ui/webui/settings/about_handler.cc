@@ -48,7 +48,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "v8/include/v8-version-string.h"
+#include "v8-version-string.h"
 
 #if BUILDFLAG(IS_CHROMEOS)
 #include <optional>

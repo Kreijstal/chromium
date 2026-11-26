@@ -14,7 +14,7 @@
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

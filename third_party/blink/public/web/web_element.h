@@ -41,7 +41,7 @@
 #include "third_party/blink/public/web/web_node.h"
 #include "ui/events/types/scroll_types.h"
 #include "ui/gfx/geometry/vector2d_f.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 class SkBitmap;
 

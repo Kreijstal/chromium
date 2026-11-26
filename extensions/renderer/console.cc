@@ -20,11 +20,11 @@
 #include "extensions/renderer/worker_thread_dispatcher.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_console_message.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-function-callback.h"
-#include "v8/include/v8-persistent-handle.h"
-#include "v8/include/v8-primitive.h"
-#include "v8/include/v8-template.h"
+#include "v8-context.h"
+#include "v8-function-callback.h"
+#include "v8-persistent-handle.h"
+#include "v8-primitive.h"
+#include "v8-template.h"
 
 namespace extensions {
 namespace console {

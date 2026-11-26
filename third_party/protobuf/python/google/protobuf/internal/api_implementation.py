@@ -44,7 +44,9 @@ def _CanImport(mod_name):
     if not mod:
       raise ImportError(mod_name + ' import succeeded but was None')
     return True
-  except ImportError:
+  except (ImportError, AttributeError):
+    # A system protobuf's native module can be found next to this pure
+    # Python copy and fail against it.
     return False
 
 

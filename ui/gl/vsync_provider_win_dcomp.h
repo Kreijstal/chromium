@@ -31,7 +31,9 @@ class GL_EXPORT VSyncProviderWinDComp : public gfx::VSyncProvider {
   bool IsHWClock() const override;
 
  private:
+#if !defined(COMPILER_GCC)
   std::optional<COMPOSITION_FRAME_STATS> prev_frame_stats_;
+#endif
 };
 
 }  // namespace gl

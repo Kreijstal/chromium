@@ -8,7 +8,7 @@
 #include "base/containers/span.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_view.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 // This file provides utilities to support implementation of cross origin
 // properties in generated bindings code.  Should be used only in generated

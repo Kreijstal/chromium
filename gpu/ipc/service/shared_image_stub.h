@@ -22,7 +22,7 @@
 #endif
 
 namespace gfx {
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 class D3DSharedFence;
 #endif
 
@@ -58,7 +58,7 @@ class GPU_IPC_SERVICE_EXPORT SharedImageStub {
   const scoped_refptr<gpu::GpuChannelSharedImageInterface>&
   shared_image_interface();
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   void CopyToGpuMemoryBufferAsync(const Mailbox& mailbox,
                                   base::OnceCallback<void(bool)> callback);
 #endif
@@ -114,7 +114,7 @@ class GPU_IPC_SERVICE_EXPORT SharedImageStub {
   void OnDestroySharedImage(const Mailbox& mailbox);
   void OnRegisterSharedImageUploadBuffer(base::ReadOnlySharedMemoryRegion shm);
   void OnCopyToGpuMemoryBuffer(const Mailbox& mailbox);
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   void OnRegisterDxgiFence(const Mailbox& mailbox,
                            gfx::DXGIHandleToken dxgi_token,
                            gfx::GpuFenceHandle fence_handle);
@@ -123,7 +123,7 @@ class GPU_IPC_SERVICE_EXPORT SharedImageStub {
                          uint64_t fence_value);
   void OnUnregisterDxgiFence(const Mailbox& mailbox,
                              gfx::DXGIHandleToken dxgi_token);
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
   void OnCreateSharedImagePool(mojom::CreateSharedImagePoolParamsPtr params);
   void OnDestroySharedImagePool(mojom::DestroySharedImagePoolParamsPtr params);
@@ -162,7 +162,7 @@ class GPU_IPC_SERVICE_EXPORT SharedImageStub {
   base::ReadOnlySharedMemoryRegion upload_memory_;
   base::ReadOnlySharedMemoryMapping upload_memory_mapping_;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   // Fences held by external processes. Registered and signaled from ipc
   // channel. Using DXGIHandleToken to identify the fence.
   using DXGITokenToFenceMap =

@@ -659,6 +659,7 @@ using PFN_DCOMPOSITION_WAIT = HRESULT(WINAPI*)(UINT count,
                                                DWORD timeoutInMs);
 PFN_DCOMPOSITION_WAIT g_wait_for_compositor_clock_function = nullptr;
 
+#if !defined(COMPILER_GCC)
 // DCompositionGetFrameId function pointer
 using PFN_DCOMPOSITION_GET_FRAME_ID =
     HRESULT(WINAPI*)(COMPOSITION_FRAME_ID_TYPE frameIdType,
@@ -673,6 +674,7 @@ using PFN_DCOMPOSITION_GET_STATISTICS =
                      COMPOSITION_TARGET_ID* targetIds,
                      UINT* actualTargetIdCount);
 PFN_DCOMPOSITION_GET_STATISTICS g_get_statistics_function = nullptr;
+#endif
 
 HRESULT DCompositionWaitForCompositorClock(UINT count,
                                            const HANDLE* handles,
@@ -681,6 +683,7 @@ HRESULT DCompositionWaitForCompositorClock(UINT count,
   return g_wait_for_compositor_clock_function(count, handles, timeoutInMs);
 }
 
+#if !defined(COMPILER_GCC)
 HRESULT DCompositionGetFrameId(COMPOSITION_FRAME_ID_TYPE frameIdType,
                                COMPOSITION_FRAME_ID* frameId) {
   DCHECK(g_get_frame_id_function);
@@ -696,6 +699,7 @@ HRESULT DCompositionGetStatistics(COMPOSITION_FRAME_ID frameId,
   return g_get_statistics_function(frameId, frameStats, targetIdCount,
                                    targetIds, actualTargetIdCount);
 }
+#endif
 
 void InitializeDirectComposition(
     Microsoft::WRL::ComPtr<ID3D11Device> d3d11_device,
@@ -794,6 +798,7 @@ void InitializeDirectComposition(
                    << logging::SystemErrorCodeToString(hr);
     }
 
+#if !defined(COMPILER_GCC)
     g_get_frame_id_function = reinterpret_cast<PFN_DCOMPOSITION_GET_FRAME_ID>(
         ::GetProcAddress(dcomp_module, "DCompositionGetFrameId"));
     CHECK(g_get_frame_id_function);
@@ -802,6 +807,7 @@ void InitializeDirectComposition(
         reinterpret_cast<PFN_DCOMPOSITION_GET_STATISTICS>(
             ::GetProcAddress(dcomp_module, "DCompositionGetStatistics"));
     CHECK(g_get_statistics_function);
+#endif
 
     g_wait_for_compositor_clock_function =
         reinterpret_cast<PFN_DCOMPOSITION_WAIT>(::GetProcAddress(
@@ -1218,10 +1224,12 @@ bool DirectCompositionTextureSupported() {
   // |InitializeDirectComposition|.
   g_direct_composition_texture_supported = false;
 
+#if !defined(__MINGW32__)
   if (!gfx::D3DSharedFence::IsSupported(d3d11_device.Get())) {
     LOG(WARNING) << "IDCompositionTexture is not supported without fences.";
     return false;
   }
+#endif
 
   Microsoft::WRL::ComPtr<IDCompositionDevice4> dcomp_device4;
   HRESULT hr = dcomp_device.As(&dcomp_device4);

@@ -549,11 +549,13 @@ crashpad_static_library("util") {
       "win/xp_compat.h",
     ]
 
-    if (current_cpu != "arm64") {
+    if (is_msvc && current_cpu != "arm64") {
       sources += [
         "misc/capture_context_win.asm",
         "win/safe_terminate_process.asm",
       ]
+    } else if (is_mingw) {
+      sources += [ "misc/capture_context_win_mingw.cc" ]
     } else {
       # When building with clang, clang-cl is used as the assembler. Since
       # clang-cl recognizes a different assembly dialect than Microsoft’s
@@ -627,16 +629,15 @@ crashpad_static_library("util") {
 
   if (crashpad_is_win) {
     libs = [
-      "user32.lib",
+      "user32",
 
       # TODO(jperaza): version.lib is needed for Windows 7 compatibility.
       # mincore.lib may be linked against instead when targeting Windows 8+.
-      "version.lib",
+      "version",
 
-      "winhttp.lib",
+      "winhttp",
     ]
 
-    cflags = [ "/wd4201" ]  # nonstandard extension used: nameless struct/union.
 
     if (current_cpu == "x86") {
       asmflags = [ "/safeseh" ]

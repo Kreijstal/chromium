@@ -49,8 +49,8 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_testing_support.h"
 #include "third_party/blink/public/web/web_view.h"
-#include "v8/include/v8-initialization.h"
-#include "v8/include/v8.h"
+#include "v8-initialization.h"
+#include "v8.h"
 
 #if BUILDFLAG(ENABLE_MOJO_CDM)
 #include "base/feature_list.h"
@@ -61,7 +61,7 @@
     (defined(ARCH_CPU_X86_64) || defined(ARCH_CPU_ARM64))
 #define ENABLE_WEB_ASSEMBLY_TRAP_HANDLER_LINUX
 #include "base/debug/stack_trace.h"
-#include "v8/include/v8-wasm-trap-handler-posix.h"
+#include "v8-wasm-trap-handler-posix.h"
 #endif
 
 namespace content {

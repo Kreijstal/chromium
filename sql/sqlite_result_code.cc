@@ -158,7 +158,7 @@ constexpr SqliteResultCodeMappingEntry kResultCodeMapping[] = {
     {SQLITE_ERROR_SNAPSHOT,
      static_cast<int>(SqliteLoggedResultCode::kUnusedChrome)},
 #ifdef SQLITE_ENABLE_SNAPSHOT
-#error "This code assumes that Chrome does not use sqlite3_snapshot_open()"
+#error This code assumes that Chrome does not use sqlite3_snapshot_open()
 #endif
 
     // Chrome does not use blocking Posix advisory file lock requests.
@@ -166,8 +166,8 @@ constexpr SqliteResultCodeMappingEntry kResultCodeMapping[] = {
      static_cast<int>(SqliteLoggedResultCode::kUnusedChrome)},
 #ifdef SQLITE_ENABLE_SETLK_TIMEOUT
 #error \
-    "This code assumes that Chrome does not use blocking Posix advisory \
-file lock requests"
+    This code assumes that Chrome does not use blocking Posix advisory \
+file lock requests
 #endif
 
     {SQLITE_READONLY_ROLLBACK,

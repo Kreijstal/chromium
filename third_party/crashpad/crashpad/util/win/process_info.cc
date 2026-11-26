@@ -117,11 +117,19 @@ bool ReadStruct(HANDLE process, WinVMAddress at, T* into) {
                          &bytes_read)) {
     // We don't have a name for the type we're reading, so include the signature
     // to get the type of T.
+#if defined(COMPILER_MSVC)
     PLOG(ERROR) << "ReadProcessMemory " << __FUNCSIG__;
+#else
+    PLOG(ERROR) << "ReadProcessMemory " << __PRETTY_FUNCTION__;
+#endif
     return false;
   }
   if (bytes_read != sizeof(T)) {
+#if defined(COMPILER_MSVC)
     LOG(ERROR) << "ReadProcessMemory " << __FUNCSIG__ << " incorrect size";
+#else
+    LOG(ERROR) << "ReadProcessMemory " << __PRETTY_FUNCTION__ << " incorrect size";
+#endif
     return false;
   }
   return true;

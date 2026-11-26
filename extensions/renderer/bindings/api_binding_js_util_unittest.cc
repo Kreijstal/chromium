@@ -16,8 +16,8 @@
 #include "gin/handle.h"
 #include "gin/public/gin_embedders.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 namespace extensions {
 

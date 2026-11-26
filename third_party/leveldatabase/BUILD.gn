@@ -134,7 +134,7 @@ component("leveldatabase") {
     "//third_party/snappy",
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     # leveldb compiles with a limited set of warnings enabled, and is not
     # likely to accept fixes for other warnings. See crbug.com/698013
     cflags = [ "/wd4018" ]  # Signed/unsigned mismatch in comparison.
@@ -171,7 +171,7 @@ static_library("leveldb_static") {
     "//third_party/snappy",
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     # leveldb compiles with a limited set of warnings enabled, and is not
     # likely to accept fixes for other warnings. See crbug.com/698013
     cflags = [ "/wd4018" ]  # Signed/unsigned mismatch in comparison.
@@ -253,7 +253,7 @@ test("leveldb_unittests") {
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [ "//build/config/compiler:no_chromium_code" ]
 
-  if (is_win) {
+  if (is_msvc) {
     # util\cache_test.cc(167): warning C4018: '<': signed/unsigned mismatch
     # util\cache_test.cc(171): warning C4018: '<': signed/unsigned mismatch
     cflags = [ "/wd4018" ]  # Signed/unsigned mismatch in comparison.

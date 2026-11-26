@@ -315,7 +315,7 @@ config("default_sanitizer_ldflags") {
         }
       }
     }
-  } else if (is_win) {
+  } else if (is_msvc) {
     # Windows directly calls link.exe instead of the compiler driver when
     # linking.  Hence, pass the runtime libraries instead of -fsanitize=address
     # or -fsanitize=fuzzer.
@@ -457,7 +457,7 @@ config("cfi_flags") {
 
     if (use_cfi_diag) {
       cflags += [ "-fno-sanitize-trap=cfi" ]
-      if (is_win) {
+      if (is_msvc) {
         cflags += [
           "/Oy-",
           "/Ob0",

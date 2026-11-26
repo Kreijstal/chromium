@@ -6,6 +6,7 @@ import("//base/trace_event/tracing.gni")
 import("//build/buildflag_header.gni")
 import("//build/compiled_action.gni")
 import("//build/config/compiler/compiler.gni")
+import("//build/config/rust.gni")
 import("//build/config/ui.gni")
 import("//build/nocompile.gni")
 import("//media/media_options.gni")
@@ -206,6 +207,12 @@ source_set("character_property_data") {
   ]
 }
 
+buildflag_header("font_rust_buildflags") {
+  header = "font_rust_buildflags.h"
+  header_dir = "third_party/blink/renderer/platform/fonts"
+  flags = [ "ENABLE_CPP_API_FROM_RUST=$enable_cpp_api_from_rust" ]
+}
+
 source_set("font_rust_headers") {
   visibility += [ "//third_party/blink/renderer/core:*" ]
   public = [
@@ -219,25 +226,40 @@ source_set("font_rust_headers") {
     "//third_party/blink/renderer:non_test_config",
   ]
   public_deps = [
+    ":font_rust_buildflags",
     ":platform_export",
-    "fonts:font_format_bindings",
-    "fonts:ift_patcher_bindings",
     "//base",
-    "//build/rust/crubit",
     "//skia",
     "//third_party/blink/renderer/platform/wtf",
   ]
+  if (enable_cpp_api_from_rust) {
+    public_deps += [
+      "fonts:font_format_bindings",
+      "fonts:ift_patcher_bindings",
+      "//build/rust/crubit",
+    ]
+  }
 }
 
 source_set("font_rust_support") {
   public = []
   sources = [
     "fonts/font_custom_platform_data.cc",
-    "fonts/ift/ift_patcher.cc",
-    "fonts/opentype/font_format_check.cc",
     "fonts/web_font_decoder.cc",
     "fonts/web_font_typeface_factory.cc",
   ]
+  if (enable_cpp_api_from_rust) {
+    sources += [
+      "fonts/ift/ift_patcher.cc",
+      "fonts/opentype/font_format_check.cc",
+    ]
+  } else {
+    # No Crubit: HarfBuzz format check, IFT unavailable.
+    sources += [
+      "fonts/ift/ift_patcher_stub.cc",
+      "fonts/opentype/font_format_check_hb.cc",
+    ]
+  }
   configs += [
     ":blink_platform_pch",
     ":blink_platform_config",
@@ -372,7 +394,7 @@ config("blink_platform_pch") {
   visibility = []
   visibility = [ "./*" ]
   if (enable_precompiled_headers) {
-    if (is_win) {
+    if (is_msvc) {
       # This is a string rather than a file GN knows about. It has to match
       # exactly what's in the /FI flag below, and what might appear in the
       # source code in quotes for an #include directive.
@@ -386,7 +408,7 @@ config("blink_platform_pch") {
 
       # Force include the header.
       cflags = [ "/FI$precompiled_header" ]
-    } else if (is_mac || is_linux) {
+    } else if (is_mac || is_linux || is_mingw) {
       precompiled_source =
           "//third_party/blink/renderer/platform/precompile_platform.h"
     }
@@ -1971,18 +1993,20 @@ component("platform") {
       "text/locale_icu.cc",
       "text/locale_icu.h",
     ]
-    cflags = [
-      "/wd4334",  # Result of 32-bit shift implicitly converted to 64 bits.
-      "/wd4724",  # Modulo by 0.
-    ]
     deps += [
       # For FontDataService mojom used by FontUniqueNameLookupWin.
       "//components/services/font_data/public/mojom:mojom_blink",
     ]
+    if (is_msvc) {
+      cflags = [
+        "/wd4334",  # Result of 32-bit shift implicitly converted to 64 bits.
+        "/wd4724",  # Modulo by 0.
+      ]
 
-    # TODO(crbug.com/40915226): Remove the need to ignore this warning.
-    if (is_component_build) {
-      ldflags = [ "/IGNORE:4217" ]
+      # TODO(crbug.com/40915226): Remove the need to ignore this warning.
+      if (is_component_build) {
+        ldflags = [ "/IGNORE:4217" ]
+      }
     }
   }
 
@@ -2184,7 +2208,7 @@ static_library("test_support") {
   allow_circular_includes_from =
       [ "//third_party/blink/renderer/platform/loader:test_support" ]
 
-  if (is_win) {
+  if (is_msvc) {
     cflags = [ "/wd4267" ]  # Truncation from size_t to int.
   }
 }
@@ -2288,7 +2312,6 @@ source_set("blink_platform_unittests_sources") {
     "fonts/font_test.cc",
     "fonts/font_test_utilities.cc",
     "fonts/generic_font_family_settings_test.cc",
-    "fonts/ift/ift_patcher_test.cc",
     "fonts/opentype/color_table_lookup_test.cc",
     "fonts/opentype/font_format_check_test.cc",
     "fonts/opentype/font_settings_test.cc",
@@ -2585,10 +2608,15 @@ source_set("blink_platform_unittests_sources") {
     ":bridge_ice_controller_tests",
     ":font_rust_headers",
     ":rustfft_ffi_unittests",
-    "fonts:font_format_bindings",
-    "fonts:ift_patcher_bindings",
-    "//build/rust/crubit",
   ]
+  if (enable_cpp_api_from_rust) {
+    sources += [ "fonts/ift/ift_patcher_test.cc" ]
+    deps += [
+      "fonts:font_format_bindings",
+      "fonts:ift_patcher_bindings",
+      "//build/rust/crubit",
+    ]
+  }
 
   data_deps = [ ":blink_platform_unittests_data" ]
 
@@ -2751,7 +2779,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
       "//third_party/blink/renderer:non_test_config",
     ]
     public_deps = [ ":blink_platform_public_deps" ]
-    if (is_win) {
+    if (is_msvc) {
       cflags = [ "/arch:AVX" ]
     } else {
       cflags = [ "-mavx" ]

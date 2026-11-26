@@ -11,6 +11,7 @@ config("cpuinfo_include") {
 }
 
 config("cpuinfo_config") {
+  if (is_clang || !is_msvc) {
   cflags = [
     # For chipset.c and utils.h.
     "-Wno-implicit-function-declaration",
@@ -27,6 +28,7 @@ config("cpuinfo_config") {
     # A lot of locations.
     "-Wno-unused-function",
   ]
+  }
 
   if (is_linux && is_component_build) {
     # Export all symbols when building as a shared library so that the
@@ -74,6 +76,9 @@ target(_cpuinfo_target_type, "cpuinfo") {
     ":os_specific",
   ]
 
+  if (is_mingw) {
+    configs -= [ "//build/config/win:nominmax" ]
+  }
   configs -= [
     "//build/config/compiler:chromium_code",
     "//build/config/sanitizers:default_sanitizer_flags",

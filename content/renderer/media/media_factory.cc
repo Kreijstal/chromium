@@ -618,7 +618,8 @@ MediaFactory::CreateRendererFactorySelector(
       RendererType::kCourier, std::move(courier_factory), is_remoting_cb);
 #endif
 
-#if BUILDFLAG(IS_WIN)
+// MinGW builds neither MediaFoundationCdm nor the MF renderer client.
+#if BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC)
   // Enable Media Foundation for Clear if it is supported & there are no GPU
   // workarounds enabled.
   bool use_mf_for_clear = false;
@@ -666,7 +667,7 @@ MediaFactory::CreateRendererFactorySelector(
                                    std::move(renderer_impl_factory));
     }
   }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC)
 
 #if BUILDFLAG(IS_CASTOS) || BUILDFLAG(IS_CAST_ANDROID)
   if (renderer_media_playback_options.is_remoting_renderer_enabled()) {

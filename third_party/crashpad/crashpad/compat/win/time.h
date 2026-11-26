@@ -15,8 +15,12 @@
 #ifndef CRASHPAD_COMPAT_WIN_TIME_H_
 #define CRASHPAD_COMPAT_WIN_TIME_H_
 
+#ifdef _MSC_VER
 // This is intended to be roughly equivalent to #include_next.
 #include <../ucrt/time.h>
+#else
+#include_next <time.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

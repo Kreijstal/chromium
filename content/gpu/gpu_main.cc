@@ -284,7 +284,7 @@ int GpuMain(MainFunctionParams parameters) {
 
   base::TimeTicks start_time = base::TimeTicks::Now();
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   base::win::EnableHighDPISupport();
 
   // Prevent Windows from displaying a modal dialog on failures like not being

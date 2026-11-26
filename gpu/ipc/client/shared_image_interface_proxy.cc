@@ -17,7 +17,7 @@
 #include "ui/gfx/buffer_types.h"
 #include "ui/gfx/gpu_fence.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "ui/gfx/win/d3d_shared_fence.h"
 #endif
 
@@ -312,7 +312,7 @@ void SharedImageInterfaceProxy::CopyToGpuMemoryBuffer(
   }
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void SharedImageInterfaceProxy::CopyToGpuMemoryBufferAsync(
     std::vector<SyncToken> sync_tokens,
     const Mailbox& mailbox,
@@ -356,7 +356,7 @@ void SharedImageInterfaceProxy::UpdateSharedImage(
                   d3d_shared_fence->GetFenceValue()))),
       std::move(dependencies), /*release_count=*/0);
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
 void SharedImageInterfaceProxy::CopyNativeGmbToSharedMemoryAsync(

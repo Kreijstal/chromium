@@ -22,13 +22,13 @@
 #include "third_party/blink/renderer/platform/heap/thread_state_storage.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/cppgc/heap-consistency.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-embedder-heap.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-profiler.h"
-#include "v8/include/v8-traced-handle.h"
+#include "cppgc/heap-consistency.h"
+#include "v8-cppgc.h"
+#include "v8-embedder-heap.h"
+#include "v8-isolate.h"
+#include "v8-object.h"
+#include "v8-profiler.h"
+#include "v8-traced-handle.h"
 
 namespace blink {
 

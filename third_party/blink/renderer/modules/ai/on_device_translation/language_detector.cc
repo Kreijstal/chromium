@@ -19,7 +19,7 @@
 #include "third_party/blink/renderer/modules/ai/exception_helpers.h"
 #include "third_party/blink/renderer/modules/ai/feedback_helpers.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace blink {
 

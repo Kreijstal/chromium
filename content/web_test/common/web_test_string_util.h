@@ -10,7 +10,7 @@
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_navigation_policy.h"
 #include "ui/base/mojom/window_open_disposition.mojom-forward.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 class GURL;
 

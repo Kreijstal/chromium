@@ -6,6 +6,7 @@ import("//build/config/win/visual_studio_version.gni")
 import("//build/toolchain/win/toolchain.gni")
 
 assert(is_win, "Should only be running on Windows")
+assert((is_msvc && !is_qtwebengine) || is_mingw)
 
 # Setup the Visual Studio state.
 #
@@ -15,7 +16,7 @@ assert(is_win, "Should only be running on Windows")
 
 # Copy the VS runtime DLL for the default toolchain to the root build directory
 # so things will run.
-if (current_toolchain == default_toolchain) {
+if (is_msvc && current_toolchain == default_toolchain) {
   if (is_debug) {
     configuration_name = "Debug"
   } else {
@@ -30,7 +31,7 @@ if (current_toolchain == default_toolchain) {
               ])
 }
 
-if (target_cpu == "x86" || target_cpu == "x64") {
+if (is_msvc && (target_cpu == "x86" || target_cpu == "x64")) {
   win_toolchains("x86") {
     toolchain_arch = "x86"
   }
@@ -40,7 +41,7 @@ if (target_cpu == "x86" || target_cpu == "x64") {
   }
 }
 
-if (target_cpu == "arm64") {
+if (is_msvc && target_cpu == "arm64") {
   win_toolchains("arm64") {
     toolchain_arch = "arm64"
   }
@@ -80,5 +81,19 @@ if (target_os == "winuwp") {
       current_cpu = target_cpu
       is_clang = false
     }
+  }
+}
+
+if (is_mingw) {
+  mingw_toolchain("x86") {
+    toolchain_arch = "x86"
+  }
+
+  mingw_toolchain("x64") {
+    toolchain_arch = "x64"
+  }
+
+  mingw_toolchain("arm64") {
+    toolchain_arch = "arm64"
   }
 }

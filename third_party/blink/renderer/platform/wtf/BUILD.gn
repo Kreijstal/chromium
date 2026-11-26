@@ -40,7 +40,7 @@ visibility = [
 ]
 
 config("wtf_config") {
-  if (is_win) {
+  if (is_msvc) {
     cflags = [
       # Don't complain about calling specific versions of templatized
       # functions (e.g. in RefPtrHashMap.h).
@@ -54,6 +54,8 @@ config("wtf_config") {
       # build.
       cflags += [ "/wd4291" ]
     }
+  } else {
+    cflags = [ "-Wno-template-id-cdtor" ]
   }
 }
 
@@ -274,7 +276,7 @@ component("wtf") {
     ]
   }
 
-  if (is_win) {
+  if (is_msvc) {
     cflags = [ "/wd4068" ]  # Unknown pragma.
 
     # Inject Visual Studio debug visualizers for our types into all targets
@@ -412,7 +414,7 @@ source_set("wtf_unittests_sources") {
     "wtf_test_helper.h",
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     cflags = [ "/wd4068" ]  # Unknown pragma.
   }
 

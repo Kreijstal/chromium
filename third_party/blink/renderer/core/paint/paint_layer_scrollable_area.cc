@@ -128,6 +128,7 @@
 #include "third_party/blink/renderer/core/timing/event_timing.h"
 #include "third_party/blink/renderer/core/view_transition/view_transition.h"
 #include "third_party/blink/renderer/core/view_transition/view_transition_utils.h"
+#include "third_party/blink/renderer/platform/heap/heap_vector_holder.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -3079,7 +3080,7 @@ void PaintLayerScrollableArea::DelayScrollOffsetClampScope::
 HeapVector<Member<PaintLayerScrollableArea>>&
 PaintLayerScrollableArea::DelayScrollOffsetClampScope::NeedsClampList() {
   using Holder =
-      DisallowNewWrapper<HeapVector<Member<PaintLayerScrollableArea>>>;
+      HeapVectorHolder<Member<PaintLayerScrollableArea>>;
   DEFINE_STATIC_LOCAL(Persistent<Holder>, needs_clamp_list,
                       (MakeGarbageCollected<Holder>()));
   return needs_clamp_list->Value();

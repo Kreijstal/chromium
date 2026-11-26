@@ -12,7 +12,7 @@
 #include "third_party/blink/renderer/platform/bindings/scoped_persistent.h"
 #include "third_party/blink/renderer/platform/bindings/trace_wrapper_v8_reference.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 class MemoryMeasurement;

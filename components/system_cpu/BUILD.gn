@@ -48,7 +48,7 @@ source_set("system_cpu") {
       "cpu_probe_win.h",
     ]
 
-    libs += [ "pdh.lib" ]
+    libs += [ "pdh" ]
   }
 }
 

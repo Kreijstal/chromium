@@ -36,7 +36,7 @@
 #include "third_party/blink/renderer/core/testing/v8/web_core_test_support.h"
 #include "third_party/blink/renderer/platform/bindings/origin_trial_features.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

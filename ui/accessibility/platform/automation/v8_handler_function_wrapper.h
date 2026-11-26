@@ -7,8 +7,8 @@
 
 #include "base/component_export.h"
 #include "base/memory/ref_counted.h"
-#include "v8/include/v8-function-callback.h"
-#include "v8/include/v8-value.h"
+#include "v8-function-callback.h"
+#include "v8-value.h"
 
 namespace gin {
 class Arguments;

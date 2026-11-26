@@ -38,7 +38,7 @@
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink {
 class ScriptState;

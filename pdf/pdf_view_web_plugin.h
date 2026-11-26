@@ -53,7 +53,7 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d_f.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
 #include "mojo/public/cpp/bindings/unique_receiver_set.h"

@@ -36,7 +36,7 @@
 #include "tools/v8_context_snapshot/buildflags.h"
 #include "url/gurl.h"
 #include "url/url_canon.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 // Notes on the javascript environment:
 //

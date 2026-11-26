@@ -15,8 +15,12 @@
 #ifndef CRASHPAD_COMPAT_WIN_WINNT_H_
 #define CRASHPAD_COMPAT_WIN_WINNT_H_
 
+#ifdef _MSC_VER
 // include_next <winnt.h>
 #include <../um/winnt.h>
+#else
+#include_next <winnt.h>
+#endif
 
 // https://msdn.microsoft.com/library/aa373184.aspx: "Note that this structure
 // definition was accidentally omitted from WinNT.h."

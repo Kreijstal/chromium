@@ -15,7 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "extensions/renderer/bindings/argument_spec.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace gin {
 class Arguments;

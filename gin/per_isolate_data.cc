@@ -13,7 +13,7 @@
 #include "gin/v8_foreground_task_runner.h"
 #include "gin/v8_foreground_task_runner_with_locker.h"
 #include "v8/include/v8-external.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 using v8::ArrayBuffer;
 using v8::Eternal;

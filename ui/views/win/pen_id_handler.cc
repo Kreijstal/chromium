@@ -17,6 +17,26 @@
 
 namespace views {
 
+#if defined(__MINGW32__)
+namespace {
+PenIdHandler::GetPenDeviceStatics get_pen_device_statics = nullptr;
+}  // namespace
+
+PenIdHandler::ScopedPenIdStaticsForTesting::ScopedPenIdStaticsForTesting(
+    PenIdHandler::GetPenDeviceStatics pen_device_statics)
+    : pen_device_resetter_(&get_pen_device_statics, pen_device_statics) {}
+PenIdHandler::ScopedPenIdStaticsForTesting::~ScopedPenIdStaticsForTesting() =
+    default;
+PenIdHandler::PenIdHandler() = default;
+PenIdHandler::~PenIdHandler() = default;
+std::optional<int32_t> PenIdHandler::TryGetPenUniqueId(UINT32) {
+  return std::nullopt;
+}
+std::optional<std::string> PenIdHandler::TryGetGuid(UINT32) const {
+  return std::nullopt;
+}
+void PenIdHandler::InitPenIdStatics() {}
+#else
 namespace {
 
 using ABI::Windows::Devices::Input::IPenDevice;
@@ -146,5 +166,6 @@ void PenIdHandler::InitPenIdStatics() {
       FROM_HERE, {base::TaskPriority::USER_VISIBLE},
       base::BindOnce(base::IgnoreResult(&PenIdStatics::GetInstance)));
 }
+#endif
 
 }  // namespace views

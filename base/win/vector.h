@@ -5,6 +5,7 @@
 #ifndef BASE_WIN_VECTOR_H_
 #define BASE_WIN_VECTOR_H_
 
+#if defined(COMPILER_MSVC)
 #include <ivectorchangedeventargs.h>
 #include <windows.foundation.collections.h>
 #include <wrl/implements.h>
@@ -408,5 +409,7 @@ class Vector
 
 }  // namespace win
 }  // namespace base
+
+#endif // COMPILER_MSVC
 
 #endif  // BASE_WIN_VECTOR_H_

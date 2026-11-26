@@ -10,9 +10,9 @@
 #include "components/guest_view/renderer/guest_view_container.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-microtask-queue.h"
+#include "v8-context.h"
+#include "v8-function.h"
+#include "v8-microtask-queue.h"
 
 namespace guest_view {
 

@@ -179,7 +179,7 @@ blink_modules_sources("webaudio") {
     "wave_shaper_node.h",
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     # Result of 32-bit shift implicitly converted to 64 bits.
     cflags = [ "/wd4334" ]
   }

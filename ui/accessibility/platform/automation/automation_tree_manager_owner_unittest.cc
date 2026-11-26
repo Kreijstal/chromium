@@ -23,8 +23,8 @@
 #include "ui/accessibility/platform/automation/automation_v8_bindings.h"
 #include "ui/accessibility/platform/automation/automation_v8_router.h"
 #include "ui/gfx/geometry/rect.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-template.h"
+#include "v8-context.h"
+#include "v8-template.h"
 
 namespace ui {
 

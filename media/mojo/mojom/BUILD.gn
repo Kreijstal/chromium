@@ -813,7 +813,7 @@ mojom("media_types") {
     },
   ]
 
-  if (is_win) {
+  if (is_msvc) {
     cpp_typemaps += [
       {
         types = [

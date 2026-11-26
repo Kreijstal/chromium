@@ -246,7 +246,7 @@
 #include "ui/events/keycodes/dom/dom_key.h"
 #include "ui/gfx/geometry/test/geometry_util.h"
 #include "ui/gfx/geometry/transform.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using blink::mojom::SelectionMenuBehavior;
 using blink::test::RunPendingTasks;

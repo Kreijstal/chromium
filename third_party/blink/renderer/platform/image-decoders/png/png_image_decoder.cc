@@ -4,8 +4,13 @@
 
 #include "third_party/blink/renderer/platform/image-decoders/png/png_image_decoder.h"
 
+#include "skia/buildflags.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#if BUILDFLAG(SKIA_BUILD_RUST_PNG)
 #include "third_party/skia/include/codec/SkPngRustDecoder.h"
+#else
+#include "third_party/skia/include/codec/SkPngDecoder.h"
+#endif
 #include "third_party/skia/include/core/SkStream.h"
 
 namespace blink {
@@ -25,8 +30,14 @@ const AtomicString& PngImageDecoder::MimeType() const {
 std::unique_ptr<SkCodec> PngImageDecoder::OnCreateSkCodec(
     std::unique_ptr<SkStream> stream,
     SkCodec::Result* result) {
+#if BUILDFLAG(SKIA_BUILD_RUST_PNG)
   std::unique_ptr<SkCodec> codec =
       SkPngRustDecoder::Decode(std::move(stream), result);
+#else
+  // No Rust: libpng decoder.
+  std::unique_ptr<SkCodec> codec =
+      SkPngDecoder::Decode(std::move(stream), result);
+#endif
   return codec;
 }
 

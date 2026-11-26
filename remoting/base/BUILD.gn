@@ -278,7 +278,7 @@ static_library("base") {
       "registry_util_win.h",
       "scoped_sc_handle_win.h",
     ]
-    libs = [ "crypt32.lib" ]  # For CryptoAPI functions in certificate_helpers
+    libs = [ "crypt32" ]  # For CryptoAPI functions in certificate_helpers
   }
 }
 

@@ -80,12 +80,18 @@ struct PA_CHROME_SRWLOCK {
 
 // Define some macros needed when prototyping Windows functions.
 
+#ifndef DECLSPEC_IMPORT
 #define DECLSPEC_IMPORT __declspec(dllimport)
+#endif
 #define WINBASEAPI DECLSPEC_IMPORT
 #define WINAPI __stdcall
 
 // Needed for LockImpl.
+#ifdef _MSC_VER
 WINBASEAPI _Releases_exclusive_lock_(*SRWLock) VOID WINAPI
+#else
+VOID WINAPI
+#endif
     ReleaseSRWLockExclusive(_Inout_ PSRWLOCK SRWLock);
 WINBASEAPI BOOLEAN WINAPI TryAcquireSRWLockExclusive(_Inout_ PSRWLOCK SRWLock);
 

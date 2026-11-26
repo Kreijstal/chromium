@@ -29,7 +29,7 @@
 #include "third_party/blink/renderer/platform/bindings/exception_messages.h"
 #include "third_party/blink/renderer/platform/heap/heap_traits.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "v8/include/v8-fast-api-calls.h"
+#include "v8-fast-api-calls.h"
 
 namespace blink {
 

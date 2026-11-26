@@ -99,7 +99,7 @@ source_set("clients") {
       "//ui/gl",
     ]
   }
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "win/media_foundation_renderer_client.cc",
       "win/media_foundation_renderer_client.h",

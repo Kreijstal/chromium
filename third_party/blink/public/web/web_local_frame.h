@@ -58,7 +58,7 @@
 #include "third_party/blink/public/web/web_script_execution_callback.h"
 #include "ui/accessibility/ax_tree_id.h"
 #include "ui/base/ime/ime_text_span.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace base {
 class Location;

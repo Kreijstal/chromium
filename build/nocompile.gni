@@ -50,7 +50,7 @@
 #   http://dev.chromium.org/developers/testing/no-compile-tests
 #
 import("//build/config/clang/clang.gni")
-if (is_win) {
+if (is_win && !is_mingw && !is_qtpdf) {
   import("//build/toolchain/win/win_toolchain_data.gni")
 }
 
@@ -95,7 +95,7 @@ if (enable_nocompile_tests) {
       rebased_depfile_path = rebase_path(depfile, root_build_dir)
       outputs = [ result_path ]
 
-      if (is_win) {
+      if (is_win && !is_mingw) {
         if (host_os == "win") {
           cxx = "clang-cl.exe"
         } else {
@@ -151,7 +151,7 @@ if (enable_nocompile_tests) {
         "-Werror",
       ]
 
-      if (!is_win) {
+      if (!is_msvc) {
         args += [
           # On non-Windows platforms, clang can generate the depfile.
           "-MMD",

@@ -9,7 +9,7 @@
 
 #include "base/at_exit.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace content {
 class BlinkTestEnvironment;

@@ -6,7 +6,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_BINDINGS_CORE_V8_SHADOW_REALM_CONTEXT_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink {
 

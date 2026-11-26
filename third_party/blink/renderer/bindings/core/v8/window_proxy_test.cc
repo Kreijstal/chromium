@@ -11,7 +11,7 @@
 #include "third_party/blink/renderer/core/testing/sim/sim_test.h"
 #include "third_party/blink/renderer/platform/bindings/dom_wrapper_world.h"
 #include "third_party/blink/renderer/platform/testing/unit_test_helpers.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-local-handle.h"
 
 namespace blink {
 

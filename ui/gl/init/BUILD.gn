@@ -51,8 +51,12 @@ component("init") {
       "gl_initializer_win.cc",
     ]
 
-    libs = [ "dwmapi.lib" ]
-    ldflags = [ "/DELAYLOAD:dwmapi.dll" ]
+    if (is_mingw) {
+      libs = [ "dwmapi" ]
+    } else {
+      libs = [ "dwmapi.lib" ]
+      ldflags = [ "/DELAYLOAD:dwmapi.dll" ]
+    }
   } else if (is_mac) {
     sources += [
       "gl_factory_mac.cc",

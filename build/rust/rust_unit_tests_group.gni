@@ -1,3 +1,4 @@
+import("//build/config/rust.gni")
 # Copyright 2021 The Chromium Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -35,6 +36,13 @@
 #   }
 
 template("rust_unit_tests_group") {
+  if (!enable_rust) {
+    # Rust is off (MinGW GCC): keep the label so GN resolves dependents.
+    group(target_name) {
+      forward_variables_from(invoker, [ "testonly", "visibility" ])
+      not_needed(invoker, "*")
+    }
+  } else {
   assert(defined(invoker.deps), "deps must be listed")
 
   # As noted in the top-level comment of //testing/buildbot/gn_isolate_map.pyl
@@ -90,5 +98,6 @@ template("rust_unit_tests_group") {
     if (is_win) {
       args += [ "--make-bat" ]
     }
+  }
   }
 }

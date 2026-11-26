@@ -5,6 +5,7 @@
 #ifndef BASE_STRINGS_TO_STRING_H_
 #define BASE_STRINGS_TO_STRING_H_
 
+#include <cstdint>
 #include <concepts>
 #include <memory>
 #include <sstream>

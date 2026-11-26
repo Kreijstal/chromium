@@ -81,7 +81,7 @@
 #endif
 
 #if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_ANDROID)
-#include "v8/include/v8-wasm-trap-handler-posix.h"
+#include "v8-wasm-trap-handler-posix.h"
 #endif
 
 #if BUILDFLAG(IS_IOS)

@@ -126,7 +126,22 @@ struct PasswordNote {
 
   friend bool operator==(const PasswordNote& lhs,
                          const PasswordNote& rhs) = default;
-  friend auto operator<=>(const PasswordNote&, const PasswordNote&) = default;
+  // Spelled out: the shared base's base::Time has no operator<=>.
+  friend std::strong_ordering operator<=>(const PasswordNote& lhs,
+                                          const PasswordNote& rhs) {
+    if (auto c = lhs.unique_display_name <=> rhs.unique_display_name; c != 0) {
+      return c;
+    }
+    if (auto c = lhs.value <=> rhs.value; c != 0) {
+      return c;
+    }
+    if (lhs.date_created != rhs.date_created) {
+      return lhs.date_created < rhs.date_created
+                 ? std::strong_ordering::less
+                 : std::strong_ordering::greater;
+    }
+    return lhs.hide_by_default <=> rhs.hide_by_default;
+  }
 
   static constexpr char16_t kPasswordChangeBackupNoteName[] =
       u"PasswordChangeBackup";

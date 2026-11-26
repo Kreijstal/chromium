@@ -19,9 +19,9 @@
 #include "extensions/renderer/bindings/api_event_handler.h"
 #include "gin/data_object_builder.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-isolate.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8-isolate.h"
 
 namespace extensions {
 

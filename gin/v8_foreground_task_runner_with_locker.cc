@@ -10,8 +10,8 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
 #include "gin/converter.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-locker.h"
+#include "v8-isolate.h"
+#include "v8-locker.h"
 
 namespace gin {
 

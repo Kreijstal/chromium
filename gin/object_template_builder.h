@@ -16,8 +16,8 @@
 #include "gin/function_template.h"
 #include "gin/gin_export.h"
 #include "gin/public/wrappable_pointer_tags.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-template.h"
+#include "v8-forward.h"
+#include "v8-template.h"
 
 namespace gin {
 

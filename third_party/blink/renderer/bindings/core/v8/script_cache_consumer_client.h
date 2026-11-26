@@ -7,7 +7,7 @@
 
 #include "third_party/blink/renderer/platform/bindings/parkable_string.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
-#include "v8/include/v8-script.h"
+#include "v8-script.h"
 
 namespace blink {
 

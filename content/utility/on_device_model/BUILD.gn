@@ -3,6 +3,7 @@
 # found in the LICENSE file.
 
 import("//services/on_device_model/on_device_model.gni")
+import("//ui/gl/features.gni")
 
 source_set("on_device_model_sandbox_init") {
   sources = [
@@ -12,8 +13,10 @@ source_set("on_device_model_sandbox_init") {
   deps = [
     "//base",
     "//services/on_device_model:ml_internal_buildflags",
-    "//services/on_device_model:on_device_model_service",
   ]
+  if (use_dawn) {
+    deps += [ "//services/on_device_model:on_device_model_service" ]
+  }
   defines = []
   if (enable_ml_internal) {
     deps += [ "//services/on_device_model/ml" ]
@@ -25,7 +28,8 @@ source_set("on_device_model_sandbox_init") {
       "//sandbox/policy",
     ]
   }
-  if (!is_fuchsia) {
+  if (!is_fuchsia && use_dawn) {
+    defines = [ "ON_DEVICE_MODEL_USE_DAWN" ]
     deps += [
       "//third_party/dawn/include/dawn:cpp_headers",
       "//third_party/dawn/src/dawn:proc",

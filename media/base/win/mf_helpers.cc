@@ -90,7 +90,9 @@ SharedImageReadLock::~SharedImageReadLock() {
 }
 
 using Microsoft::WRL::ComPtr;
+#if !defined(COMPILER_GCC) // FIXME: missing Microsoft::WRL::MakeAndInitialize
 using Microsoft::WRL::MakeAndInitialize;
+#endif
 
 namespace {
 
@@ -196,6 +198,7 @@ HRESULT AddEncryptAttributes(const DecryptConfig& decrypt_config,
                              GUID* last_key_id) {
   DVLOG(3) << __func__;
 
+#if !defined(COMPILER_GCC) // FIXME: missing MFSampleEncryptionProtectionScheme
   MFSampleEncryptionProtectionScheme mf_protection_scheme;
   if (decrypt_config.encryption_scheme() == EncryptionScheme::kCenc) {
     mf_protection_scheme = MFSampleEncryptionProtectionScheme::
@@ -251,6 +254,7 @@ HRESULT AddEncryptAttributes(const DecryptConfig& decrypt_config,
   GUID key_id = GetGUIDFromString(decrypt_config.key_id());
   RETURN_IF_FAILED(mf_sample->SetGUID(MFSampleExtension_Content_KeyID, key_id));
   *last_key_id = key_id;
+#endif
 
   // IV
   size_t iv_length = decrypt_config.iv().length();
@@ -266,6 +270,7 @@ HRESULT AddEncryptAttributes(const DecryptConfig& decrypt_config,
       reinterpret_cast<const uint8_t*>(decrypt_config.iv().c_str()),
       iv_length));
 
+#if !defined(COMPILER_GCC) // FIXME: missing MFSampleExtension_Encryption_SubSample_Mapping
   // Handle subsample entries.
   const auto& subsample_entries = decrypt_config.subsamples();
   if (subsample_entries.empty()) {
@@ -284,6 +289,7 @@ HRESULT AddEncryptAttributes(const DecryptConfig& decrypt_config,
       MFSampleExtension_Encryption_SubSample_Mapping,
       reinterpret_cast<const uint8_t*>(mf_subsample_entries.data()),
       mf_sample_entries_size));
+#endif
 
   return S_OK;
 }
@@ -380,24 +386,34 @@ ChannelLayout ChannelConfigToChannelLayout(ChannelConfig config) {
       return CHANNEL_LAYOUT_MONO;
     case KSAUDIO_SPEAKER_STEREO:
       return CHANNEL_LAYOUT_STEREO;
+#if defined(KSAUDIO_SPEAKER_2POINT1)
     case KSAUDIO_SPEAKER_2POINT1:
       return CHANNEL_LAYOUT_2POINT1;
+#endif
+#if defined(KSAUDIO_SPEAKER_3POINT0)
     case KSAUDIO_SPEAKER_3POINT0:
       return CHANNEL_LAYOUT_SURROUND;
+#endif
+#if defined(KSAUDIO_SPEAKER_3POINT1)
     case KSAUDIO_SPEAKER_3POINT1:
       return CHANNEL_LAYOUT_3_1;
+#endif
     case KSAUDIO_SPEAKER_QUAD:
       return CHANNEL_LAYOUT_QUAD;
     case KSAUDIO_SPEAKER_SURROUND:
       return CHANNEL_LAYOUT_4_0;
+#if defined(KSAUDIO_SPEAKER_5POINT0)
     case KSAUDIO_SPEAKER_5POINT0:
       return CHANNEL_LAYOUT_5_0;
+#endif
     case KSAUDIO_SPEAKER_5POINT1:
       return CHANNEL_LAYOUT_5_1_BACK;
     case KSAUDIO_SPEAKER_5POINT1_SURROUND:
       return CHANNEL_LAYOUT_5_1;
+#if defined(KSAUDIO_SPEAKER_7POINT0)
     case KSAUDIO_SPEAKER_7POINT0:
       return CHANNEL_LAYOUT_7_0;
+#endif
     case KSAUDIO_SPEAKER_7POINT1:
       return CHANNEL_LAYOUT_7_1_WIDE_BACK;
     case KSAUDIO_SPEAKER_7POINT1_SURROUND:
@@ -774,6 +790,7 @@ HRESULT CreateDecryptConfigFromSample(
 
   EncryptionScheme encryption_scheme = EncryptionScheme::kUnencrypted;
   UINT32 mf_protection_scheme = 0;
+#if !defined(COMPILER_GCC) // FIXME: missing MFSampleExtension_Encryption_ProtectionScheme
   RETURN_IF_FAILED(mf_sample->GetUINT32(
       MFSampleExtension_Encryption_ProtectionScheme, &mf_protection_scheme));
   switch (mf_protection_scheme) {
@@ -792,6 +809,7 @@ HRESULT CreateDecryptConfigFromSample(
                   << mf_protection_scheme;
       return MF_E_UNEXPECTED;
   }
+#endif
 
   // IV
   UINT32 iv_length = 0;
@@ -820,6 +838,7 @@ HRESULT CreateDecryptConfigFromSample(
   base::win::ScopedCoMem<MediaFoundationSubsampleEntry> subsample_mappings;
   uint32_t subsample_mappings_size = 0;
 
+#if !defined(COMPILER_GCC) // FIXME: missing MFSampleExtension_Encryption_SubSample_Mapping
   // If `MFSampleExtension_Encryption_SubSample_Mapping` attribute doesn't
   // exist, we should not fail the call. i.e., Encrypted audio content.
   if (SUCCEEDED(mf_sample->GetAllocatedBlob(
@@ -840,6 +859,7 @@ HRESULT CreateDecryptConfigFromSample(
       subsamples.emplace_back(entry.clear_bytes, entry.cipher_bytes);
     }
   }
+#endif
 
   // Key ID
   const auto key_id_string = GetStringFromGUID(key_id);
@@ -851,6 +871,7 @@ HRESULT CreateDecryptConfigFromSample(
   if (encryption_scheme == EncryptionScheme::kCenc) {
     *decrypt_config =
         DecryptConfig::CreateCencConfig(key_id_string, iv_string, subsamples);
+#if !defined(COMPILER_GCC) // FIXME: missing MFSampleExtension_Encryption_*
   } else {
     EncryptionPattern encryption_pattern;
 
@@ -875,6 +896,7 @@ HRESULT CreateDecryptConfigFromSample(
     DVLOG(3) << __func__ << ": encryption_pattern=" << encryption_pattern;
     *decrypt_config = DecryptConfig::CreateCbcsConfig(
         key_id_string, iv_string, subsamples, encryption_pattern);
+#endif
   }
 
   return S_OK;

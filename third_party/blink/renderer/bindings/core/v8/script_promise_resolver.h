@@ -24,7 +24,7 @@
 #include "third_party/blink/renderer/platform/heap/prefinalizer.h"
 #include "third_party/blink/renderer/platform/scheduler/public/post_cancellable_task.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if DCHECK_IS_ON()
 #include "base/debug/stack_trace.h"

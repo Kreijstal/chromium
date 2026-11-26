@@ -53,21 +53,25 @@ class COMPONENT_EXPORT(GEOLOCATION) SystemGeolocationSourceWin
   void OnLaunchUriSuccess(uint8_t launched);
   void OnLaunchUriFailure(HRESULT result);
 
+#if !defined(__MINGW32__)
   void OnRequestLocationAccessSuccess(
       ABI::Windows::Devices::Geolocation::GeolocationAccessStatus
           geolocation_access_status);
   void OnRequestLocationAccessFailure(HRESULT result);
+#endif
 
   // The pending operation for launching the settings page, or nullptr if not
   // launching the settings page.
   Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperation<bool>>
       launch_uri_op_;
 
+#if !defined(__MINGW32__)
   // The pending operation for requesting location access, or nullptr if not
   // requesting access.
   Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperation<
       ABI::Windows::Devices::Geolocation::GeolocationAccessStatus>>
       request_location_access_op_;
+#endif
 
   // True if the user was prompted to grant location permissions and the
   // permission status has not yet changed. Used for metrics logging.

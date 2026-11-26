@@ -16,7 +16,7 @@
 #include "content/web_test/renderer/web_test_spell_checker.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_text_check_client.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 class WebLocalFrame;

@@ -28,7 +28,7 @@
 #include "third_party/blink/renderer/modules/webcodecs/fuzzer_inputs.pb.h"
 #include "third_party/blink/renderer/modules/webcodecs/video_frame.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace base {
 class ScopedClosureRunner;

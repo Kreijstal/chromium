@@ -8,7 +8,7 @@
 #include "base/cpu.h"
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "v8/include/v8-platform.h"
+#include "v8-platform.h"
 
 // includes for Branch Target Instruction tests
 #if defined(ARCH_CPU_ARM64) && (OS_LINUX || OS_ANDROID)

@@ -61,12 +61,12 @@ interface CdmDocumentService {
   // Gets the Media FoundationCDM data for the origin associated with the CDM.
   // - `media_foundation_cdm_data`: The CDM data for the origin associated with
   //                                the CDM.
-  [EnableIf=is_win]
+  [EnableIf=is_msvc]
   GetMediaFoundationCdmData() => (MediaFoundationCdmData cdm_data);
 
   // Reports a CDM event, which can facilitate metrics reporting or fallback
   // logic.  For error events, the `hresult` provides more details about the
   // error.
-  [EnableIf=is_win]
+  [EnableIf=is_msvc]
   OnCdmEvent(CdmEvent event, uint32 hresult);
 };

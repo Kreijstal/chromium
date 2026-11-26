@@ -18,10 +18,10 @@
 #include "gin/object_template_builder.h"
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/wrappable.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-primitive.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8-object.h"
+#include "v8-primitive.h"
 
 namespace extensions {
 

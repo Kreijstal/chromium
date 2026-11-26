@@ -19,7 +19,7 @@
 #include "extensions/renderer/bindings/argument_spec_builder.h"
 #include "extensions/renderer/bindings/returns_async_builder.h"
 #include "gin/converter.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 namespace {

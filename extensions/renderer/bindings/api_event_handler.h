@@ -14,7 +14,7 @@
 #include "extensions/renderer/bindings/api_event_listeners.h"
 #include "extensions/renderer/bindings/event_emitter.h"
 #include "extensions/renderer/bindings/listener_tracker.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class APIResponseValidator;

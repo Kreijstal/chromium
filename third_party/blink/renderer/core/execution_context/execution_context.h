@@ -60,8 +60,8 @@
 #include "third_party/blink/renderer/platform/use_counter_and_console_logger.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/perfetto/include/perfetto/tracing/traced_value_forward.h"
-#include "v8/include/v8-callbacks.h"
-#include "v8/include/v8-forward.h"
+#include "v8-callbacks.h"
+#include "v8-forward.h"
 
 namespace base {
 class SingleThreadTaskRunner;

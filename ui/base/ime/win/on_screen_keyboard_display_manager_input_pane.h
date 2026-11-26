@@ -5,6 +5,8 @@
 #ifndef UI_BASE_IME_WIN_ON_SCREEN_KEYBOARD_DISPLAY_MANAGER_INPUT_PANE_H_
 #define UI_BASE_IME_WIN_ON_SCREEN_KEYBOARD_DISPLAY_MANAGER_INPUT_PANE_H_
 
+#if defined(COMPILER_MSVC)
+
 #include <inputpaneinterop.h>
 #include <windows.ui.viewmanagement.h>
 #include <wrl/client.h>
@@ -81,5 +83,7 @@ class COMPONENT_EXPORT(UI_BASE_IME_WIN)
 };
 
 }  // namespace ui
+
+#endif // COMPILER_MSVC
 
 #endif  // UI_BASE_IME_WIN_ON_SCREEN_KEYBOARD_DISPLAY_MANAGER_INPUT_PANE_H_

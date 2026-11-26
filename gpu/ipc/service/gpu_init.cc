@@ -213,6 +213,7 @@ void ResumeGpuWatchdog(GpuWatchdogThread* watchdog_thread) {
   }
 }
 
+#if !BUILDFLAG(IS_QTWEBENGINE) // unused
 // TODO(crbug.com/40700374): We currently do not handle
 // VK_ERROR_DEVICE_LOST in in-process-gpu.
 // Android WebView is allowed for now because it CHECKs on context loss.
@@ -228,6 +229,7 @@ void DisableInProcessGpuVulkan(GpuFeatureInfo* gpu_feature_info,
     gpu_preferences->gr_context_type = GrContextType::kGL;
   }
 }
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
 // TODO(https://crbug.com/324468229): We currently do not handle Dawn device
@@ -370,7 +372,17 @@ std::unique_ptr<GpuInit> GpuInit::Create() {
 
 GpuInitLegacy::GpuInitLegacy() = default;
 
-GpuInitLegacy::~GpuInitLegacy() = default;
+GpuInitLegacy::~GpuInitLegacy() {
+#if BUILDFLAG(IS_WIN)
+  if (gl::GetGLImplementation() != gl::kGLImplementationDisabled) {
+    auto *gl_display = gl::init::GetOrInitializeGLOneOffPlatformImplementation(
+        false, false, false, gl::GpuPreference::kDefault);
+    if (gl_display) {
+      gl::init::ShutdownGL(gl_display, false);
+    }
+  }
+#endif // BUILDFLAG(IS_WIN)
+}
 
 void GpuInitLegacy::set_sandbox_helper(GpuSandboxHelper* helper) {
   sandbox_helper_ = helper;
@@ -1005,6 +1017,7 @@ bool GpuInitLegacy::InitializeAndStartSandbox(
     Microsoft::WRL::ComPtr<ID3D11Device> d3d11_device;
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> d3d12_command_queue;
     gl::SolidColorPoolFactory solid_color_factory;
+#if BUILDFLAG(USE_DAWN)
     if (dawn_context_provider_) {
       d3d11_device = dawn_context_provider_->GetD3D11Device();
       d3d12_command_queue = dawn_context_provider_->GetD3D12CommandQueue();
@@ -1018,7 +1031,9 @@ bool GpuInitLegacy::InitializeAndStartSandbox(
             dawn_context_provider_->GetDevice(), d3d12_command_queue);
       }
 #endif  // BUILDFLAG(SKIA_USE_DAWN)
-    } else {
+    } else
+#endif
+    {
       d3d11_device = gl::QueryD3D11DeviceObjectFromANGLE();
     }
     if (!solid_color_factory) {
@@ -1198,6 +1213,12 @@ void GpuInitLegacy::InitializeInProcess(base::CommandLine* command_line,
   }
 
   if (!gl_disabled) {
+    if (!CollectGpuExtraInfo(&gpu_extra_info_, gpu_preferences)) {
+      VLOG(1) << "gpu::CollectGpuExtraInfo failed";
+    }
+  }
+
+  if (!gl_disabled) {
     if (!gpu_feature_info_.disabled_extensions.empty()) {
       gl::init::SetDisabledExtensionsPlatform(
           gpu_feature_info_.disabled_extensions);
@@ -1274,7 +1295,21 @@ void GpuInitLegacy::InitializeInProcess(base::CommandLine* command_line,
                                          gpu_info_, command_line)) {
     LOG(FATAL) << "All gr_context_type fallbacks exhausted";
   }
+#if BUILDFLAG(IS_QTWEBENGINE)
+  gpu_info_.gl_implementation_parts = gl::GetGLImplementationParts();
+  if (gpu_feature_info_.status_values[GPU_FEATURE_TYPE_VULKAN] !=
+          kGpuFeatureStatusEnabled ||
+      !InitializeVulkan()) {
+    VLOG(1) << "Vulkan disabled or failed to initialize";
+    gpu_preferences_.use_vulkan = VulkanImplementationName::kNone;
+    gpu_feature_info_.status_values[GPU_FEATURE_TYPE_VULKAN] =
+        kGpuFeatureStatusDisabled;
+    if (gpu_preferences.gr_context_type == GrContextType::kVulkan)
+      gpu_preferences_.gr_context_type = GrContextType::kGL;
+  }
+#else
   DisableInProcessGpuVulkan(&gpu_feature_info_, &gpu_preferences_);
+#endif
 #endif  // BUILDFLAG(IS_ANDROID)
 
   InitializeDawnProcs();

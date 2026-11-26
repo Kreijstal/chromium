@@ -53,7 +53,7 @@
 #include "ui/gfx/geometry/size_conversions.h"
 #include "ui/gfx/skia_span_util.h"
 
-#if BUILDFLAG(ENABLE_DAV1D_DECODER)
+#if BUILDFLAG(ENABLE_DAV1D_DECODER) && defined(BLINK_CRABBYAVIF)
 #include "third_party/blink/renderer/platform/image-decoders/avif/avif_image_decoder.h"
 #endif
 
@@ -215,7 +215,7 @@ String SniffMimeTypeInternal(scoped_refptr<SegmentReader> reader,
   if (MatchesBMPSignature(contents)) {
     return "image/bmp";
   }
-#if BUILDFLAG(ENABLE_DAV1D_DECODER)
+#if BUILDFLAG(ENABLE_DAV1D_DECODER) && defined(BLINK_CRABBYAVIF)
   if (AVIFImageDecoder::MatchesAVIFSignature(fast_reader)) {
     return "image/avif";
   }
@@ -347,7 +347,7 @@ std::unique_ptr<ImageDecoder> ImageDecoder::CreateByMimeType(
     decoder =
         CreateBmpImageDecoder(alpha_option, high_bit_depth_decoding_option,
                               color_behavior, max_decoded_bytes);
-#if BUILDFLAG(ENABLE_DAV1D_DECODER)
+#if BUILDFLAG(ENABLE_DAV1D_DECODER) && defined(BLINK_CRABBYAVIF)
   } else if (mime_type == "image/avif") {
     decoder = std::make_unique<AVIFImageDecoder>(
         alpha_option, high_bit_depth_decoding_option, color_behavior, aux_image,

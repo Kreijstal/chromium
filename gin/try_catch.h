@@ -9,7 +9,7 @@
 
 #include "base/memory/stack_allocated.h"
 #include "gin/gin_export.h"
-#include "v8/include/v8-exception.h"
+#include "v8-exception.h"
 
 namespace gin {
 

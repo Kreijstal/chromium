@@ -13,7 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "gin/gin_export.h"
 #include "gin/wrappable.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace gin {
 

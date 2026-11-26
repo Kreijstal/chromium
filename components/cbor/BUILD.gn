@@ -4,11 +4,15 @@
 
 import("//build/buildflag_header.gni")
 import("//build/config/cronet/config.gni")
+import("//build/config/rust.gni")
 import("//testing/libfuzzer/fuzzer_test.gni")
 
 if (is_ios) {
   import("//build/config/ios/bundle_data_from_filelist.gni")
 }
+
+# The Rust parser needs Crubit; without it use the C++ one (as Cronet does).
+_use_cbor_rust = !is_cronet_build && enable_cpp_api_from_rust
 
 buildflag_header("buildflags") {
   header = "cbor_buildflags.h"
@@ -16,7 +20,7 @@ buildflag_header("buildflags") {
   # TODO(crbug.com/535682335): Remove `USE_CBOR_RUST` buildflag entirely,
   # unconditionally enable Rust CBOR parser, and drop `is_cronet_build` check
   # once Cronet supports Crubit dependencies.
-  flags = [ "USE_CBOR_RUST=!$is_cronet_build" ]
+  flags = [ "USE_CBOR_RUST=$_use_cbor_rust" ]
 }
 
 source_set("cbor_headers") {
@@ -52,7 +56,7 @@ source_set("cbor_rust_impl") {
     "//base",
   ]
 
-  if (!is_cronet_build) {
+  if (_use_cbor_rust) {
     deps += [
       "//build/rust/crubit",
       "//components/cbor/rust:cbor_rust_bindings",
@@ -95,7 +99,7 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/fuzztest",
   ]
-  if (!is_cronet_build) {
+  if (_use_cbor_rust) {
     deps += [ "//components/cbor/rust:cbor_rust_unittests" ]
   }
   if (is_ios) {

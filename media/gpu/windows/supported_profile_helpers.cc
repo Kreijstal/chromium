@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 #include "base/trace_event/trace_event.h"
 #include "base/win/windows_version.h"
 #include "media/base/media_switches.h"
@@ -90,6 +91,7 @@ class D3D11VideoDeviceWrapper : public D3DVideoDeviceWrapper {
   ComD3D11VideoDevice1 video_device_;
 };
 
+#if !BUILDFLAG(IS_MINGW)
 class D3D12VideoDeviceWrapper : public D3DVideoDeviceWrapper {
  public:
   explicit D3D12VideoDeviceWrapper(ComD3D12VideoDevice video_device)
@@ -164,6 +166,7 @@ class D3D12VideoDeviceWrapper : public D3DVideoDeviceWrapper {
  private:
   ComD3D12VideoDevice video_device_;
 };
+#endif
 
 // TODO(dalecurtis): These values are too low. We should only be using
 // hardware decode for videos above ~360p, see http://crbug.com/684792.
@@ -495,7 +498,9 @@ SupportedResolutionRangeMap GetSupportedD3DVideoDecoderResolutions(
         }
         continue;
       }
-
+#if BUILDFLAG(IS_MINGW)
+  return GetSupportedD3DVideoDecoderResolutions(nullptr, workarounds);
+#else
       // For range extensions only test main10_444 with Y410, and apply
       // the same resolution range to other formats to reduce profile
       // enumeration time for decoders. The selection of main10 444 is due to
@@ -504,6 +509,7 @@ SupportedResolutionRangeMap GetSupportedD3DVideoDecoderResolutions(
       // Ideally we should be also testing P016 for 12-bit 4:2:0, for example,
       // to get the precise resolution range of 12-bit 4:2:0. Same for other
       // range extension formats.
+#endif
       if (profile_id == DXVA_ModeHEVC_VLD_Main10_444 ||
           profile_id == DXVA_ModeHEVC_VLD_Main444_10_Intel) {
         // Intel private GUID reports the same capability as DXVA GUID, so
@@ -549,6 +555,9 @@ SupportedResolutionRangeMap GetSupportedD3D11VideoDecoderResolutions(
 SupportedResolutionRangeMap GetSupportedD3D12VideoDecoderResolutions(
     ComD3D12Device device,
     const gpu::GpuDriverBugWorkarounds& workarounds) {
+#if BUILDFLAG(IS_MINGW)
+  return {};
+#else
   ComD3D12VideoDevice video_device;
   std::unique_ptr<D3D12VideoDeviceWrapper> video_device_wrapper;
   if (device && SUCCEEDED(device.As(&video_device))) {
@@ -557,6 +566,7 @@ SupportedResolutionRangeMap GetSupportedD3D12VideoDecoderResolutions(
   }
   return GetSupportedD3DVideoDecoderResolutions(video_device_wrapper.get(),
                                                 workarounds);
+#endif
 }
 
 UINT GetGPUVendorID(ComDXGIDevice dxgi_device) {

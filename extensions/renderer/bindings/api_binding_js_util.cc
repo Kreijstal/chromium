@@ -20,8 +20,8 @@
 #include "gin/converter.h"
 #include "gin/dictionary.h"
 #include "gin/object_template_builder.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 namespace extensions {
 APIBindingJSUtil::APIBindingJSUtil(APITypeReferenceMap* type_refs,

@@ -11,7 +11,7 @@
 #include "third_party/blink/renderer/platform/bindings/v8_per_context_data.h"
 #include "third_party/blink/renderer/platform/context_lifecycle_observer.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
-#include "v8/include/v8-context.h"
+#include "v8-context.h"
 
 namespace blink {
 

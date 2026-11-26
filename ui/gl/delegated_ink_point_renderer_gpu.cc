@@ -63,6 +63,7 @@ void DelegatedInkPointRendererGpu::InitMessagePipeline(
 bool DelegatedInkPointRendererGpu::Initialize(
     IDCompositionDevice2* dcomp_device2,
     IDXGISwapChain1* root_swap_chain) {
+#if !defined(COMPILER_GCC)
   if (swap_chain_ == root_swap_chain && delegated_ink_trail_) {
     return true;
   }
@@ -89,6 +90,9 @@ bool DelegatedInkPointRendererGpu::Initialize(
   force_new_ink_trail_ = true;
 
   return true;
+#else
+  return false;
+#endif
 }
 
 bool DelegatedInkPointRendererGpu::DelegatedInkIsSupported(
@@ -99,9 +103,13 @@ bool DelegatedInkPointRendererGpu::DelegatedInkIsSupported(
     return false;
   }
 
+#if !defined(COMPILER_GCC)
   Microsoft::WRL::ComPtr<IDCompositionInkTrailDevice> ink_trail_device;
   HRESULT hr = dcomp_device.As(&ink_trail_device);
   return hr == S_OK;
+#else
+  return false;
+#endif
 }
 
 uint64_t DelegatedInkPointRendererGpu::GetMaximumNumberOfPointerIdsForTesting()
@@ -165,6 +173,7 @@ void DelegatedInkPointRendererGpu::ReportPointsDrawn() {
 
 void DelegatedInkPointRendererGpu::SetDelegatedInkTrailStartPoint(
     std::unique_ptr<gfx::DelegatedInkMetadata> metadata) {
+#if !defined(COMPILER_GCC)
   TRACE_EVENT("delegated_ink_trails",
               "DelegatedInkPointRendererGpu::SetDelegatedInkTrailStartPoint",
               perfetto::TerminatingFlow::Global(metadata->trace_id()),
@@ -253,6 +262,7 @@ void DelegatedInkPointRendererGpu::SetDelegatedInkTrailStartPoint(
   metadata_ = std::move(metadata);
   DrawSavedTrailPoints();
   force_new_ink_trail_ = false;
+#endif
 }
 
 void DelegatedInkPointRendererGpu::StoreDelegatedInkPoint(
@@ -477,8 +487,10 @@ DelegatedInkPointRendererGpu::MakeDelegatedInkOverlay(
       0, 0, presentation_rect.right(), presentation_rect.bottom());
   ink_layer.transform = gfx::Transform::MakeTranslation(
       metadata->presentation_area().OffsetFromOrigin());
+#if !defined(COMPILER_GCC)
   ink_layer.overlay_image = DCLayerOverlayImage(presentation_area_enclosed_size,
                                                 delegated_ink_trail_);
+#endif
   ink_layer.layer_id = gfx::OverlayLayerId::MakeVizInternal(
       gfx::OverlayLayerId::VizInternalId::kDelegatedInkTrail);
   SetDelegatedInkTrailStartPoint(std::move(metadata));
@@ -498,6 +510,9 @@ bool DelegatedInkPointRendererGpu::DrawDelegatedInkPoint(
     return false;
   }
 
+#if defined(COMPILER_GCC)
+  return false;
+#else
   DCHECK(delegated_ink_trail_);
 
   DCompositionInkTrailPoint ink_point;
@@ -536,6 +551,7 @@ bool DelegatedInkPointRendererGpu::DrawDelegatedInkPoint(
   }
   delegated_ink_points_[point.pointer_id()][point] = token;
   return true;
+#endif
 }
 
 void DelegatedInkPointRendererGpu::InitializeForTesting(

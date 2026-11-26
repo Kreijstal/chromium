@@ -314,6 +314,7 @@ static bool GetDeviceNamesWinImpl(
     device.unique_id =
         base::WideToUTF8(static_cast<WCHAR*>(endpoint_device_id));
 
+#if !defined(COMPILER_GCC) // FIXME: missing Microsoft::WRL::ComPtr<IPropertyStore>
     // Retrieve user-friendly name of endpoint device.
     // Example: "Microphone (Realtek High Definition Audio)".
     Microsoft::WRL::ComPtr<IPropertyStore> properties;
@@ -324,6 +325,7 @@ static bool GetDeviceNamesWinImpl(
       had_error = true;
       continue;
     }
+#endif
 
     ScopedPropVariant friendly_name;
     hr =

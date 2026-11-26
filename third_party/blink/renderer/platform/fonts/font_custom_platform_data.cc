@@ -48,7 +48,7 @@
 #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
 #include "third_party/skia/include/core/SkTypeface.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace {
 

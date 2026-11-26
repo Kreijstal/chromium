@@ -349,6 +349,13 @@ source_set("common") {
   if (is_chromeos || is_android || is_win || is_castos || is_fuchsia) {
     defines = [ "ENABLE_PROTECTED_MEDIA_IDENTIFIER_PERMISSION" ]
   }
+
+  if (!enable_rust) {
+    defines += [ "BLINK_COMMON_NO_RUST" ]
+    deps -= [
+      "//third_party/blink/common/rust_crash",
+    ]
+  }
 }
 
 test("blink_common_unittests") {

@@ -9,7 +9,7 @@
 #include "third_party/blink/public/mojom/call_stack_generator/call_stack_generator.mojom-blink.h"
 #include "third_party/blink/renderer/controller/controller_export.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

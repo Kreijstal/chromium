@@ -25,12 +25,13 @@
 #include "media/gpu/windows/scoped_d3d_buffers.h"
 #include "media/gpu/windows/supported_profile_helpers.h"
 
-#define RETURN_IF_FAILED(message, status_code, hr)                          \
-  do {                                                                      \
-    if (FAILED(hr)) {                                                       \
-      media_log_->NotifyError<D3DStatusTraits>({status_code, message, hr}); \
-      return false;                                                         \
-    }                                                                       \
+#define RETURN_IF_FAILED(message, status_code, hr)                         \
+  do {                                                                     \
+    if (FAILED(hr)) {                                                      \
+      media_log_->NotifyError<D3DStatusTraits>(                            \
+          D3DStatus(status_code, message, hr));                            \
+      return false;                                                        \
+    }                                                                      \
   } while (0)
 
 #define STATIC_RETURN_IF_FAILED(hr, message)       \

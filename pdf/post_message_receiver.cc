@@ -23,9 +23,9 @@
 #include "gin/public/wrapper_info.h"
 #include "gin/wrappable.h"
 #include "pdf/v8_value_converter.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8.h"
 
 namespace chrome_pdf {
 

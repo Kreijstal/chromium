@@ -38,7 +38,7 @@ component("system_media_controls") {
 
   public_deps = [ "//skia" ]
 
-  if (is_win) {
+  if (is_msvc) {
     sources = [
       "win/system_media_controls_win.cc",
       "win/system_media_controls_win.h",

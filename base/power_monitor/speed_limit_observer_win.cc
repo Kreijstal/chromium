@@ -24,7 +24,9 @@
 namespace {
 
 // From ntdef.f
+#ifndef NT_SUCCESS
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+#endif
 
 // We poll for new speed-limit values once every second.
 constexpr base::TimeDelta kSampleInterval = base::Seconds(1);

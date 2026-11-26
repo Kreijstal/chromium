@@ -21,7 +21,7 @@ TtsPlatform* TtsPlatform::GetInstance() {
     return result;
 #endif
 
-#if BUILDFLAG(IS_CHROMEOS)
+#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MINGW)
   // On Chrome OS, the platform TTS definition is provided by the content
   // client.
   //

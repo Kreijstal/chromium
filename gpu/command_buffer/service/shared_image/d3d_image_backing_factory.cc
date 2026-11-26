@@ -468,6 +468,7 @@ bool D3DImageBackingFactory::IsD3DSharedImageSupported(
 bool D3DImageBackingFactory::IsSwapChainSupported(
     const GpuPreferences& gpu_preferences,
     DawnContextProvider* dawn_context_provider /*=nullptr*/) {
+#if BUILDFLAG(SKIA_USE_DAWN)
   if (gpu_preferences.gr_context_type == GrContextType::kGraphiteDawn) {
     // This is only supported if graphite and ANGLE share the same D3D11 device.
     CHECK(dawn_context_provider);
@@ -477,6 +478,7 @@ bool D3DImageBackingFactory::IsSwapChainSupported(
       return false;
     }
   }
+#endif
 
   return gl::DirectCompositionSupported() &&
          gl::DXGISwapChainTearingSupported();
@@ -725,16 +727,24 @@ std::unique_ptr<SharedImageBacking> D3DImageBackingFactory::CreateSharedImage(
                                              SHARED_IMAGE_USAGE_WEBGPU_WRITE);
   const bool has_gl_usage = HasGLES2ReadOrWriteUsage(usage);
   const bool want_dcomp_texture =
+#if BUILDFLAG(IS_QTWEBENGINE)
+      false;
+#else
       usage.Has(SHARED_IMAGE_USAGE_SCANOUT) &&
       IsFormatSupportedForDCompTexture(desc.Format) &&
       IsColorSpaceSupportedForDCompTexture(
           gfx::ColorSpaceWin::GetDXGIColorSpace(color_space));
+#endif
   // TODO(crbug.com/40204134): Look into using DXGI handle when MF VEA is used.
   const bool needs_cross_device_synchronization =
       has_webgpu_usage ||
       (has_gl_usage && (d3d11_device_ != angle_d3d11_device_));
   const bool needs_shared_handle =
+#if BUILDFLAG(IS_QTWEBENGINE)
+      true;
+#else
       needs_cross_device_synchronization || want_dcomp_texture;
+#endif
   if (needs_shared_handle) {
     // TODO(crbug.com/40068319): Many texture formats cannot be shared on old
     // GPUs/drivers to try to detect that and implement a fallback path or
@@ -1119,12 +1129,11 @@ bool D3DImageBackingFactory::IsSupported(SharedImageUsageSet usage,
     return false;
   }
 
+#if !BUILDFLAG(IS_QTWEBENGINE)
   const bool is_scanout = usage.Has(gpu::SHARED_IMAGE_USAGE_SCANOUT);
   const bool is_video_decode = usage.Has(gpu::SHARED_IMAGE_USAGE_VIDEO_DECODE);
   const bool is_concurrent_read_write =
       usage.Has(gpu::SHARED_IMAGE_USAGE_CONCURRENT_READ_WRITE);
-  const bool is_buffer =
-      usage.Has(gpu::SHARED_IMAGE_USAGE_WEBGPU_SHARED_BUFFER);
   if (is_scanout) {
     if (is_video_decode || gmb_type == gfx::DXGI_SHARED_HANDLE ||
         is_concurrent_read_write) {
@@ -1159,6 +1168,9 @@ bool D3DImageBackingFactory::IsSupported(SharedImageUsageSet usage,
 
     return true;
   }
+#endif
+  const bool is_buffer =
+      usage.Has(gpu::SHARED_IMAGE_USAGE_WEBGPU_SHARED_BUFFER);
 
   if (gmb_type == gfx::EMPTY_BUFFER) {
     if (ToDXGIFormat(format) == DXGI_FORMAT_UNKNOWN && !is_buffer) {

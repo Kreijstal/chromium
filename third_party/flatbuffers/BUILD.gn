@@ -3,6 +3,7 @@
 # found in the LICENSE file.
 
 import("//testing/test.gni")
+import("//build/config/qtwebengine_private_paths.gni")
 import("//third_party/flatbuffers/flatbuffer.gni")
 
 config("flatbuffers_config") {
@@ -141,13 +142,20 @@ source_set("compiler_files") {
   deps = [ ":flatbuffers" ]
 }
 
-executable("flatc") {
-  sources = [ "src/src/flatc_main.cpp" ]
-  configs += [ ":flatbuffers_warnings" ]
-  deps = [
-    ":compiler_files",
-    ":flatbuffers",
-  ]
+if (qtwebengine_private_tool_dir != "") {
+  copy("flatc") {
+    sources = [ qtwebengine_private_tool_dir + "/../../../bin/flatc.exe" ]
+    outputs = [ "$root_out_dir/flatc.exe" ]
+  }
+} else {
+  executable("flatc") {
+    sources = [ "src/src/flatc_main.cpp" ]
+    configs += [ ":flatbuffers_warnings" ]
+    deps = [
+      ":compiler_files",
+      ":flatbuffers",
+    ]
+  }
 }
 
 # The following is just for testing.

@@ -1,0 +1,4 @@
+declare_args() {
+  qtwebengine_private_chromium_include_dir = ""
+  qtwebengine_private_tool_dir = ""
+}

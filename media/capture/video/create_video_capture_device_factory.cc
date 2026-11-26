@@ -23,7 +23,7 @@
 #include "media/capture/video/chromeos/public/cros_features.h"
 #include "media/capture/video/chromeos/video_capture_device_factory_chromeos.h"
 #include "media/capture/video/linux/video_capture_device_factory_linux.h"
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
 #include "media/capture/video/win/video_capture_device_factory_win.h"
 #elif BUILDFLAG(IS_APPLE)
 #include "media/capture/video/apple/video_capture_device_factory_apple.h"
@@ -70,7 +70,7 @@ CreatePlatformSpecificVideoCaptureDeviceFactory(
   if (base::SysInfo::IsRunningOnChromeOS())
     return std::make_unique<VideoCaptureDeviceFactoryChromeOS>(ui_task_runner);
   return std::make_unique<VideoCaptureDeviceFactoryLinux>(ui_task_runner);
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   return std::make_unique<VideoCaptureDeviceFactoryWin>();
 #elif BUILDFLAG(IS_APPLE)
 #if BUILDFLAG(IS_IOS_TVOS)

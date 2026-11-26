@@ -177,7 +177,7 @@ config("sqlite_warnings") {
       "-Wno-#warnings",
     ]
   }
-  if (is_win && !is_clang) {
+  if (is_msvc && !is_clang) {
     cflags += [ "/wd4101" ]  # 'zTrace' unreferenced variable in src/src/vdbe.c
   }
 }

@@ -19,7 +19,7 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_bundled_code_cache_generator.h"
 #include "tools/v8_context_snapshot/buildflags.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace {
 

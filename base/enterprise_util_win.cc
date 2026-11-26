@@ -20,8 +20,12 @@ bool IsManagedDevice() {
   // they are managed.
   // In addition, simply being joined to AAD does not mean the device is being
   // managed by the AAD tenant, so checking for AAD join is not included here.
+#if defined(COMPILER_MSVC)
   return base::win::IsEnrolledToDomain() ||
          base::win::IsDeviceRegisteredWithManagement();
+#else
+  return base::win::IsEnrolledToDomain();
+#endif
 }
 
 bool IsEnterpriseDevice() {
@@ -30,7 +34,11 @@ bool IsEnterpriseDevice() {
   }
   // Both legacy domain join and AAD join represent machine-wide enterprise
   // join.
+#if defined(COMPILER_MSVC)
   return base::win::IsEnrolledToDomain() || base::win::IsJoinedToAzureAD();
+#else
+  return base::win::IsEnrolledToDomain();
+#endif
 }
 
 AutoReset<bool> SetIsEnterpriseDeviceForTesting(bool is_enterprise) {

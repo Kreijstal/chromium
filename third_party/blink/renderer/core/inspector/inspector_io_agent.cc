@@ -6,7 +6,7 @@
 
 #include "third_party/blink/renderer/bindings/core/v8/v8_blob.h"
 #include "third_party/blink/renderer/core/fileapi/blob.h"
-#include "v8/include/v8-inspector.h"
+#include "v8-inspector.h"
 
 namespace blink {
 

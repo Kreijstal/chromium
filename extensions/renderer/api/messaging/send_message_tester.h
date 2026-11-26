@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "extensions/common/api/messaging/signing_certificate.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 class ScriptContext;

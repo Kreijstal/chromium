@@ -150,12 +150,13 @@ import("//build_overrides/protobuf.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/cronet/config.gni")
 import("//build/config/sanitizers/sanitizers.gni")
+import("//build/config/qtwebengine_private_paths.gni")
 import("//build/toolchain/kythe.gni")
 
 declare_args() {
   # Allows subprojects to omit javascript dependencies (e.g.) closure_compiler
   # and google-closure-library.
-  enable_js_protobuf = !is_cronet_build
+  enable_js_protobuf = false
 }
 
 declare_args() {
@@ -325,7 +326,7 @@ template("proto_library") {
   _generate_javascript = defined(invoker.generate_javascript) &&
                          invoker.generate_javascript && enable_js_protobuf
   _generate_typescript = defined(invoker.generate_typescript) &&
-                         invoker.generate_typescript && enable_js_protobuf
+                         invoker.generate_typescript
   _generate_with_plugin = defined(invoker.generator_plugin_label) ||
                           defined(invoker.generator_plugin_script)
 
@@ -606,7 +607,9 @@ template("proto_library") {
                   _protoc_gen_ts_path,
                   "//tools/protoc_wrapper/protoc-gen-ts_proto.py",
                 ] + _protoc_gen_ts_runtime_deps
-      deps += [ "//third_party/node:check_version" ]
+      if (!is_mingw) {
+        deps += [ "//third_party/node:check_version" ]
+      }
     }
 
     if (_generate_with_plugin) {
@@ -796,7 +799,7 @@ template("proto_library") {
           public_deps += [ "$_this_dir:protobuf_lite" ]
         }
 
-        if (is_win) {
+        if (is_msvc) {
           cflags = [
             # disable: C4125 decimal digit terminates octal escape sequence
             # Protoc generates such sequences frequently, there's no obvious

@@ -31,7 +31,7 @@ extern "C" void* __libc_stack_end;  // NOLINT
 
 namespace blink {
 
-#if BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC) && !defined(ADDRESS_SANITIZER)
+#if BUILDFLAG(IS_WIN) && !defined(ADDRESS_SANITIZER)
 namespace {
 
 size_t ThreadStackSize() {
@@ -135,7 +135,7 @@ size_t GetUnderestimatedStackSize() {
 #endif
   }
   return pthread_get_stacksize_np(pthread_self());
-#elif BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC)
+#elif BUILDFLAG(IS_WIN)
   thread_local size_t thread_stack_size = 0;
   if (!thread_stack_size) {
     thread_stack_size = ThreadStackSize();
@@ -187,7 +187,7 @@ void* GetStackStartImpl() {
 #endif
 #elif BUILDFLAG(IS_APPLE)
   return pthread_get_stackaddr_np(pthread_self());
-#elif BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC)
+#elif BUILDFLAG(IS_WIN)
 // On Windows stack limits for the current thread are available in
 // the thread information block (TIB).
 // On Windows ARM64, stack limits could be retrieved by calling

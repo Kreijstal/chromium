@@ -41,10 +41,12 @@
 #include "third_party/perfetto/protos/perfetto/trace/track_event/chrome_window_handle_event_info.pbzero.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/accessibility/accessibility_features.h"
-#include "ui/accessibility/platform/ax_fragment_root_win.h"
 #include "ui/accessibility/platform/ax_platform.h"
+#if !defined(__MINGW32__)
+#include "ui/accessibility/platform/ax_fragment_root_win.h"
 #include "ui/accessibility/platform/ax_platform_node_win.h"
 #include "ui/accessibility/platform/ax_system_caret_win.h"
+#endif
 #include "ui/base/ime/text_input_client.h"
 #include "ui/base/ime/text_input_type.h"
 #include "ui/base/mojom/window_show_state.mojom.h"
@@ -86,6 +88,28 @@
 #include "ui/views/win/hwnd_util.h"
 #include "ui/views/win/pen_event_handler_util.h"
 #include "ui/views/win/scoped_fullscreen_visibility.h"
+
+#if defined(__MINGW32__)
+// No ATL: native accessibility is off, so these are inert stand-ins.
+#include <oleacc.h>
+#include <uiautomation.h>
+#include <wrl/client.h>
+namespace ui {
+class AXSystemCaretWin {
+ public:
+  explicit AXSystemCaretWin(HWND) {}
+  void Hide() {}
+  void MoveCaretTo(const gfx::Rect&) {}
+  Microsoft::WRL::ComPtr<IAccessible> GetCaret() { return nullptr; }
+};
+class AXFragmentRootWin {
+ public:
+  AXFragmentRootWin(HWND, AXFragmentRootDelegateWin*) {}
+  IRawElementProviderSimple* GetProvider() { return nullptr; }
+  gfx::NativeViewAccessible GetNativeViewAccessible() { return nullptr; }
+};
+}  // namespace ui
+#endif
 
 namespace views {
 namespace {
@@ -1652,9 +1676,11 @@ void HWNDMessageHandler::InitExtras() {
   // then ask element B for its fragment root, without having sent WM_GETOBJECT
   // to element B's window.
   // So we create the fragment root now to ensure it's ready if asked for.
+#if !defined(__MINGW32__)
   if (::ui::AXPlatform::GetInstance().IsUiaProviderEnabled()) {
     ax_fragment_root_ = std::make_unique<ui::AXFragmentRootWin>(hwnd(), this);
   }
+#endif
 
   // Disable pen flicks (http://crbug.com/506977)
   base::win::DisableFlicks(hwnd());
@@ -2337,7 +2363,9 @@ LRESULT HWNDMessageHandler::OnGetObject(UINT message,
   switch (static_cast<LONG>(l_param)) {
     case UiaRootObjectId:
       ui::AXPlatform::GetInstance().SetUiaRequested();
-      if (ui::AXPlatform::GetInstance().IsUiaProviderEnabled()) {
+      // No fragment root on MinGW (no native accessibility).
+      if (ax_fragment_root_ &&
+          ui::AXPlatform::GetInstance().IsUiaProviderEnabled()) {
         // Return the IRawElementProviderSimple for the window's client area to
         // a UI Automation client.
         Microsoft::WRL::ComPtr<IRawElementProviderSimple> root;

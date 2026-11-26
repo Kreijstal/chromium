@@ -69,7 +69,7 @@
 #include "third_party/blink/renderer/platform/wtf/allocator/partitions.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if defined(USE_BLINK_EXTENSIONS_WEBVIEW)
 #include "third_party/blink/renderer/extensions/webview/webview_extensions.h"

@@ -35,7 +35,7 @@
 #include "third_party/blink/public/platform/modules/service_worker/web_service_worker_error.h"
 #include "third_party/blink/renderer/bindings/core/v8/idl_types.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

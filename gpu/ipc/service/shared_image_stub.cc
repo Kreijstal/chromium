@@ -32,7 +32,7 @@
 #include "ui/gfx/native_pixmap_handle.h"
 #include "ui/gl/gl_context.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "ui/gfx/win/d3d_shared_fence.h"
 #endif
 
@@ -197,7 +197,7 @@ void SharedImageStub::ExecuteDeferredRequest(
           std::move(request->get_destroy_shared_image_pool()));
       break;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
     case mojom::DeferredSharedImageRequest::Tag::kRegisterDxgiFence: {
       auto& reg = *request->get_register_dxgi_fence();
       OnRegisterDxgiFence(reg.mailbox, reg.dxgi_token,
@@ -214,7 +214,7 @@ void SharedImageStub::ExecuteDeferredRequest(
       OnUnregisterDxgiFence(unregister.mailbox, unregister.dxgi_token);
       break;
     }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
   }
 }
 
@@ -437,7 +437,7 @@ void SharedImageStub::OnDestroySharedImage(const Mailbox& mailbox) {
     return;
   }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   registered_dxgi_fences_.erase(mailbox);
 #endif
 }
@@ -455,7 +455,7 @@ void SharedImageStub::OnCopyToGpuMemoryBuffer(const Mailbox& mailbox) {
   }
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void SharedImageStub::CopyToGpuMemoryBufferAsync(
     const Mailbox& mailbox,
     base::OnceCallback<void(bool)> callback) {
@@ -557,7 +557,7 @@ void SharedImageStub::OnUnregisterDxgiFence(const Mailbox& mailbox,
   }
 }
 
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(IS_FUCHSIA)
 void SharedImageStub::RegisterSysmemBufferCollection(

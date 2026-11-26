@@ -5,6 +5,8 @@
 #ifndef UI_GL_DELEGATED_INK_POINT_RENDERER_GPU_H_
 #define UI_GL_DELEGATED_INK_POINT_RENDERER_GPU_H_
 
+#include <windows.h>
+
 #include <dcomp.h>
 #include <wrl/client.h>
 
@@ -124,15 +126,19 @@ class GL_EXPORT DelegatedInkPointRendererGpu
 
   bool DrawDelegatedInkPoint(const gfx::DelegatedInkPoint& point);
 
+#if !defined(COMPILER_GCC) /* FIXME: missing IDCompositionDelegatedInkTrail from wrl/client.h */
   // The delegated ink trail object that the ink trail is drawn on. This is the
   // content of the ink visual.
   Microsoft::WRL::ComPtr<IDCompositionDelegatedInkTrail> delegated_ink_trail_;
+#endif
 
   // The swap chain whose updates |delegated_ink_trail_| is synchronized with.
   // If null, |delegated_ink_trail_| is synchronized with DComp commit.
   raw_ptr<IDXGISwapChain1> swap_chain_ = nullptr;
 
+#if !defined(COMPILER_GCC) /* FIXME: missing IDCompositionInkTrailDevice from wrl/client.h */
   Microsoft::WRL::ComPtr<IDCompositionInkTrailDevice> ink_trail_device_;
+#endif
 
   // The most recent metadata received. The metadata marks the last point of
   // the app rendered stroke, which corresponds to the first point of the

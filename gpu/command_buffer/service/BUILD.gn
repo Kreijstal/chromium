@@ -101,10 +101,12 @@ if (is_win) {
   config("service_win_linker_flags") {
     # This is in a separate config so the flags can be applied to dependents.
     # ldflags in GN aren't automatically inherited.
-    ldflags = [
-      # Linking with OneCore.lib causes the following dlls to load.
-      "/DELAYLOAD:api-ms-win-core-handle-l1-1-0.dll",
-    ]
+    if (is_msvc) {
+      ldflags = [
+        # Linking with OneCore.lib causes the following dlls to load.
+        "/DELAYLOAD:api-ms-win-core-handle-l1-1-0.dll",
+      ]
+    }
   }
 }
 
@@ -362,7 +364,9 @@ target(link_target_type, "gles2_sources") {
 
   # This target pulls in angle headers that can't be built with this
   # warning active: crbug.com/430317494
-  cflags_cc = [ "-Wno-thread-safety" ]
+  if (!is_msvc) {
+    cflags_cc = [ "-Wno-thread-safety" ]
+  }
 
   public_deps = [
     "//base",
@@ -628,7 +632,24 @@ target(link_target_type, "gles2_sources") {
     }
   }
 
-  if (is_win) {
+  if (is_mingw) {
+    sources += [
+      "dxgi_shared_handle_manager.cc",
+      "dxgi_shared_handle_manager.h",
+      "shared_image/d3d_image_backing.cc",
+      "shared_image/d3d_image_backing.h",
+      "shared_image/d3d_image_backing_factory.cc",
+      "shared_image/d3d_image_backing_factory.h",
+      "shared_image/d3d_image_representation.cc",
+      "shared_image/d3d_image_representation.h",
+      "shared_image/d3d_image_utils.cc",
+      "shared_image/d3d_image_utils.h",
+    ]
+    libs = [ "d3d12", "dxguid", "onecore" ]
+    all_dependent_configs = [ ":service_win_linker_flags" ]
+  }
+
+  if (is_msvc) {
     sources += [
       "dxgi_shared_handle_manager.cc",
       "dxgi_shared_handle_manager.h",

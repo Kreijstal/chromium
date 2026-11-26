@@ -28,7 +28,7 @@
 #include "gpu/command_buffer/service/shared_image/shared_image_representation.h"
 #include "ui/gl/trace_util.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "gpu/command_buffer/service/dxgi_shared_handle_manager.h"
 #include "ui/gfx/win/d3d_shared_fence.h"
 #include "ui/gl/direct_composition_support.h"
@@ -98,7 +98,7 @@ SharedImageManager::SharedImageManager(
     VulkanContextProvider* vulkan_context_provider,
     scoped_refptr<base::SingleThreadTaskRunner> io_runner)
     : display_context_on_another_thread_(display_context_on_another_thread)
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
       ,
       dxgi_shared_handle_manager_(
           base::MakeRefCounted<DXGISharedHandleManager>())
@@ -480,7 +480,7 @@ SharedImageManager::ProduceLegacyOverlay(const Mailbox& mailbox,
 }
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void SharedImageManager::UpdateExternalFence(
     const Mailbox& mailbox,
     scoped_refptr<gfx::D3DSharedFence> external_fence) {
@@ -636,7 +636,7 @@ bool SharedImageManager::SupportsScanoutImages() {
   return true;
 #elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
   return supports_overlays_on_ozone_;
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   return gl::DirectCompositionTextureSupported();
 #else
   return false;

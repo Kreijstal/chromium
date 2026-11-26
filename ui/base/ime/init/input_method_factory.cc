@@ -12,7 +12,7 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/gfx/switches.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "ui/base/ime/win/input_method_win_tsf.h"
 #elif BUILDFLAG(IS_APPLE)
 #include "ui/base/ime/mac/input_method_mac.h"
@@ -52,7 +52,7 @@ std::unique_ptr<InputMethod> CreateInputMethod(
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kHeadless))
     return base::WrapUnique(new MockInputMethod(ime_key_event_dispatcher));
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   return std::make_unique<InputMethodWinTSF>(ime_key_event_dispatcher, widget);
 #elif BUILDFLAG(IS_APPLE)
   return std::make_unique<InputMethodMac>(ime_key_event_dispatcher);

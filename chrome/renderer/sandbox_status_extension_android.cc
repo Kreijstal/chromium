@@ -24,7 +24,7 @@
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/platform/web_url_request.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 SandboxStatusExtension::SandboxStatusExtension(content::RenderFrame* frame)
     : content::RenderFrameObserver(frame) {

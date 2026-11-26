@@ -126,7 +126,11 @@ class GpuMojoMediaClientWin final : public GpuMojoMediaClient {
   std::unique_ptr<AudioDecoder> CreatePlatformAudioDecoder(
       scoped_refptr<base::SequencedTaskRunner> task_runner,
       std::unique_ptr<MediaLog> media_log) final {
+#if defined(COMPILER_MSVC)
     return MediaFoundationAudioDecoder::Create();
+#else
+    return nullptr;
+#endif
   }
 
   VideoDecoderType GetPlatformDecoderImplementationType() final {

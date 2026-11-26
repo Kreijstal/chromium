@@ -8,11 +8,11 @@
 #include "media/base/cdm_context.h"
 #include "media/cdm/cdm_helpers.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include <optional>
 
 #include "media/cdm/media_foundation_cdm_data.h"
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 namespace media {
 
@@ -61,7 +61,7 @@ void CdmAuxiliaryHelper::GetStorageId(uint32_t version, StorageIdCB callback) {
   std::move(callback).Run(version, std::vector<uint8_t>());
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void CdmAuxiliaryHelper::GetMediaFoundationCdmData(
     GetMediaFoundationCdmDataCB callback) {
   std::move(callback).Run(std::make_unique<MediaFoundationCdmData>(
@@ -74,6 +74,6 @@ void CdmAuxiliaryHelper::GetContentProtectionWindow(
     GetContentProtectionWindowCB callback) {
   std::move(callback).Run(0u);
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 }  // namespace media

@@ -9,8 +9,8 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/wrappable.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/prefinalizer.h"
+#include "cppgc/allocation.h"
+#include "cppgc/prefinalizer.h"
 
 namespace content {
 class RenderFrame;

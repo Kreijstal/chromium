@@ -21,7 +21,7 @@
 #include "base/synchronization/lock.h"
 #include "base/thread_annotations.h"
 #include "extensions/renderer/source_map.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace ui {
 class ResourceBundle;

@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/functional/callback.h"
+#include "components/tracing/common/background_tracing_state_manager.h"
 #endif  // BUILDFLAG(IS_WIN)
 
 namespace content {

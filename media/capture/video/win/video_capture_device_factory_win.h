@@ -163,7 +163,9 @@ class CAPTURE_EXPORT VideoCaptureDeviceFactoryWin
 
   class UsageReportHandler;
   scoped_refptr<UsageReportHandler> report_handler_;
+#if !defined(COMPILER_GCC) // FIXME: missing Microsoft::WRL::ComPtr<IMFSensorActivityMonitor>
   Microsoft::WRL::ComPtr<IMFSensorActivityMonitor> monitor_;
+#endif
 
   base::WeakPtrFactory<VideoCaptureDeviceFactoryWin> weak_ptr_factory_{this};
 };

@@ -31,7 +31,7 @@ namespace media {
 // instead of in Audio{Input,Output}Buffer to be able to calculate size like so.
 // Use a constexpr for the alignment value that's the same as
 // AudioBus::kChannelAlignment, since MSVC doesn't accept the latter to be used.
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #pragma warning(push)
 #pragma warning(disable : 4324)  // Disable warning for added padding.
 #endif
@@ -85,7 +85,7 @@ class MEDIA_EXPORT AudioOutputBufferParametersHelper {
   uint64_t previous_glitch_count_ = 0;
 };
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #pragma warning(pop)
 #endif
 

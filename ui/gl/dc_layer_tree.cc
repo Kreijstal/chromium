@@ -38,6 +38,7 @@ bool NeedSwapChainPresenter(const DCLayerOverlayParams& overlay) {
                                       DCLayerOverlayType::kDCompVisualContent;
 }
 
+#if !defined(COMPILER_GCC) // FIXME: missing Microsoft::WRL::ComPtr<IDCompositionVisual3>
 // Unconditionally get a IDCompositionVisual2 as a IDCompositionVisual3.
 //
 // |IDCompositionVisual3| should be available since Windows 8.1, but we noticed
@@ -74,6 +75,7 @@ D2D_MATRIX_4X4_F TransformToD2D_MATRIX_4X4_F(const gfx::Transform& transform) {
                           t.rc(0, 2), t.rc(1, 2), t.rc(2, 2), t.rc(3, 2),
                           t.rc(0, 3), t.rc(1, 3), t.rc(2, 3), t.rc(3, 3));
 }
+#endif
 
 #if DCHECK_IS_ON()
 bool VisualTreeValid(
@@ -218,6 +220,7 @@ void DCLayerTree::Initialize(
 
   hdr_metadata_helper_ = HDRMetadataHelperWin::Create();
 
+#if !defined(__MINGW32__)
   if (Microsoft::WRL::ComPtr<IDCompositionDevice5> dcomp_device5;
       SUCCEEDED(dcomp_device_.As(&dcomp_device5))) {
     hr = dcomp_device5->CreateDynamicTexture(&primary_plane_surface_);
@@ -226,6 +229,7 @@ void DCLayerTree::Initialize(
                    << logging::SystemErrorCodeToString(hr);
     }
   }
+#endif
 }
 
 base::expected<VideoProcessorWrapper*, CommitError>
@@ -524,6 +528,7 @@ bool DCLayerTree::VisualTree::VisualSubtree::Update(
     }
   }
 
+#if !defined(COMPILER_GCC)
   if (opacity_changed) {
     if (opacity_ != 1) {
       hr = CheckedCastToVisual3(clip_visual_.Get())->SetOpacity(opacity_);
@@ -540,6 +545,7 @@ bool DCLayerTree::VisualTree::VisualSubtree::Update(
       CHECK_EQ(hr, S_OK);
     }
   }
+#endif
 
   if (rounded_corner_bounds_changed) {
     if (!rounded_corner_bounds_.IsEmpty()) {
@@ -602,6 +608,7 @@ bool DCLayerTree::VisualTree::VisualSubtree::Update(
     }
   }
 
+#if !defined(COMPILER_GCC)
   if (quad_to_root_transform_changed) {
     if (quad_to_root_transform_.Is2dTransform()) {
       const D2D_MATRIX_3X2_F matrix =
@@ -616,6 +623,7 @@ bool DCLayerTree::VisualTree::VisualSubtree::Update(
       CHECK_EQ(hr, S_OK);
     }
   }
+#endif
 
   if (nearest_neighbor_filter_changed) {
     hr = transform_visual_->SetBitmapInterpolationMode(
@@ -686,6 +694,7 @@ bool DCLayerTree::VisualTree::VisualSubtree::Update(
     // update. No visual changes are needed in this case.
   }
 
+#if !defined(COMPILER_GCC)
   if (background_color_content_changed || background_color_changed) {
     if (!background_color_content_ || background_color.fA == 0.0) {
       // A fully transparent color is the same as no background fill.
@@ -701,6 +710,7 @@ bool DCLayerTree::VisualTree::VisualSubtree::Update(
       CHECK_EQ(hr, S_OK);
     }
   }
+#endif
 
   if (quad_rect_changed) {
     const bool needs_scale =
@@ -1486,8 +1496,10 @@ base::expected<void, CommitError> DCLayerTree::CommitAndClearPendingOverlays(
                                                           &damage_rect, 1);
           CHECK_EQ(hr, S_OK);
 
+          Microsoft::WRL::ComPtr<IUnknown> primary_plane_surface_unknown;
+          primary_plane_surface_.As(&primary_plane_surface_unknown);
           overlay.overlay_image = DCLayerOverlayImage(
-              overlay.overlay_image->size(), primary_plane_surface_,
+              overlay.overlay_image->size(), primary_plane_surface_unknown,
               primary_plane_surface_serial_++);
           did_update_primary_plane_damage = true;
         } else {

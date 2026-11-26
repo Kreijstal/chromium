@@ -32,7 +32,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_BINDINGS_CORE_V8_RETAINED_OBJECT_INFO_H_
 
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
-#include "v8/include/v8-profiler.h"
+#include "v8-profiler.h"
 
 namespace blink {
 

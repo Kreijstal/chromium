@@ -8,6 +8,7 @@ import("//chrome/process_version_rc_template.gni")
 import("//testing/test.gni")
 
 executable("notification_helper") {
+  if (is_msvc) {
   sources = [
     "notification_helper.cc",
     "notification_helper.rc",
@@ -36,6 +37,7 @@ executable("notification_helper") {
   ]
 
   libs = [ "runtimeobject.lib" ]
+  }
 }
 
 source_set("lib") {
@@ -71,6 +73,7 @@ process_version_rc_template("version_resources") {
 }
 
 test("notification_helper_unittests") {
+  if (is_msvc) {
   use_xvfb = use_xvfb_in_this_config
 
   sources = [
@@ -93,4 +96,5 @@ test("notification_helper_unittests") {
   data_deps = [ ":notification_helper" ]
 
   libs = [ "runtimeobject.lib" ]
+  }
 }

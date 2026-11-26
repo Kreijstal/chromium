@@ -13,7 +13,7 @@
 #include "extensions/renderer/bindings/api_binding_test.h"
 #include "extensions/renderer/bindings/api_binding_types.h"
 #include "extensions/renderer/bindings/api_request_handler.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class APIBindingsSystem;

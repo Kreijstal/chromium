@@ -64,8 +64,8 @@
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkPoint.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-context.h"
+#include "v8-local-handle.h"
 
 // GoogleTest expectation macros trigger a bug in IWYU:
 // https://github.com/include-what-you-use/include-what-you-use/issues/1546

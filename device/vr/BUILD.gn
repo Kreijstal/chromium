@@ -253,7 +253,7 @@ if (enable_vr) {
 
       if (is_win) {
         libs = [
-          "d3d11.lib",
+          "d3d11",
           "dxgi.lib",
         ]
 
@@ -389,8 +389,8 @@ if (enable_vr) {
       ]
 
       libs = [
-        "d3d11.lib",
-        "dxgi.lib",
+          "d3d11",
+          "dxgi.lib",
       ]
 
       deps = [ "//base" ]
@@ -499,8 +499,8 @@ if (enable_openxr) {
 
       if (is_win) {
         libs = [
-          "d3d11.lib",
-          "dxgi.lib",
+        "d3d11",
+        "dxgi.lib",
         ]
       } else if (is_linux) {
         # The mock's Linux session path speaks XrGraphicsBindingVulkan2KHR.

@@ -39,8 +39,12 @@ class DisplayInfo;
 }  // namespace internal
 
 class DISPLAY_EXPORT ScreenWin : public Screen,
+#if defined(COMPILER_MSVC)
                                  public ColorProfileReader::Client,
                                  public UwpTextScaleFactor::Observer {
+#else
+                                 public ColorProfileReader::Client {
+#endif
  public:
   ScreenWin(const ScreenWin&) = delete;
   ScreenWin& operator=(const ScreenWin&) = delete;
@@ -309,8 +313,10 @@ class DISPLAY_EXPORT ScreenWin : public Screen,
   //-----------------------------------------------------------------
   // UwpTextScaleFactor::Observer:
 
+#if defined(COMPILER_MSVC)
   void OnUwpTextScaleFactorChanged() override;
   void OnUwpTextScaleFactorCleanup(UwpTextScaleFactor* source) override;
+#endif
 
   // Tests don't want to use the actual DPI settings of the monitor(s) on
   // the machine running the test.
@@ -345,8 +351,10 @@ class DISPLAY_EXPORT ScreenWin : public Screen,
   // Information gathered from DXGI adapters and outputs.
   gfx::mojom::DXGIInfoPtr dxgi_info_;
 
+#if defined(COMPILER_MSVC)
   base::ScopedObservation<UwpTextScaleFactor, UwpTextScaleFactor::Observer>
       scale_factor_observation_{this};
+#endif
 
   // Used to avoid calling GetSystemMetricsForDpi in unit tests.
   bool per_process_dpi_awareness_disabled_for_testing_ = false;

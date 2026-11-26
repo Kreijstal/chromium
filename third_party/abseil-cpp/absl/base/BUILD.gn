@@ -206,6 +206,9 @@ absl_source_set("base") {
     ":spinlock_wait",
     "//third_party/abseil-cpp/absl/meta:type_traits",
   ]
+  if (is_mingw) {
+    libs = [ ":libpthread.a" ]
+  }
 }
 
 absl_source_set("atomic_hook_test_helper") {

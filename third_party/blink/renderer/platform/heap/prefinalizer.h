@@ -5,7 +5,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_HEAP_PREFINALIZER_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_HEAP_PREFINALIZER_H_
 
-#include "v8/include/cppgc/prefinalizer.h"
+#include "cppgc/prefinalizer.h"
 
 // Allows registering a method called `PreFinalizer` (name is adjustable) in an
 // object of type `GarbageCollected<T>` or `GarbageCollectedMixin`. A

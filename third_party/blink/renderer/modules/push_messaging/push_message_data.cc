@@ -17,7 +17,7 @@
 #include "third_party/blink/renderer/platform/blob/blob_data.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

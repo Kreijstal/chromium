@@ -1625,6 +1625,7 @@ MediaStreamManager::MediaStreamManager(
 
   CHECK(audio_system_, base::NotFatalUntil::M158);
 
+#if !BUILDFLAG(IS_MINGW)
   if (!video_capture_provider) {
     scoped_refptr<base::SingleThreadTaskRunner> device_task_runner;
 
@@ -1667,6 +1668,7 @@ MediaStreamManager::MediaStreamManager(
             std::move(device_task_runner)));
   }
   InitializeMaybeAsync(std::move(video_capture_provider));
+#endif
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
   if (base::FeatureList::IsEnabled(kReleaseVideoSourceProviderIfNotInUse)) {

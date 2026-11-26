@@ -15,7 +15,7 @@
 
 #include "gin/gin_export.h"
 #include "partition_alloc/partition_alloc.h"
-#include "v8/include/v8-platform.h"
+#include "v8-platform.h"
 
 namespace gin {
 

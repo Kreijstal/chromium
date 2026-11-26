@@ -24,6 +24,9 @@ def CollectSONAME(args):
     # TODO(crbug.com/40797404): Come up with a way to get this info without having
     # to bundle readelf in the toolchain package.
     toc = ''
+    # MinGW's readelf doesn't work on PE files
+    if sys.platform == 'win32' and 'MINGW' in sys.version:
+        return 0, toc
     readelf = subprocess.Popen(
         wrapper_utils.CommandToRun([args.readelf, '-d', args.output]),
         stdout=subprocess.PIPE,
@@ -39,6 +42,9 @@ def CollectSONAME(args):
 def CollectDynSym(args):
     """Replaces: nm --format=posix -g -D -p $sofile | cut -f1-2 -d' '"""
     toc = ''
+    # MinGW's nm doesn't work on PE/COFF files
+    if sys.platform == 'win32' and 'MINGW' in sys.version:
+        return 0, toc
     nm = subprocess.Popen(
         wrapper_utils.CommandToRun(
             [args.nm, '--format=posix', '-g', '-D', '-p', args.output]
@@ -106,6 +112,9 @@ def main():
     )
     parser.add_argument(
         '--strip', help='The strip binary to run', metavar='PATH'
+    )
+    parser.add_argument(
+        '--objcopy', help='The objcopy binary to run', metavar='PATH'
     )
     parser.add_argument(
         '--symbols-file',
@@ -189,9 +198,35 @@ def main():
         # When use_mold=true, the linker creates both stripped and symbols
         # files directly.
         if args.strip:
+            if args.objcopy:
+                result = subprocess.call(
+                    wrapper_utils.CommandToRun(
+                        [
+                            args.objcopy,
+                            '--only-keep-debug',
+                            args.symbols_file,
+                            args.output + '.debug',
+                        ]
+                    )
+                )
+                if result != 0:
+                    return result
             result = subprocess.call(
                 wrapper_utils.CommandToRun(
                     [args.strip, '-o', args.output, args.symbols_file]
+                )
+            )
+        if result != 0:
+            return result
+        if args.objcopy:
+            result = subprocess.call(
+                wrapper_utils.CommandToRun(
+                    [
+                        args.objcopy,
+                        '--add-gnu-debuglink',
+                        args.output + '.debug',
+                        args.output,
+                    ]
                 )
             )
 

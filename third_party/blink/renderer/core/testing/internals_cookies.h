@@ -8,7 +8,7 @@
 #include "services/network/public/mojom/cookie_manager.mojom-blink.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_internal_cookie.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_internal_cookie_same_site.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace v8 {
 class Isolate;

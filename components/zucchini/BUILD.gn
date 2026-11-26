@@ -134,7 +134,7 @@ static_library("zucchini_io") {
   }
 }
 
-if (is_win && current_toolchain == default_toolchain) {
+if (is_msvc && current_toolchain == default_toolchain) {
   # Redirect the default 'zucchini' target to the one built with the system
   # allocator.
   _toolchain =
@@ -162,7 +162,7 @@ if (is_win && current_toolchain == default_toolchain) {
   }
 }
 
-if (!is_win || current_toolchain != default_toolchain) {
+if (!is_msvc || current_toolchain != default_toolchain) {
   executable("zucchini") {
     sources = [
       "main_utils.cc",
@@ -178,7 +178,7 @@ if (!is_win || current_toolchain != default_toolchain) {
       "//base",
     ]
 
-    if (is_win) {
+    if (is_msvc) {
       deps += [
         ":zucchini_exe_version",
         "//build/win:default_exe_manifest",
@@ -187,7 +187,7 @@ if (!is_win || current_toolchain != default_toolchain) {
   }
 }
 
-if (is_win) {
+if (is_msvc) {
   process_version_rc_template("zucchini_exe_version") {
     template_file = "zucchini_exe_version.rc.version"
     output = "$target_gen_dir/zucchini_exe_version.rc"

@@ -48,11 +48,11 @@
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_scoped_window_focus_allowed_indicator.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "cppgc/allocation.h"
+#include "v8-context.h"
+#include "v8-cppgc.h"
+#include "v8-local-handle.h"
+#include "v8-persistent-handle.h"
 
 using blink::mojom::UserActivationNotificationType;
 

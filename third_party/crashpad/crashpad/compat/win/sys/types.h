@@ -15,8 +15,12 @@
 #ifndef CRASHPAD_COMPAT_WIN_SYS_TYPES_H_
 #define CRASHPAD_COMPAT_WIN_SYS_TYPES_H_
 
+#ifdef _MSC_VER
 // This is intended to be roughly equivalent to #include_next.
 #include <../ucrt/sys/types.h>
+#else
+#include_next <sys/types.h>
+#endif
 
 #include <stdint.h>
 

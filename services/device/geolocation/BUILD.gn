@@ -90,7 +90,7 @@ source_set("geolocation") {
     ]
   }
 
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "win/location_provider_winrt.cc",
       "win/location_provider_winrt.h",

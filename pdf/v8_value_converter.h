@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace base {
 class Value;

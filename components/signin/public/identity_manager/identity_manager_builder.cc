@@ -69,6 +69,7 @@ std::unique_ptr<AccountsMutator> BuildAccountsMutator(
 #endif
 }
 
+#if !defined(TOOLKIT_QT)
 std::unique_ptr<AccountFetcherService> BuildAccountFetcherService(
     SigninClient* signin_client,
     ProfileOAuth2TokenService* token_service,
@@ -81,6 +82,7 @@ std::unique_ptr<AccountFetcherService> BuildAccountFetcherService(
       std::move(image_decoder), std::move(account_fetcher_factory));
   return account_fetcher_service;
 }
+#endif
 
 }  // anonymous namespace
 

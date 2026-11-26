@@ -20,7 +20,7 @@
 #include "ui/base/cursor/mojom/cursor_type.mojom-forward.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/gfx/geometry/rect.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace gfx {
 class Vector2d;

@@ -15,7 +15,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 

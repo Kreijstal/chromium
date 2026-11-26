@@ -20,7 +20,7 @@
 #include "gpu/vulkan/buildflags.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 namespace gfx {
 class D3DSharedFence;
 }
@@ -139,7 +139,7 @@ class GPU_GLES2_EXPORT SharedImageManager
 
   bool UpdateSharedImage(const Mailbox& mailbox, gfx::GpuFenceHandle in_fence);
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   void UpdateExternalFence(const Mailbox& mailbox,
                            scoped_refptr<gfx::D3DSharedFence> external_fence);
 #endif
@@ -182,7 +182,7 @@ class GPU_GLES2_EXPORT SharedImageManager
   // method is to facilitate pageflip testing on the viz thread.
   scoped_refptr<gfx::NativePixmap> GetNativePixmap(const gpu::Mailbox& mailbox);
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   const scoped_refptr<DXGISharedHandleManager>& dxgi_shared_handle_manager()
       const {
     return dxgi_shared_handle_manager_;
@@ -205,8 +205,10 @@ class GPU_GLES2_EXPORT SharedImageManager
 
   bool is_registered_as_memory_dump_provider_ = false;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   scoped_refptr<DXGISharedHandleManager> dxgi_shared_handle_manager_;
+#endif
+#if BUILDFLAG(IS_WIN)
   scoped_refptr<base::SingleThreadTaskRunner> io_runner_;
 #endif
 

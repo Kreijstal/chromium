@@ -9,8 +9,8 @@
 #include "extensions/common/features/feature_provider.h"
 #include "extensions/renderer/script_context.h"
 #include "extensions/renderer/v8_schema_registry.h"
-#include "v8/include/v8-container.h"
-#include "v8/include/v8-function-callback.h"
+#include "v8-container.h"
+#include "v8-function-callback.h"
 
 namespace extensions {
 

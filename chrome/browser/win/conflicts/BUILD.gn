@@ -25,7 +25,8 @@ source_set("module_info") {
 
   deps = [ "//base:i18n" ]
 
-  libs = [ "crypt32.lib" ]
+  libs = [ "crypt32" ]
+
 }
 
 loadable_module("conflicts_dll") {

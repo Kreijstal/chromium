@@ -90,7 +90,11 @@ Stack::Stack(uintptr_t stack_top) : stack_top_(stack_top) {
 }
 
 PA_NOINLINE uintptr_t GetStackPointer() {
+#if defined(COMPILER_GCC) || defined(__clang__)
   return reinterpret_cast<uintptr_t>(__builtin_frame_address(0));
+#else
+  return 0;
+#endif
 }
 
 namespace {

@@ -11,9 +11,9 @@
 #include "base/functional/callback_helpers.h"
 #include "extensions/renderer/gc_callback.h"
 #include "extensions/renderer/script_context.h"
-#include "v8/include/v8-function-callback.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-object.h"
+#include "v8-function-callback.h"
+#include "v8-function.h"
+#include "v8-object.h"
 
 namespace extensions {
 

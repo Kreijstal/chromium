@@ -38,9 +38,13 @@ void EnableTerminationOnHeapCorruption() {
 }
 
 void EnableTerminationOnOutOfMemory() {
+#if defined(COMPILER_GCC)
+  std::set_new_handler(nullptr);
+#else
   constexpr int kCallNewHandlerOnAllocationFailure = 1;
   _set_new_handler(&ReleaseReservationOrTerminate);
   _set_new_mode(kCallNewHandlerOnAllocationFailure);
+#endif
 }
 
 bool UncheckedCalloc(size_t num_items, size_t size, void** result) {

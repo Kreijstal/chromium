@@ -5,6 +5,7 @@
 #ifndef COMPONENTS_AUTOFILL_CORE_BROWSER_DATA_MODEL_PAYMENTS_CREDIT_CARD_BENEFIT_H_
 #define COMPONENTS_AUTOFILL_CORE_BROWSER_DATA_MODEL_PAYMENTS_CREDIT_CARD_BENEFIT_H_
 
+#include <compare>
 #include <string>
 #include <variant>
 
@@ -81,7 +82,28 @@ class CreditCardBenefitBase {
   //   class's operators does not work nicely until Clang implements
   //   https://reviews.llvm.org/D103929.
   bool operator==(const CreditCardBenefitBase& b) const = default;
-  auto operator<=>(const CreditCardBenefitBase& b) const = default;
+  // Spelled out: the shared base's base::Time has no operator<=>.
+  std::strong_ordering operator<=>(const CreditCardBenefitBase& b) const {
+    auto time_cmp = [](base::Time x, base::Time y) {
+      return x < y   ? std::strong_ordering::less
+             : y < x ? std::strong_ordering::greater
+                     : std::strong_ordering::equal;
+    };
+    if (auto c = benefit_id_ <=> b.benefit_id_; c != 0) {
+      return c;
+    }
+    if (auto c = linked_card_instrument_id_ <=> b.linked_card_instrument_id_;
+        c != 0) {
+      return c;
+    }
+    if (auto c = benefit_description_ <=> b.benefit_description_; c != 0) {
+      return c;
+    }
+    if (auto c = time_cmp(start_time_, b.start_time_); c != 0) {
+      return c;
+    }
+    return time_cmp(expiry_time_, b.expiry_time_);
+  }
   friend class CreditCardFlatRateBenefit;
   friend class CreditCardCategoryBenefit;
   friend class CreditCardMerchantBenefit;

@@ -14,7 +14,9 @@
 #include "base/memory/weak_ptr.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#if defined(COMPILER_MSVC)
 #include "services/shape_detection/face_detection_impl_win.h"
+#endif
 #include "services/shape_detection/public/mojom/facedetection_provider.mojom.h"
 
 namespace shape_detection {
@@ -43,11 +45,13 @@ class FaceDetectionProviderWin
       shape_detection::mojom::FaceDetectorOptionsPtr options) override;
 
  private:
+#if defined(COMPILER_MSVC)
   void OnFaceDetectorCreated(
       mojo::PendingReceiver<shape_detection::mojom::FaceDetection> receiver,
       ABI::Windows::Graphics::Imaging::BitmapPixelFormat pixel_format,
       Microsoft::WRL::ComPtr<ABI::Windows::Media::FaceAnalysis::IFaceDetector>
           face_detector);
+#endif
 
   mojo::SelfOwnedReceiverRef<mojom::FaceDetectionProvider> receiver_;
   base::WeakPtrFactory<FaceDetectionProviderWin> weak_factory_{this};

@@ -58,6 +58,28 @@ const GUID kCommunicationsSessionId = {
 namespace {
 
 constexpr uint32_t KSAUDIO_SPEAKER_UNSUPPORTED = 0xFFFFFFFF;
+#if defined(__MINGW32__)
+#ifndef KSAUDIO_SPEAKER_2POINT1
+#define KSAUDIO_SPEAKER_2POINT1 \
+  (KSAUDIO_SPEAKER_STEREO | SPEAKER_LOW_FREQUENCY)
+#endif
+#ifndef KSAUDIO_SPEAKER_3POINT0
+#define KSAUDIO_SPEAKER_3POINT0 \
+  (KSAUDIO_SPEAKER_STEREO | SPEAKER_FRONT_CENTER)
+#endif
+#ifndef KSAUDIO_SPEAKER_3POINT1
+#define KSAUDIO_SPEAKER_3POINT1 \
+  (KSAUDIO_SPEAKER_3POINT0 | SPEAKER_LOW_FREQUENCY)
+#endif
+#ifndef KSAUDIO_SPEAKER_5POINT0
+#define KSAUDIO_SPEAKER_5POINT0 \
+  (KSAUDIO_SPEAKER_3POINT0 | SPEAKER_SIDE_LEFT | SPEAKER_SIDE_RIGHT)
+#endif
+#ifndef KSAUDIO_SPEAKER_7POINT0
+#define KSAUDIO_SPEAKER_7POINT0 \
+  (KSAUDIO_SPEAKER_5POINT0 | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
+#endif
+#endif
 
 REFERENCE_TIME BufferSizeInFramesToTimeDelta(uint32_t frames,
                                              DWORD bytes_per_sec,
@@ -225,21 +247,27 @@ ChannelConfig GuessChannelConfig(WORD channels) {
     case 2:
       DVLOG(2) << "KSAUDIO_SPEAKER_STEREO";
       return KSAUDIO_SPEAKER_STEREO;
+#if !defined(COMPILER_GCC) // FIXME: missing KSAUDIO_SPEAKER_2POINT1
     case 3:
       DVLOG(2) << "KSAUDIO_SPEAKER_2POINT1";
       return KSAUDIO_SPEAKER_2POINT1;
+#endif
     case 4:
       DVLOG(2) << "KSAUDIO_SPEAKER_QUAD";
       return KSAUDIO_SPEAKER_QUAD;
+#if !defined(COMPILER_GCC) // FIXME: missing KSAUDIO_SPEAKER_5POINT0
     case 5:
       DVLOG(2) << "KSAUDIO_SPEAKER_5POINT0";
       return KSAUDIO_SPEAKER_5POINT0;
+#endif
     case 6:
       DVLOG(2) << "KSAUDIO_SPEAKER_5POINT1";
       return KSAUDIO_SPEAKER_5POINT1;
+#if !defined(COMPILER_GCC) // FIXME: missing KSAUDIO_SPEAKER_7POINT0
     case 7:
       DVLOG(2) << "KSAUDIO_SPEAKER_7POINT0";
       return KSAUDIO_SPEAKER_7POINT0;
+#endif
     case 8:
       DVLOG(2) << "KSAUDIO_SPEAKER_7POINT1";
       return KSAUDIO_SPEAKER_7POINT1;
@@ -1522,6 +1550,10 @@ std::pair<int, bool> CoreAudioUtil::GetVoiceProcessingEffectsAndCheckForAEC(
     return {{}, false};
   };
 
+#if defined(__MINGW32__)
+  return false_and_log_no_effect();
+#else
+
   // This check guarantees that the client has been initialized since that is
   // required by the IAudioEffectsManager to function. The effects manager will
   // only be able to report supported effects if the client is in communications
@@ -1586,6 +1618,7 @@ std::pair<int, bool> CoreAudioUtil::GetVoiceProcessingEffectsAndCheckForAEC(
   }
 
   return std::make_pair(effects, echo_cancellation_is_available);
+#endif
 }
 
 }  // namespace media

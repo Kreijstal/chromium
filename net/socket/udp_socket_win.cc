@@ -557,12 +557,14 @@ int UDPSocketWin::InternalConnect(const IPEndPoint& address) {
   DCHECK(!is_connected());
   DCHECK(!remote_address_.get());
 
+#if !defined(COMPILER_GCC) // FIXME: missing SO_RANDOMIZE_PORT
   // Always do a random bind.
   // Ignore failures, which may happen if the socket was already bound.
   DWORD randomize_port_value = 1;
   setsockopt(socket_, SOL_SOCKET, SO_RANDOMIZE_PORT,
              reinterpret_cast<const char*>(&randomize_port_value),
              sizeof(randomize_port_value));
+#endif
 
   SockaddrStorage storage;
   if (!address.ToSockAddr(storage.addr(), &storage.addr_len)) {
@@ -703,6 +705,7 @@ int UDPSocketWin::SetRecvTos() {
   }
   int v6_only = 0;
   int ecn = 1;
+#if !defined(COMPILER_GCC) // FIXME: missing IPV6_RECVECN, IP_RECVECN
   if (addr_family_ == AF_INET6 && !address.address().IsIPv4MappedIPv6()) {
     rv = setsockopt(socket_, IPPROTO_IPV6, IPV6_RECVECN,
                     reinterpret_cast<const char*>(&ecn), sizeof(ecn));
@@ -729,6 +732,7 @@ int UDPSocketWin::SetRecvTos() {
       return LogAndReturnError();
     }
   }
+#endif
   wsa_recv_msg_ = GetRecvMsgPointer();
   if (wsa_recv_msg_ == nullptr) {
     return LogAndReturnError();
@@ -1655,6 +1659,7 @@ int DscpManager::PrepareForSend(const IPEndPoint& remote_address) {
   // We won't try this address again if we get an error.
   configured_.emplace(remote_address);
 
+#if !defined(COMPILER_GCC) // FIXME: missing QOS_NON_ADAPTIVE_FLOW
   // We don't need to call SetFlow if we already have a qos flow.
   bool new_flow = flow_id_ == 0;
 
@@ -1683,6 +1688,7 @@ int DscpManager::PrepareForSend(const IPEndPoint& remote_address) {
     api_->SetFlow(qos_handle_, flow_id_, QOSSetOutgoingDSCPValue, sizeof(buf),
                   &buf, 0, nullptr);
   }
+#endif
 
   return OK;
 }

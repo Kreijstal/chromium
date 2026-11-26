@@ -107,9 +107,14 @@ VARIANT* ScopedVariant::Receive() {
 
 VARIANT ScopedVariant::Copy() const {
   VARIANT ret = {{{VT_EMPTY}}};
+#if defined(COMPILER_GCC) // FIXME: VariantCopy is implemented differently
+  ::VariantCopy(&ret, const_cast<VARIANT*>(&var_));
+#else
   ::VariantCopy(&ret, &var_);
+#endif
   return ret;
 }
+
 
 int ScopedVariant::Compare(const VARIANT& other, bool ignore_case) const {
   DCHECK(!V_ISARRAY(&var_))
@@ -179,7 +184,15 @@ int ScopedVariant::Compare(const VARIANT& other, bool ignore_case) const {
 
   // 5. Otherwise returns the lexicographical comparison of the values held by
   //    the two VARIANTS that share the same VARTYPE.
+#if defined(COMPILER_GCC) // FIXME: VariantCompare is not yet supported
+  PROPVARIANT var1;
+  PROPVARIANT var2;
+  VariantToPropVariant(&var_, &var1);
+  VariantToPropVariant(&other, &var2);
+  return PropVariantCompareEx(var1, var2, PVCU_DEFAULT, PVCHF_DEFAULT);
+#else
   return ::VariantCompare(var_, other);
+#endif
 }
 
 void ScopedVariant::Set(const wchar_t* str) {
@@ -291,7 +304,11 @@ void ScopedVariant::Set(SAFEARRAY* array) {
 
 void ScopedVariant::Set(const VARIANT& var) {
   DCHECK(!IsLeakableVarType(var_.vt)) << "leaking variant: " << var_.vt;
+#if defined(COMPILER_GCC) // FIXME: VariantCopy is implemented differently
+  if (FAILED(::VariantCopy(&var_, const_cast<VARIANT*>(&var)))) {
+#else
   if (FAILED(::VariantCopy(&var_, &var))) {
+#endif
     DLOG(ERROR) << "VariantCopy failed";
     var_.vt = VT_EMPTY;
   }

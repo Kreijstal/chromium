@@ -59,7 +59,7 @@
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

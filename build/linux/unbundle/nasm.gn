@@ -1,0 +1,11 @@
+# Copies the system nasm where nasm_assemble() expects the host tool.
+if (current_toolchain == host_toolchain) {
+  action("nasm") {
+    script = "//build/linux/unbundle/copy_system_tool.py"
+    outputs = [ "$root_out_dir/nasm.exe" ]
+    args = [
+      "nasm",
+      rebase_path(outputs[0], root_build_dir),
+    ]
+  }
+}

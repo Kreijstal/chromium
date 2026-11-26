@@ -29,7 +29,7 @@ component("browser") {
       "//components/version_info",
       "//crypto",
     ]
-    libs = [ "crypt32.lib" ]
+    libs = [ "crypt32" ]
   }
 }
 
@@ -91,7 +91,7 @@ if (is_win) {
       "//components/version_info",
     ]
 
-    libs = [ "crypt32.lib" ]
+    libs = [ "crypt32" ]
   }
 }
 

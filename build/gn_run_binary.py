@@ -19,8 +19,24 @@ path = sys.argv[1]
 if not os.path.isabs(path):
     path = './' + path
 
+def _NormalizeNasmPathArg(arg):
+  if arg.startswith('-I') and len(arg) > 2:
+    include = arg[2:]
+    trailing_slash = '/' if include.endswith(('/', '\\')) else ''
+    include = include.rstrip('/\\')
+    if include and not os.path.isabs(include):
+      include = os.path.abspath(include)
+    return '-I' + include.replace('\\', '/') + trailing_slash
+
+  if arg.endswith('.asm') and not os.path.isabs(arg):
+    return os.path.abspath(arg).replace('\\', '/')
+
+  return arg
+
 # The rest of the arguments are passed directly to the executable.
 args = [path] + sys.argv[2:]
+if os.path.basename(path).lower() == 'nasm.exe':
+  args = [path] + [_NormalizeNasmPathArg(arg) for arg in sys.argv[2:]]
 
 ret = subprocess.call(args)
 if ret != 0:

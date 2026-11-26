@@ -4,7 +4,7 @@
 
 #include "media/gpu/gpu_video_encode_accelerator_factory.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "third_party/microsoft_dxheaders/src/include/directx/d3d12video.h"
 // Windows SDK headers should be included after DirectX headers.
 #endif
@@ -38,7 +38,7 @@
 #if BUILDFLAG(IS_MAC)
 #include "media/gpu/mac/vt_video_encode_accelerator_mac.h"
 #endif
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "media/gpu/windows/d3d12_helpers.h"
 #include "media/gpu/windows/d3d12_video_encode_accelerator.h"
 #include "media/gpu/windows/media_foundation_video_encode_accelerator_win.h"
@@ -108,7 +108,7 @@ std::unique_ptr<VideoEncodeAccelerator> CreateVTVEA(
 }
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 std::unique_ptr<VideoEncodeAccelerator> CreateMediaFoundationVEA(
     const gpu::GpuPreferences& gpu_preferences,
     const gpu::GpuDriverBugWorkarounds& gpu_workarounds,
@@ -217,7 +217,7 @@ base::span<const VEAFactoryFunction> GetVEAFactoryFunctions(
 #elif BUILDFLAG(IS_MAC)
   static constexpr VEAFactoryFunction kFactories[] = {&CreateVTVEA};
   return kFactories;
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   static constexpr VEAFactoryFunction kFactories[] = {
       &CreateD3D12VEA,
       &CreateMediaFoundationVEA,

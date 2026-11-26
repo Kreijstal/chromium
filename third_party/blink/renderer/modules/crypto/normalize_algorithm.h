@@ -36,7 +36,7 @@
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/renderer/bindings/modules/v8/v8_typedefs.h"
 #include "third_party/blink/renderer/modules/modules_export.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

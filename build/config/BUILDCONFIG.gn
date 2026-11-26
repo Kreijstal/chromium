@@ -139,6 +139,14 @@ declare_args() {
   is_clang = current_os != "linux" ||
              (current_cpu != "mips" && current_cpu != "mips64")
 
+  # MinGW port (from Qt WebEngine).
+  is_mingw = false
+  is_msvc = false
+  is_gcc = false
+  is_qtwebengine = false
+  is_qtpdf = false
+  is_gcc_legacy = false # used for gcc 9
+
   # Allows the path to a custom target toolchain to be injected as a single
   # argument, and set as the default toolchain.
   custom_toolchain = ""
@@ -170,6 +178,20 @@ declare_args() {
   # https://chromium.googlesource.com/chromium/src/+/main/docs/component_build.md
   is_component_build = is_debug && current_os != "android" &&
                        current_os != "ios" && current_os != "watchos"
+}
+
+declare_args() {
+  # sdk.gni of a chromium-base SDK and the directory of its import libraries;
+  # the targets it lists link those instead of compiling their sources.
+  chromium_base_sdk_gni = ""
+  chromium_base_sdk_libdir = ""
+
+  # SDK targets to compile anyway, e.g. ones whose thread_locals other local
+  # targets read (TLS can't be imported from a DLL).
+  chromium_base_sdk_keep = []
+}
+if (chromium_base_sdk_gni != "") {
+  import(chromium_base_sdk_gni)
 }
 
 assert(!(is_debug && is_official_build), "Can't do official debug builds")
@@ -236,16 +258,20 @@ if (host_toolchain == "") {
     # On Windows always use the target CPU for host builds for x86/x64. On the
     # configurations we support this will always work and it saves build steps.
     # Windows ARM64 targets require an x64 host for cross build.
-    if (target_cpu == "x86" || target_cpu == "x64") {
-      if (is_clang) {
-        host_toolchain = "//build/toolchain/win:win_clang_$target_cpu"
-      } else {
-        host_toolchain = "//build/toolchain/win:$target_cpu"
-      }
-    } else if (is_clang) {
-      host_toolchain = "//build/toolchain/win:win_clang_$host_cpu"
+    if (is_mingw) {
+      host_toolchain = "//build/toolchain/win:mingw_$target_cpu"
     } else {
-      host_toolchain = "//build/toolchain/win:$host_cpu"
+      if (target_cpu == "x86" || target_cpu == "x64") {
+        if (is_clang) {
+          host_toolchain = "//build/toolchain/win:win_clang_$target_cpu"
+        } else {
+          host_toolchain = "//build/toolchain/win:$target_cpu"
+        }
+      } else if (is_clang) {
+        host_toolchain = "//build/toolchain/win:win_clang_$host_cpu"
+      } else {
+        host_toolchain = "//build/toolchain/win:$host_cpu"
+      }
     }
   } else if (host_os == "aix") {
     host_toolchain = "//build/toolchain/aix:$host_cpu"
@@ -280,10 +306,14 @@ if (target_os == "android") {
 } else if (target_os == "win") {
   # On Windows, we use the same toolchain for host and target by default.
   # Beware, win cross builds have some caveats, see docs/win_cross.md
-  if (is_clang) {
-    _default_toolchain = "//build/toolchain/win:win_clang_$target_cpu"
+  if (is_mingw) {
+    _default_toolchain = "//build/toolchain/win:mingw_$target_cpu"
   } else {
-    _default_toolchain = "//build/toolchain/win:$target_cpu"
+    if (is_clang) {
+      _default_toolchain = "//build/toolchain/win:win_clang_$target_cpu"
+    } else {
+      _default_toolchain = "//build/toolchain/win:$target_cpu"
+    }
   }
 } else if (target_os == "winuwp") {
   # Only target WinUWP on for a Windows store application and only
@@ -336,6 +366,7 @@ is_chromeos = current_os == "chromeos"
 is_fuchsia = current_os == "fuchsia"
 is_ios = current_os == "ios"
 is_linux = current_os == "linux"
+is_ohos = current_os == "ohos"
 is_mac = current_os == "mac"
 is_wasm = current_os == "emscripten"
 is_watchos = current_os == "watchos"
@@ -407,6 +438,12 @@ if (is_win) {
 
 if (is_apple) {
   default_compiler_configs += [ "//build/config/compiler:enable_arc" ]
+}
+
+if (is_mingw) {
+  default_compiler_configs -= [
+    "//build/config/win:default_crt",
+  ]
 }
 
 if (is_posix) {
@@ -584,9 +621,46 @@ foreach(_target_type,
           "static_library",
         ]) {
   template(_target_type) {
+    _sdk_hit = false
+    _sdk_implib = ""
+    if (chromium_base_sdk_gni != "" && current_toolchain == default_toolchain &&
+        filter_include(
+            [ get_label_info(":$target_name", "label_no_toolchain") ],
+            chromium_base_sdk_targets) != [] &&
+        filter_include(
+            [ get_label_info(":$target_name", "label_no_toolchain") ],
+            chromium_base_sdk_keep) == []) {
+      _sdk_hit = true
+      foreach(_lib, chromium_base_sdk_implibs) {
+        if (_lib.label ==
+            get_label_info(":$target_name", "label_no_toolchain")) {
+          _sdk_implib = "$chromium_base_sdk_libdir/${_lib.implib}"
+        }
+      }
+    }
     target(_target_type, target_name) {
       forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
       forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+      if (_sdk_hit && defined(sources)) {
+        # Compiled into the SDK; keep only headers.
+        _sources = sources
+        sources = []
+        sources = filter_exclude(_sources,
+                                 [
+                                   "*.c",
+                                   "*.cc",
+                                   "*.cpp",
+                                   "*.S",
+                                   "*.asm",
+                                   "*.rc",
+                                 ])
+      }
+      if (_sdk_implib != "") {
+        if (!defined(libs)) {
+          libs = []
+        }
+        libs += [ _sdk_implib ]
+      }
       if (!defined(inputs)) {
         inputs = []
       }

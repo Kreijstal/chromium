@@ -4,7 +4,9 @@
 
 #include "base/win/scoped_com_initializer.h"
 
+#if defined(COMPILER_MSVC)
 #include <wrl/implements.h>
+#endif
 
 #include <ostream>
 
@@ -48,6 +50,7 @@ DWORD ScopedCOMInitializer::GetCOMBalancerReferenceCountForTesting() const {
 void ScopedCOMInitializer::Initialize(COINIT init,
                                       Uninitialization uninitialization) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+#if defined(COMPILER_MSVC)
   // COINIT_DISABLE_OLE1DDE is always added based on:
   // https://docs.microsoft.com/en-us/windows/desktop/learnwin32/initializing-the-com-library
   if (uninitialization == Uninitialization::kBlockPremature) {
@@ -73,6 +76,7 @@ void ScopedCOMInitializer::Initialize(COINIT init,
       hr_ == HRESULT_FROM_WIN32(ERROR_NOT_ENOUGH_MEMORY)) {
     base::win::OnResourceExhausted();
   }
+#endif
 }
 
 }  // namespace win

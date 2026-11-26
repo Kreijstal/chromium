@@ -69,7 +69,7 @@ bool CheckForConstantHandle(PHANDLE section_handle,
 
   CountedParameterSet<NameBased> params;
   std::wstring_view object_name =
-      base::win::UnicodeStringToView(path->ObjectName);
+      base::win::UnicodeStringToView(path->Name);
   params[NameBased::NAME] = ParamPickerMake(object_name);
 
   auto handle = QueryReturnConst(IpcTag::NTCREATESECTION, params.GetBase());

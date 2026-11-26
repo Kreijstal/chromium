@@ -63,7 +63,7 @@
 #include "third_party/blink/renderer/platform/scheduler/test/recording_task_time_observer.h"
 #include "third_party/blink/renderer/platform/scheduler/test/task_environment.h"
 #include "third_party/blink/renderer/platform/scheduler/test/web_scheduling_test_helper.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using base::sequence_manager::TaskQueue;
 

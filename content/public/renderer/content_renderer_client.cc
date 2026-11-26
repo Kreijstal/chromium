@@ -19,7 +19,7 @@
 #include "third_party/blink/public/platform/web_prescient_networking.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "v8/include/v8-initialization.h"
+#include "v8-initialization.h"
 
 namespace content {
 

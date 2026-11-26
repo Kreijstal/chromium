@@ -279,7 +279,7 @@ source_set("filters") {
       "passthrough_dts_audio_decoder.h",
     ]
   }
-  if (is_win) {
+  if (is_msvc) {
     sources += [
       "win/media_foundation_audio_decoder.cc",
       "win/media_foundation_audio_decoder.h",

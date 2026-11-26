@@ -88,7 +88,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_hasher.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

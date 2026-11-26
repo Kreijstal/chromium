@@ -35,4 +35,9 @@ void SetDelayLoadHookCallback(DelayLoadCallbackFunction callback_function) {
 // at several points throughout delay loading, providing application the
 // ability to modify delayload behavior. See
 // https://learn.microsoft.com/en-us/cpp/build/reference/understanding-the-helper-function
+#if defined(__MINGW32__)
+// mingw-w64's delayimp.h declares the hook non-const.
+extern "C" PfnDliHook __pfnDliNotifyHook2 = DelayLoadNotifyHook;
+#else
 extern "C" const PfnDliHook __pfnDliNotifyHook2 = DelayLoadNotifyHook;
+#endif

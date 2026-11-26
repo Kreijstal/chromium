@@ -262,7 +262,7 @@ config("gaiacp_config") {
   libs = [
     "advapi32.lib",  # For LookupAccountSid()
     "credui.lib",  # For CredPackAuthenticationBufferW()
-    "crypt32.lib",  # For CryptProtectData()
+    "crypt32",  # For CryptProtectData()
     "netapi32.lib",  # For NetUserXXX()
     "userenv.lib",  # For GetUserProfileDirectoryW()
     "winhttp.lib",  # For WinHttpXXX()

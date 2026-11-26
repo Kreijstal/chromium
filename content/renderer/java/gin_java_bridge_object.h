@@ -16,7 +16,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/cppgc/prefinalizer.h"
-#include "v8/include/v8-util.h"
+#include "v8-util.h"
 
 namespace blink {
 class WebLocalFrame;

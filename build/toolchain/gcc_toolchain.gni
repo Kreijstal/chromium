@@ -54,6 +54,7 @@ if (enable_resource_allowlist_generation) {
 #  - cc
 #  - cxx
 #  - ld
+#  - rc (mingw only)
 #
 # Optional parameters that control the tools:
 #
@@ -155,6 +156,12 @@ template("single_gcc_toolchain") {
                               invoker_toolchain_args.current_cpu == "arm")
     }
 
+    if (defined(toolchain_args.is_mingw)) {
+      toolchain_is_mingw = toolchain_args.is_mingw
+    } else {
+      toolchain_is_mingw = is_mingw
+    }
+
     # When the invoker has explicitly overridden cc_wrapper in the
     # toolchain args, use those values, otherwise default to the global one.
     # This works because the only reasonable override that toolchains might
@@ -228,6 +235,11 @@ template("single_gcc_toolchain") {
     } else {
       nm = "nm"
     }
+    if (defined(invoker.rc)) {
+      rc = invoker.rc
+    } else {
+      rc = "windres"
+    }
 
     if (defined(invoker.shlib_extension)) {
       default_shlib_extension = invoker.shlib_extension
@@ -244,7 +256,11 @@ template("single_gcc_toolchain") {
     if (defined(invoker.executable_extension)) {
       default_executable_extension = invoker.executable_extension
     } else {
-      default_executable_extension = ""
+      if (toolchain_is_mingw) {
+        default_executable_extension = ".exe"
+      } else {
+        default_executable_extension = ""
+      }
     }
 
     # Bring these into our scope for string interpolation with default values.
@@ -344,6 +360,14 @@ template("single_gcc_toolchain") {
       outputs = [ "$object_subdir/{{source_name_part}}.pcm" ]
     }
 
+    tool("rc") {
+      depfile = "{{output}}.d"
+      command = "$rc -i {{source}} -o {{output}} {{include_dirs}} -O coff"
+      depsformat = "gcc"
+      description = "RC {{output}}"
+      outputs = [ "$object_subdir/{{source_name_part}}.rc.o" ]
+    }
+
     tool("asm") {
       # For GCC we can just use the C compiler to compile assembly.
       depfile = "{{output}}.d"
@@ -369,7 +393,11 @@ template("single_gcc_toolchain") {
       if (host_os == "win") {
         tool_wrapper_path =
             rebase_path("//build/toolchain/win/tool_wrapper.py", root_build_dir)
+        if (toolchain_is_mingw) {
+          command = "\"$python_path\" $tool_wrapper_path delete-file-and-run {{output}} $ar {{arflags}} -r -c -D {{output}} @\"$rspfile\""
+        } else {
         command = "cmd /s /c \"\"$python_path\" $tool_wrapper_path delete-file {{output}} && $command\""
+        }
       } else {
         command = "rm -f {{output}} && $command"
 
@@ -413,9 +441,12 @@ template("single_gcc_toolchain") {
       tocfile = sofile + ".TOC"
 
       soname_flag = ""
-      if (current_os != "aix") {
+      if (current_os != "aix" && current_os != "win") {
         # -soname flag is not available on aix ld
         soname_flag = "-Wl,-soname=\"$soname\""
+      } else if (current_os == "win") {
+        # Have MinGW linker generate an import library
+        soname_flag = "-Wl,--out-implib=lib\"$soname\".a"
       }
       if (use_mold_separate_debug_file) {
         main_so_file = sofile
@@ -466,6 +497,8 @@ template("single_gcc_toolchain") {
 
       if (target_cpu == "mipsel" && is_component_build && is_android) {
         rspfile_content = "-Wl,--start-group -Wl,--whole-archive {{inputs}} {{solibs}} -Wl,--no-whole-archive {{libs}} -Wl,--end-group"
+      } else if (current_os == "win") {
+        rspfile_content = "-Wl,--whole-archive {{inputs}} {{solibs}} -Wl,--no-whole-archive -Wl,--start-group {{libs}} -Wl,--end-group"
       } else if (current_os == "aix") {
         # --whole-archive, --no-whole-archive flags are not available on the aix
         # ld.
@@ -483,7 +516,11 @@ template("single_gcc_toolchain") {
 
       default_output_dir = "{{root_out_dir}}${default_shlib_subdir}"
 
-      output_prefix = "lib"
+      if (toolchain_is_mingw) {
+        output_prefix = ""
+      } else {
+        output_prefix = "lib"
+      }
 
       # Since the above commands only updates the .TOC file when it changes, ask
       # Ninja to check if the timestamp actually changed to know if downstream

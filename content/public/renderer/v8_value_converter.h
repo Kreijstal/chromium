@@ -9,7 +9,7 @@
 
 #include "content/common/content_export.h"
 #include "third_party/blink/public/platform/web_v8_value_converter.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace base {
 class Value;

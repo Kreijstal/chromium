@@ -189,7 +189,7 @@
 #include "ui/base/webui/jstemplate_builder.h"
 #include "ui/webui/buildflags.h"
 #include "url/origin.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_CHROMEOS)

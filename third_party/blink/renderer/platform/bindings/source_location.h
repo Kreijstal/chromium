@@ -13,7 +13,7 @@
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/perfetto/include/perfetto/tracing/traced_value_forward.h"
-#include "v8/include/v8-inspector.h"
+#include "v8-inspector.h"
 
 namespace blink {
 

@@ -8,6 +8,35 @@
 
 #include <mfapi.h>
 
+#if defined(__MINGW32__)
+#if !defined(MFVideoPrimaries_Display_P3)
+#define MFVideoPrimaries_Display_P3 static_cast<MFVideoPrimaries>(13)
+#endif
+
+#if !defined(MFVideoTransFunc_BT1361_ECG)
+#define MFVideoTransFunc_BT1361_ECG \
+  static_cast<MFVideoTransferFunction>(18)
+#endif
+#if !defined(MFVideoTransFunc_SMPTE428)
+#define MFVideoTransFunc_SMPTE428 static_cast<MFVideoTransferFunction>(19)
+#endif
+
+#if !defined(MFVideoTransferMatrix_Identity)
+#define MFVideoTransferMatrix_Identity \
+  static_cast<MFVideoTransferMatrix>(6)
+#endif
+#if !defined(MFVideoTransferMatrix_FCC47)
+#define MFVideoTransferMatrix_FCC47 static_cast<MFVideoTransferMatrix>(7)
+#endif
+#if !defined(MFVideoTransferMatrix_YCgCo)
+#define MFVideoTransferMatrix_YCgCo static_cast<MFVideoTransferMatrix>(8)
+#endif
+#if !defined(MFVideoTransferMatrix_SMPTE2085)
+#define MFVideoTransferMatrix_SMPTE2085 \
+  static_cast<MFVideoTransferMatrix>(9)
+#endif
+#endif
+
 #include "base/logging.h"
 #include "media/base/video_color_space.h"
 

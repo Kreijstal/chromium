@@ -19,7 +19,7 @@
 #include "extensions/common/user_script.h"
 #include "extensions/renderer/injection_host.h"
 #include "extensions/renderer/script_injector.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace content {
 class RenderFrame;

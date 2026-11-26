@@ -11,11 +11,11 @@
 #include "third_party/abseil-cpp/absl/numeric/int128.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-primitive.h"
-#include "v8/include/v8-value.h"
+#include "v8-context.h"
+#include "v8-forward.h"
+#include "v8-local-handle.h"
+#include "v8-primitive.h"
+#include "v8-value.h"
 
 namespace blink {
 

@@ -20,9 +20,9 @@
 #include "third_party/blink/renderer/platform/wtf/key_value_pair.h"
 #include "third_party/blink/renderer/platform/wtf/sanitizers.h"
 #include "third_party/blink/renderer/platform/wtf/type_traits.h"
-#include "v8/include/cppgc/custom-space.h"
-#include "v8/include/cppgc/explicit-management.h"
-#include "v8/include/cppgc/object-size-trait.h"
+#include "cppgc/custom-space.h"
+#include "cppgc/explicit-management.h"
+#include "cppgc/object-size-trait.h"
 
 namespace blink {
 

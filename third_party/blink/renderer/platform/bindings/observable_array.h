@@ -8,7 +8,7 @@
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/heap_traits.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 // Overview of Blink implementation of Web IDL observable arrays
 //

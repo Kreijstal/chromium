@@ -108,8 +108,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "tools/v8_context_snapshot/buildflags.h"
-#include "v8/include/v8-profiler.h"
-#include "v8/include/v8.h"
+#include "v8-profiler.h"
+#include "v8.h"
 
 #if defined(V8_USE_EXTERNAL_STARTUP_DATA)
 #include "gin/public/v8_snapshot_file_type.h"
@@ -117,7 +117,7 @@
 
 namespace blink {
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 // Defined in v8_initializer_win.cc.
 v8::FilterETWSessionByURLResult FilterETWSessionByURLCallback(
     v8::Local<v8::Context> context,
@@ -864,9 +864,9 @@ void V8Initializer::InitializeV8Common(v8::Isolate* isolate) {
   DOMArrayBuffer::SetArrayBufferDetachCallback(isolate);
   isolate->SetMetricsRecorder(std::make_shared<V8MetricsRecorder>(isolate));
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   isolate->SetFilterETWSessionByURL2Callback(FilterETWSessionByURLCallback);
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
   V8ContextSnapshot::EnsureInterfaceTemplates(isolate);
 

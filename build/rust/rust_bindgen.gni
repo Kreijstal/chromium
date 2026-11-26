@@ -53,8 +53,14 @@ import("//build/rust/rust_static_library.gni")
 # * C header: //build/rust/tests/bindgen_test
 # * C++ header: //build/rust/tests/bindgen_cpp_test
 template("rust_bindgen") {
+  if (!enable_rust) {
+    # Rust is off (MinGW GCC): keep the label so GN resolves dependents.
+    group(target_name) {
+      forward_variables_from(invoker, [ "testonly", "visibility" ])
+      not_needed(invoker, "*")
+    }
+  } else {
   _rust_bindgen_generator_target_name = target_name + "_generator"
-
   _wrap_static_fns = false
   if (defined(invoker.wrap_static_fns) && invoker.wrap_static_fns) {
     _wrap_static_fns = true
@@ -153,5 +159,6 @@ template("rust_bindgen") {
     no_allocator_crate = true
     no_chromium_prelude = true
     no_clippy = true
+  }
   }
 }

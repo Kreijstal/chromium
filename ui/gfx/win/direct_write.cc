@@ -73,9 +73,15 @@ bool GetFontCollection(Microsoft::WRL::ComPtr<IDWriteFactory>& factory,
 
     for (UINT32 font_index = 0; font_index < n_fonts; ++font_index) {
       Microsoft::WRL::ComPtr<IDWriteFontFaceReference> font_face;
+#if defined(__MINGW32__)
+      hr = factory3->CreateFontFaceReference_(font_file.Get(), font_index,
+                                              DWRITE_FONT_SIMULATIONS_NONE,
+                                              &font_face);
+#else
       hr = factory3->CreateFontFaceReference(font_file.Get(), font_index,
                                              DWRITE_FONT_SIMULATIONS_NONE,
                                              &font_face);
+#endif
       DCHECK(SUCCEEDED(hr));
 
       hr = font_set_builder->AddFontFaceReference(font_face.Get());

@@ -62,7 +62,11 @@ class BASE_EXPORT VariantVector final {
     }
     AssertVartype<ExpectedVartype>();
     ScopedVariant scoped_variant;
-    scoped_variant.Set(value);
+    if constexpr (ExpectedVartype == VT_DATE) {
+      scoped_variant.SetDate(value);
+    } else {
+      scoped_variant.Set(value);
+    }
     vector_.push_back(std::move(scoped_variant));
   }
 
@@ -77,20 +81,6 @@ class BASE_EXPORT VariantVector final {
     AssertVartype<ExpectedVartype>();
     ScopedVariant scoped_variant;
     scoped_variant.Set(value);
-    vector_.push_back(std::move(scoped_variant));
-  }
-
-  // Specialize VT_DATE because ScopedVariant has a separate SetDate method,
-  // this is because VT_R8 and VT_DATE share the same underlying type.
-  template <>
-  void Insert<VT_DATE>(
-      typename internal::VariantConverter<VT_DATE>::Type value) {
-    if (vartype_ == VT_EMPTY) {
-      vartype_ = VT_DATE;
-    }
-    AssertVartype<VT_DATE>();
-    ScopedVariant scoped_variant;
-    scoped_variant.SetDate(value);
     vector_.push_back(std::move(scoped_variant));
   }
 

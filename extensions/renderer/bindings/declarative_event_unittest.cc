@@ -22,8 +22,8 @@
 #include "extensions/renderer/bindings/argument_spec.h"
 #include "extensions/renderer/bindings/test_interaction_provider.h"
 #include "gin/handle.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
 
 static_assert(BUILDFLAG(ENABLE_EXTENSIONS_CORE));
 

@@ -8,9 +8,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/supports_user_data.h"
 #include "gin/gin_export.h"
-#include "v8/include/cppgc/garbage-collected.h"
-#include "v8/include/cppgc/visitor.h"
-#include "v8/include/v8-forward.h"
+#include "cppgc/garbage-collected.h"
+#include "cppgc/visitor.h"
+#include "v8-forward.h"
 
 namespace gin {
 

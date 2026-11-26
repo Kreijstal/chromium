@@ -15,7 +15,7 @@
 #include "content/web_test/renderer/web_ax_object_proxy.h"
 #include "third_party/blink/public/web/web_ax_object.h"
 #include "ui/accessibility/ax_event_intent.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

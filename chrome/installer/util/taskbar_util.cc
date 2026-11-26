@@ -53,6 +53,15 @@ class __declspec(uuid("0DD79AE2-D156-45D4-9EEB-3B549769E940")) IPinnedList3
                                            PinnedListModifyCaller caller) = 0;
 };
 
+#if defined(__MINGW32__)
+// GCC ignores __declspec(uuid); give __uuidof its GUID.
+}  // namespace
+__CRT_UUID_DECL(IPinnedList3,
+                0x0dd79ae2, 0xd156, 0x45d4,
+                0x9e, 0xeb, 0x3b, 0x54, 0x97, 0x69, 0xe9, 0x40)
+namespace {
+#endif
+
 // ScopedPIDLFromPath class, and the idea of using IPinnedList3::Modify,
 // are thanks to Gee Law <https://geelaw.blog/entries/msedge-pins/>
 class ScopedPIDLFromPath {

@@ -34,7 +34,7 @@ component("codec") {
     ]
   }
 
-  if (is_win) {
+  if (is_msvc) {
     cflags = [ "/wd4324" ]  # Structure was padded due to __declspec(align()),
                             # which is uninteresting.
   }

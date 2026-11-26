@@ -260,7 +260,7 @@ config("absl_define_config") {
 
 config("absl_default_cflags_cc") {
   cflags_cc = []
-  if (is_clang) {
+  if (is_clang && !is_mingw) {
     cflags_cc += [
       # TODO(crbug.com/588506): Explicitly enable conversion warnings.
       "-Wbool-conversion",
@@ -279,7 +279,7 @@ config("absl_default_cflags_cc") {
 
 config("absl_test_config") {
   cflags_cc = []
-  if (is_win && !is_clang) {
+  if (is_msvc && !is_clang) {
     cflags_cc += [ "/wd4996" ]
   }
   if (is_clang) {

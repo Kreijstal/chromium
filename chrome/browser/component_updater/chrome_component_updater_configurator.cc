@@ -24,7 +24,9 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_MSVC)
 #include "chrome/browser/component_updater/updater_state.h"
+#endif
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/update_client/chrome_update_query_params_delegate.h"
 #include "chrome/common/channel_info.h"
@@ -305,11 +307,11 @@ std::optional<bool> ChromeConfigurator::IsMachineExternallyManaged() const {
 update_client::UpdaterStateProvider
 ChromeConfigurator::GetUpdaterStateProvider() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_MSVC)
   return base::BindRepeating(&UpdaterState::GetState);
 #else
   return configurator_impl_.GetUpdaterStateProvider();
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_MSVC)
 }
 
 scoped_refptr<update_client::CrxCache> ChromeConfigurator::GetCrxCache() const {

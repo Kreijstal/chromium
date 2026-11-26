@@ -189,7 +189,10 @@ component("metafile") {
       "emf_win.h",
     ]
 
-    libs = [ "xpsprint.lib" ]
+    if (!is_mingw) {
+      # MinGW has no xpsprint import lib; win_helper loads it at runtime.
+      libs = [ "xpsprint.lib" ]
+    }
   }
 }
 

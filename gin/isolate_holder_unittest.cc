@@ -8,10 +8,10 @@
 #include "gin/converter.h"
 #include "gin/function_template.h"
 #include "gin/test/v8_test.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-template.h"
+#include "v8-context.h"
+#include "v8-isolate.h"
+#include "v8-local-handle.h"
+#include "v8-template.h"
 
 namespace gin {
 

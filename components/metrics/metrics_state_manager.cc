@@ -86,12 +86,14 @@ std::unique_ptr<metrics::ClientInfo> NoOpLoadClientInfoBackup() {
   return nullptr;
 }
 
+#if !defined(TOOLKIT_QT)
 // Exits the browser with a helpful error message if an invalid,
 // field-trial-related command-line flag was specified.
 void ExitWithMessage(const std::string& message) {
   UNSAFE_TODO(puts(message.c_str()));
   exit(1);
 }
+#endif
 
 class MetricsStateMetricsProvider : public MetricsProvider {
  public:

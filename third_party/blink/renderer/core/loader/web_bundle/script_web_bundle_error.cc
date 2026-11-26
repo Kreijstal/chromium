@@ -5,7 +5,7 @@
 #include "third_party/blink/renderer/core/loader/web_bundle/script_web_bundle_error.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/bindings/v8_throw_exception.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

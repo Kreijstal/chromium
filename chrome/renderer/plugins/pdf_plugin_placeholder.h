@@ -7,7 +7,7 @@
 
 #include "components/plugins/renderer/plugin_placeholder.h"
 #include "gin/public/wrappable_pointer_tags.h"
-#include "v8/include/cppgc/persistent.h"
+#include "cppgc/persistent.h"
 
 // Placeholder that allows users to click to download a PDF for when
 // plugins are disabled and the PDF fails to load.

@@ -17,7 +17,7 @@
 #include "extensions/common/mojom/message_port.mojom.h"
 #include "extensions/renderer/bindings/api_binding_types.h"
 #include "extensions/renderer/bindings/get_per_context_data.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace gin {
 class Arguments;

@@ -28,6 +28,9 @@ source_set("test_support") {
     "//chrome/windows_services/service_program:constants",
     "//testing/gtest",
   ]
+  if (is_mingw){
+    deps -= [ "//chrome/installer/util:work_item" ]
+  }
 }
 
 source_set("unit_tests") {

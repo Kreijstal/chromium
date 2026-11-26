@@ -479,3 +479,5 @@ expand_directory_allowlist =
 allow_circular_includes_from_allowlist =
     allow_circular_includes_from_untriaged + project_bedrock_circular_includes +
     []
+
+exec_script_allowlist += [ "//v8/BUILD.gn" ]

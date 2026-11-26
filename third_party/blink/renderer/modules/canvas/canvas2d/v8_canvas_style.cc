@@ -16,8 +16,8 @@
 #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_pattern.h"
 #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_style.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-value.h"
+#include "v8-local-handle.h"
+#include "v8-value.h"
 
 namespace v8 {
 class Isolate;

@@ -112,6 +112,12 @@ component("display") {
       "win/uwp_text_scale_factor.cc",
       "win/uwp_text_scale_factor.h",
     ]
+    if (is_mingw) {
+      sources -= [
+        "win/uwp_text_scale_factor.cc",
+        "win/uwp_text_scale_factor.h",
+      ]
+    }
   }
 
   if (is_ios) {
@@ -150,8 +156,12 @@ component("display") {
       "//components/headless/screen_info",
       "//ui/gfx/mojom:dxgi_info",
     ]
-    libs = [ "shcore.lib" ]
-    ldflags = [ "/DELAYLOAD:shcore.dll" ]
+    if (is_mingw) {
+      libs = [ "shcore" ]
+    } else {
+      libs = [ "shcore.lib" ]
+      ldflags = [ "/DELAYLOAD:shcore.dll" ]
+    }
   }
 
   if (use_aura) {
@@ -227,6 +237,12 @@ static_library("test_support") {
       "win/test/scoped_screen_win.h",
       "win/test/screen_util_win.cc",
       "win/test/screen_util_win.h",
+    ]
+  }
+
+  # mingw-w64 has no swdevice.h.
+  if (is_win && !is_mingw) {
+    sources += [
       "win/test/virtual_display_util_win.cc",
       "win/test/virtual_display_util_win.h",
     ]
@@ -284,7 +300,7 @@ static_library("test_support") {
     public_deps += [ "//ui/display/manager" ]
   }
 
-  if (!is_mac && !is_win && !is_chromeos &&
+  if (!is_mac && (!is_win || is_mingw) && !is_chromeos &&
       !(is_linux && ozone_platform_x11 && enable_remoting)) {
     sources += [
       # Virtual display util stub for unimplemented platforms.

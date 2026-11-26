@@ -452,6 +452,10 @@ class RcBuilder(interface.Tool):
     ):
       return 'utf_8'
     # TODO(gfeher) modify here to set utf-8 encoding for admx/adml
+    if sys.platform == 'win32' and 'MINGW' in sys.version:
+      # windres cannot handle utf-16 encoding
+      if output_type == 'rc_all':
+        return 'utf_8'
     return 'utf_16'
 
   def _ProcessOutput(self, output, zippable_android_xml_outputs):

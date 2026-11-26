@@ -70,7 +70,7 @@
 #include "third_party/perfetto/include/perfetto/tracing/track_event_args.h"
 #include "third_party/perfetto/protos/perfetto/trace/track_event/chrome_renderer_scheduler_state.pbzero.h"
 #include "third_party/perfetto/protos/perfetto/trace/track_event/track_event.pbzero.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/self_compaction_manager.h"

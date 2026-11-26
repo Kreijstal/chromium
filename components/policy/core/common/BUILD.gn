@@ -296,13 +296,23 @@ source_set("internal") {
       "scoped_critical_policy_section.cc",
       "scoped_critical_policy_section.h",
     ]
-    libs = [
-      "netapi32.lib",
-      "ntdsapi.lib",
-      "secur32.lib",
-      "shlwapi.lib",
-      "userenv.lib",
-    ]
+    if (is_msvc) {
+      libs = [
+        "netapi32.lib",
+        "ntdsapi.lib",
+        "secur32.lib",
+        "shlwapi.lib",
+        "userenv.lib",
+     ]
+    } else {
+      libs = [
+        "netapi32",
+        "ntdsapi",
+        "secur32",
+        "shlwapi",
+        "userenv",
+      ]
+    }
   }
 
   if (is_win || is_mac || is_linux) {

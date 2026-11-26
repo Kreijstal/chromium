@@ -11,8 +11,12 @@
 
 #include "base/containers/span.h"
 #include "base/types/expected.h"
-#include "components/private_verification_tokens/common/athm_ffi/athm_ffi.h"
+#include "components/private_verification_tokens/common/private_verification_tokens_buildflags.h"
 #include "components/private_verification_tokens/common/private_verification_tokens_issuer_config.h"
+
+#if BUILDFLAG(ENABLE_ATHM_FFI)
+#include "components/private_verification_tokens/common/athm_ffi/athm_ffi.h"
+#endif
 
 namespace private_verification_tokens {
 
@@ -78,9 +82,11 @@ class PrivacyPassAthmBatchRequest {
   Finalize(base::span<const uint8_t> response_body);
 
  private:
+#if BUILDFLAG(ENABLE_ATHM_FFI)
   explicit PrivacyPassAthmBatchRequest(PrivacyPassBatchClient batch_client);
 
   std::optional<PrivacyPassBatchClient> batch_client_;
+#endif
   std::vector<uint8_t> request_body_;
 };
 

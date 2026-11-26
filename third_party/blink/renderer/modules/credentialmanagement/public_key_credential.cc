@@ -28,8 +28,8 @@
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/functional.h"
 #include "third_party/blink/renderer/platform/wtf/text/base64.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-value.h"
+#include "v8-local-handle.h"
+#include "v8-value.h"
 
 namespace blink {
 

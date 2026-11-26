@@ -60,10 +60,12 @@ OutputSurface::DCSupportLevel GetDcSupportLevel() {
     Microsoft::WRL::ComPtr<IDCompositionDevice3> dcomp_device =
         gl::GetDirectCompositionDevice();
 
+#if !defined(__MINGW32__)
     if (Microsoft::WRL::ComPtr<IDCompositionDevice5> dcomp_device5;
         SUCCEEDED(dcomp_device.As(&dcomp_device5))) {
       return OutputSurface::DCSupportLevel::kDCompDynamicTexture;
     }
+#endif
 
     return OutputSurface::DCSupportLevel::kDCompTexture;
   }

@@ -10,7 +10,7 @@ import("//build/config/sysroot.gni")
 if (use_xcode_symlinks) {
   import("//build/config/apple/mobile_config.gni")
 }
-if (is_win) {
+if (is_win && !is_mingw) {
   import("//build/toolchain/win/win_toolchain_data.gni")
 }
 

@@ -15,7 +15,7 @@
 #include "extensions/renderer/module_system.h"
 #include "extensions/renderer/script_context.h"
 #include "extensions/renderer/string_source_map.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace controlled_frame {
 

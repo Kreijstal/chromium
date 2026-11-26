@@ -30,7 +30,18 @@ source_set("enc") {
   public_configs = [ ":system_brotli_enc" ]
 }
 
-copy("brotli") {
-  sources = [ "/usr/bin/brotli" ]
-  outputs = [ "$root_out_dir/brotli" ]
+if (is_win) {
+  action("brotli") {
+    script = "//build/linux/unbundle/copy_system_tool.py"
+    outputs = [ "$root_out_dir/brotli.exe" ]
+    args = [
+      "brotli",
+      rebase_path(outputs[0], root_build_dir),
+    ]
+  }
+} else {
+  copy("brotli") {
+    sources = [ "/usr/bin/brotli" ]
+    outputs = [ "$root_out_dir/brotli" ]
+  }
 }

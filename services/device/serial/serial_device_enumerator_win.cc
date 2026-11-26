@@ -9,6 +9,7 @@
 #define INITGUID
 #include <devguid.h>
 #include <devpkey.h>
+#include <ntdef.h>
 #include <ntddser.h>
 #include <setupapi.h>
 #include <stdint.h>

@@ -7,7 +7,7 @@
 
 #include "third_party/blink/renderer/platform/heap/thread_state.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
-#include "v8/include/cppgc/heap-consistency.h"
+#include "cppgc/heap-consistency.h"
 
 #if defined(LEAK_SANITIZER)
 #include <sanitizer/lsan_interface.h>

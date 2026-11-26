@@ -20,7 +20,7 @@
 #include "base/containers/span.h"
 #include "build/build_config.h"
 
-#if defined(COMPILER_MSVC)
+#if BUILDFLAG(IS_WIN)
 #include <malloc.h>
 #else
 #include <stdlib.h>
@@ -100,7 +100,7 @@ BASE_EXPORT void* AlignedCalloc(size_t num_items,
 
 // Deallocate memory allocated by `AlignedAlloc()` or `AlignedCalloc()`.
 inline void AlignedFree(void* ptr) {
-#if defined(COMPILER_MSVC)
+#if BUILDFLAG(IS_WIN)
   _aligned_free(ptr);
 #else
   free(ptr);

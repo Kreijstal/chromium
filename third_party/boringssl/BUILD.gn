@@ -113,7 +113,7 @@ if (enable_rust) {
   }
 }
 
-if (is_msan) {
+if (is_msan || is_mingw || (is_msvc && current_cpu == "arm64" && !is_clang)) {
   # MSan instrumentation is incompatible with assembly optimizations.
   # BoringSSL's GAS-compatible assembly knows how to detect MSan, but the NASM
   # assembly does not, so we check for MSan explicitly.
@@ -126,7 +126,7 @@ if (is_msan) {
     visibility = [ ":*" ]
     testonly = true
   }
-} else if (is_win && (current_cpu == "x86" || current_cpu == "x64")) {
+} else if (is_msvc && (current_cpu == "x86" || current_cpu == "x64")) {
   # Windows' x86 and x86_64 assembly is built with NASM.
   import("//third_party/nasm/nasm_assemble.gni")
 

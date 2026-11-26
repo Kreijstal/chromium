@@ -7,7 +7,9 @@
 
 #include <objidl.h>
 #include <winnt.h>
+#if defined(COMPILER_MSVC)
 #include <wrl/implements.h>
+#endif
 
 #include <optional>
 
@@ -28,9 +30,13 @@ namespace internal {
 // revoke the registered spy and allow for the successful uninitialization of
 // the COM library.
 class BASE_EXPORT ComInitBalancer
+#if defined(COMPILER_MSVC)
     : public Microsoft::WRL::RuntimeClass<
           Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
           IInitializeSpy> {
+#else
+    : public IInitializeSpy {
+#endif
  public:
   // Constructs a COM initialize balancer. |co_init| defines the apartment's
   // concurrency model used by the balancer.
@@ -39,7 +45,7 @@ class BASE_EXPORT ComInitBalancer
   ComInitBalancer(const ComInitBalancer&) = delete;
   ComInitBalancer& operator=(const ComInitBalancer&) = delete;
 
-  ~ComInitBalancer() override;
+  ~ComInitBalancer();
 
   // Disables balancer by revoking the registered spy and consequently
   // unblocking attempts to uninitialize the COM library.
@@ -50,12 +56,12 @@ class BASE_EXPORT ComInitBalancer
  private:
   // IInitializeSpy:
   IFACEMETHODIMP PreInitialize(DWORD apartment_type,
-                               DWORD reference_count) override;
+                               DWORD reference_count);
   IFACEMETHODIMP PostInitialize(HRESULT result,
                                 DWORD apartment_type,
-                                DWORD new_reference_count) override;
-  IFACEMETHODIMP PreUninitialize(DWORD reference_count) override;
-  IFACEMETHODIMP PostUninitialize(DWORD new_reference_count) override;
+                                DWORD new_reference_count);
+  IFACEMETHODIMP PreUninitialize(DWORD reference_count);
+  IFACEMETHODIMP PostUninitialize(DWORD new_reference_count);
 
   const DWORD co_init_;
 

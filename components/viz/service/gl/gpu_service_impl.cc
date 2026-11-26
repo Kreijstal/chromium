@@ -471,7 +471,7 @@ void GpuServiceImpl::InitializeWithHost(
       default_offscreen_surface, std::move(creation_params), sync_point_manager,
       shared_image_manager, scheduler, shutdown_event);
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   // shared_image_d3d must be initialized after we call
   // InitializeWithHostInternal as that is where the shared context state is
   // created.

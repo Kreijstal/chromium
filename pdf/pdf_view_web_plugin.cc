@@ -121,7 +121,7 @@
 #include "ui/gfx/geometry/vector2d_f.h"
 #include "ui/gfx/range/range.h"
 #include "url/gurl.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 #if BUILDFLAG(ENABLE_PDF_INK2)
 #include "base/memory/raw_ref.h"

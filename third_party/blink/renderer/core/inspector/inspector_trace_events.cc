@@ -68,8 +68,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/format.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8-profiler.h"
-#include "v8/include/v8.h"
+#include "v8-profiler.h"
+#include "v8.h"
 
 namespace blink {
 

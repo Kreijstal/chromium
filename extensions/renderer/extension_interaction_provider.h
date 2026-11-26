@@ -7,7 +7,7 @@
 
 #include "extensions/renderer/bindings/interaction_provider.h"
 
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace extensions {
 

@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "components/web_distiller/core/url_utils.h"
 #include "content/public/renderer/render_frame.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace web_distiller {
 

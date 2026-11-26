@@ -41,7 +41,7 @@
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_dom_event.h"
 #include "v8/include/cppgc/source-location.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 #if INSIDE_BLINK
 #include "third_party/blink/renderer/platform/wtf/casting.h"

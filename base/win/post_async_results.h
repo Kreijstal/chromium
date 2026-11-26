@@ -5,6 +5,8 @@
 #ifndef BASE_WIN_POST_ASYNC_RESULTS_H_
 #define BASE_WIN_POST_ASYNC_RESULTS_H_
 
+#ifdef _MSC_VER
+
 #include <unknwn.h>
 
 #include <windows.foundation.h>
@@ -349,5 +351,7 @@ HRESULT PostAsyncResults(
 
 }  // namespace win
 }  // namespace base
+
+#endif
 
 #endif  // BASE_WIN_POST_ASYNC_RESULTS_H_

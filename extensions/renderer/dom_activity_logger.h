@@ -11,7 +11,7 @@
 #include "extensions/common/extension_id.h"
 #include "extensions/common/mojom/renderer_host.mojom.h"
 #include "third_party/blink/public/web/web_dom_activity_logger.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink {
 class WebString;

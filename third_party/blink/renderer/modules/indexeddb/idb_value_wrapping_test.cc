@@ -25,7 +25,7 @@
 #include "third_party/blink/renderer/platform/testing/task_environment.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

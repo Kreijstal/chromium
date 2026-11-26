@@ -2,7 +2,14 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//build/buildflag_header.gni")
 import("//build/config/rust.gni")
+
+# ATHM is only reachable from C++ through Crubit.
+buildflag_header("buildflags") {
+  header = "private_verification_tokens_buildflags.h"
+  flags = [ "ENABLE_ATHM_FFI=$enable_cpp_api_from_rust" ]
+}
 
 source_set("private_verification_tokens_public_key") {
   sources = [
@@ -202,26 +209,33 @@ source_set("test_support") {
   testonly = true
   sources = [ "private_verification_tokens_test_util.h" ]
   public_deps = [
+    ":buildflags",
     "//base",
-    "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings",
   ]
+  if (enable_cpp_api_from_rust) {
+    public_deps += [ "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings" ]
+  }
 }
 
 # ATHM (Anonymous Tokens with Hidden Metadata): Crubit bindings over
 # //third_party/anonymous_tokens:athm and the C++ that calls it.
-if (enable_rust) {
-  source_set("privacy_pass_athm_batch_request") {
-    sources = [
-      "privacy_pass_athm_batch_request.cc",
-      "privacy_pass_athm_batch_request.h",
-    ]
-    public_deps = [
-      ":private_verification_tokens_issuer_config",
-      "//base",
-      "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings",
-    ]
+source_set("privacy_pass_athm_batch_request") {
+  sources = [ "privacy_pass_athm_batch_request.h" ]
+  public_deps = [
+    ":buildflags",
+    ":private_verification_tokens_issuer_config",
+    "//base",
+  ]
+  if (enable_cpp_api_from_rust) {
+    sources += [ "privacy_pass_athm_batch_request.cc" ]
+    public_deps += [ "//components/private_verification_tokens/common/athm_ffi:athm_ffi_bindings" ]
+  } else {
+    # No Crubit: Create() always fails.
+    sources += [ "privacy_pass_athm_batch_request_stub.cc" ]
   }
+}
 
+if (enable_cpp_api_from_rust) {
   source_set("privacy_pass_athm_batch_request_unittest") {
     testonly = true
     sources = [ "privacy_pass_athm_batch_request_unittest.cc" ]

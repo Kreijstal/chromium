@@ -139,7 +139,17 @@ target(link_target_type, "child") {
     ]
   }
 
-  if (is_win) {
+  if (is_mingw) {
+    sources += [
+      "child_process_sandbox_support_impl_win.cc",
+      "child_process_sandbox_support_impl_win.h",
+      "font_warmup_win.cc",
+      "font_warmup_win.h",
+    ]
+    libs = [ "dwrite" ]
+  }
+
+  if (is_msvc) {
     sources += [
       "child_process_sandbox_support_impl_win.cc",
       "child_process_sandbox_support_impl_win.h",

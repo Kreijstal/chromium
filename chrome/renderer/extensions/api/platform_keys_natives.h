@@ -6,7 +6,7 @@
 #define CHROME_RENDERER_EXTENSIONS_API_PLATFORM_KEYS_NATIVES_H_
 
 #include "extensions/renderer/object_backed_native_handler.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class ScriptContext;

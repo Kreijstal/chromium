@@ -9,8 +9,8 @@
 
 #include "third_party/blink/renderer/modules/modules_export.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-value.h"
+#include "v8-local-handle.h"
+#include "v8-value.h"
 
 namespace blink {
 class IDBKey;

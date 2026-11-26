@@ -36,7 +36,6 @@ crashpad_executable("dump_minidump_annotations") {
   ]
 
   if (crashpad_is_win) {
-    cflags = [ "/wd4201" ]  # nonstandard extension used : nameless struct/union
   }
 }
 
@@ -103,11 +102,6 @@ if (!crashpad_is_fuchsia && !crashpad_is_ios) {
         "__info_plist",
         rebase_path(inputs[0], root_build_dir),
       ]
-    }
-
-    if (crashpad_is_win) {
-      cflags =
-          [ "/wd4201" ]  # nonstandard extension used : nameless struct/union
     }
   }
 }

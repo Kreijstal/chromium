@@ -5,6 +5,8 @@
 #ifndef MEDIA_CDM_WIN_MEDIA_FOUNDATION_CDM_H_
 #define MEDIA_CDM_WIN_MEDIA_FOUNDATION_CDM_H_
 
+#if defined(COMPILER_MSVC)
+
 #include <mfcontentdecryptionmodule.h>
 #include <wrl.h>
 
@@ -174,5 +176,7 @@ class MEDIA_EXPORT MediaFoundationCdm final : public ContentDecryptionModule,
 };
 
 }  // namespace media
+
+#endif
 
 #endif  // MEDIA_CDM_WIN_MEDIA_FOUNDATION_CDM_H_

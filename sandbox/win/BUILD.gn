@@ -175,10 +175,17 @@ static_library("sandbox") {
     "//build/config/win:maybe_set_appcontainer_acls",
   ]
 
-  libs = [
-    "ntdll.lib",
-    "userenv.lib",
-  ]
+  if (is_msvc) {
+    libs = [
+      "ntdll.lib",
+      "userenv.lib",
+    ]
+  } else {
+    libs = [
+      "ntdll",
+      "userenv",
+    ]
+  }
 }
 
 test("sbox_integration_tests") {

@@ -11,7 +11,7 @@
 #include "base/test/task_environment.h"
 #include "extensions/renderer/bindings/test_js_runner.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace gin {
 class ContextHolder;

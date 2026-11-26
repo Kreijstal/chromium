@@ -34,7 +34,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/window_proxy.h"
 #include "third_party/blink/renderer/core/frame/remote_frame.h"
 #include "third_party/blink/renderer/platform/bindings/dom_wrapper_world.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
-#include "v8/include/cppgc/platform.h"
+#include "cppgc/platform.h"
 
 namespace blink {
 

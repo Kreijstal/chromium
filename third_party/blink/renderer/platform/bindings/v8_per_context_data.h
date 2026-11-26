@@ -46,7 +46,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

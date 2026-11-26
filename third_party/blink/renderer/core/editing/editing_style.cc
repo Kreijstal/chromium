@@ -71,6 +71,7 @@
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/core/style_property_shorthand.h"
+#include "third_party/blink/renderer/platform/heap/heap_vector_holder.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/heap/disallow_new_wrapper.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
@@ -1134,7 +1135,7 @@ bool EditingStyle::ConflictsWithInlineStyleOfElement(
 
 static const HeapVector<Member<HtmlElementEquivalent>>&
 HtmlElementEquivalents() {
-  using Holder = DisallowNewWrapper<HeapVector<Member<HtmlElementEquivalent>>>;
+  using Holder = HeapVectorHolder<Member<HtmlElementEquivalent>>;
   DEFINE_STATIC_LOCAL(Persistent<Holder>, html_element_equivalents_holder,
                       (MakeGarbageCollected<Holder>()));
   HeapVector<Member<HtmlElementEquivalent>>* html_element_equivalents =
@@ -1200,7 +1201,7 @@ bool EditingStyle::ConflictsWithImplicitStyleOfElement(
 static const HeapVector<Member<HtmlAttributeEquivalent>>&
 HtmlAttributeEquivalents() {
   using Holder =
-      DisallowNewWrapper<HeapVector<Member<HtmlAttributeEquivalent>>>;
+      HeapVectorHolder<Member<HtmlAttributeEquivalent>>;
   DEFINE_STATIC_LOCAL(Persistent<Holder>, html_attribute_equivalents_holder,
                       (MakeGarbageCollected<Holder>()));
   HeapVector<Member<HtmlAttributeEquivalent>>* html_attribute_equivalents =

@@ -6,7 +6,7 @@
 #define CONTENT_PUBLIC_RENDERER_CHROME_OBJECT_EXTENSIONS_UTILS_H_
 
 #include "content/common/content_export.h"
-#include "v8/include/v8-local-handle.h"
+#include "v8-local-handle.h"
 
 #include <string>
 

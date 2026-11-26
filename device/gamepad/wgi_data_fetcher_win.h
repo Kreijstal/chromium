@@ -5,6 +5,8 @@
 #ifndef DEVICE_GAMEPAD_WGI_DATA_FETCHER_WIN_H_
 #define DEVICE_GAMEPAD_WGI_DATA_FETCHER_WIN_H_
 
+#if defined(COMPILER_MSVC)
+
 #include <Windows.Gaming.Input.h>
 #include <wrl/event.h>
 
@@ -137,5 +139,7 @@ class DEVICE_GAMEPAD_EXPORT WgiDataFetcherWin final
 };
 
 }  // namespace device
+
+#endif
 
 #endif  // DEVICE_GAMEPAD_WGI_DATA_FETCHER_WIN_H_

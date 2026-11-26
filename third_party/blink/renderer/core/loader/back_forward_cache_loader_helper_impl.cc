@@ -5,7 +5,7 @@
 #include "third_party/blink/renderer/core/loader/back_forward_cache_loader_helper_impl.h"
 
 #include "third_party/blink/renderer/platform/bindings/source_location.h"
-#include "v8/include/cppgc/visitor.h"
+#include "cppgc/visitor.h"
 
 namespace blink {
 

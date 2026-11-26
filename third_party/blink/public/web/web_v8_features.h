@@ -9,7 +9,7 @@
 #include "third_party/blink/public/mojom/browser_interface_broker.mojom-shared.h"
 #include "third_party/blink/public/platform/cross_variant_mojo_util.h"
 #include "third_party/blink/public/platform/web_common.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink {
 

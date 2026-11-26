@@ -23,7 +23,7 @@
 #include "third_party/blink/renderer/platform/testing/task_environment.h"
 #include "third_party/blink/renderer/platform/testing/unit_test_helpers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using device::mojom::blink::PressureState;
 

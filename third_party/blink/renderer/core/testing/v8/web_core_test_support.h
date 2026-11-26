@@ -26,7 +26,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_TESTING_V8_WEB_CORE_TEST_SUPPORT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_TESTING_V8_WEB_CORE_TEST_SUPPORT_H_
 
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

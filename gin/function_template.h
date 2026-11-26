@@ -18,14 +18,14 @@
 #include "gin/converter.h"
 #include "gin/gin_export.h"
 #include "gin/public/wrappable_pointer_tags.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/garbage-collected.h"
-#include "v8/include/cppgc/macros.h"
-#include "v8/include/cppgc/visitor.h"
-#include "v8/include/v8-cpp-heap-external.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-template.h"
+#include "cppgc/allocation.h"
+#include "cppgc/garbage-collected.h"
+#include "cppgc/macros.h"
+#include "cppgc/visitor.h"
+#include "v8-cpp-heap-external.h"
+#include "v8-cppgc.h"
+#include "v8-forward.h"
+#include "v8-template.h"
 
 namespace gin {
 

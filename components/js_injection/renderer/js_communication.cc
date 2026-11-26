@@ -19,8 +19,8 @@
 #include "third_party/blink/public/web/web_script_source.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "v8/include/cppgc/persistent.h"
-#include "v8/include/v8.h"
+#include "cppgc/persistent.h"
+#include "v8.h"
 
 namespace js_injection {
 namespace {

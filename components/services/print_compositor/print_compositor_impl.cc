@@ -94,7 +94,7 @@ PrintCompositorImpl::PrintCompositorImpl(
   if (!initialize_environment)
     return;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC)  // MinGW: no font proxy
   // Initialize child process font integration so skia can use it.
   content::InitializeFontIntegration();
 #endif
@@ -121,7 +121,7 @@ PrintCompositorImpl::PrintCompositorImpl(
 }
 
 PrintCompositorImpl::~PrintCompositorImpl() {
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) && defined(COMPILER_MSVC)  // MinGW: no font proxy
   content::UninitializeFontIntegration();
 #endif
 }

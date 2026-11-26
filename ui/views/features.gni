@@ -4,6 +4,7 @@
 
 import("//build/config/cast.gni")
 import("//build/config/ui.gni")
+import("//ui/base/ui_features.gni")
 
 # Enable desktop-oriented features implemented by DesktopNativeWidgetAura.
 enable_desktop_aura = use_aura && !is_chromeos && !is_castos
@@ -12,4 +13,5 @@ enable_desktop_aura = use_aura && !is_chromeos && !is_castos
 # enabled, characters offsets and word boundaries become available to ATs for
 # select Views. Currently only used on Windows, but could be used by other
 # platforms if needed.
-supports_ax_text_offsets = is_win
+# The helpers live in views_utilities_aura, built with native accessibility.
+supports_ax_text_offsets = is_win && has_native_accessibility

@@ -15,6 +15,10 @@
 #ifndef CRASHPAD_COMPAT_WIN_SYS_TIME_H_
 #define CRASHPAD_COMPAT_WIN_SYS_TIME_H_
 
+#ifdef _MSC_VER
 #include <winsock2.h>
+#else
+#include_next <sys/time.h>
+#endif
 
 #endif  // CRASHPAD_COMPAT_WIN_SYS_TIME_H_

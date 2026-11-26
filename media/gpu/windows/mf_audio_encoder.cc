@@ -410,6 +410,7 @@ void MFAudioEncoder::Initialize(const Options& options,
     return;
   }
 
+#if !defined(COMPILER_GCC) // FIXME: missing CODECAPI_AVEncAACEnableVBR
   if (options_.bitrate_mode.has_value() &&
       options_.bitrate_mode.value() == AudioEncoder::BitrateMode::kVariable &&
       options.codec == AudioCodec::kAAC) {
@@ -428,6 +429,7 @@ void MFAudioEncoder::Initialize(const Options& options,
       }
     }
   }
+#endif
 
   // We skip getting the stream counts and IDs because encoders only have one
   // input and output stream, and the ID of each is always 0.

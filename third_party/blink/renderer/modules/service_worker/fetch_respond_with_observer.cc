@@ -35,7 +35,7 @@
 #include "third_party/blink/renderer/platform/loader/fetch/bytes_consumer.h"
 #include "third_party/blink/renderer/platform/mojo/heap_mojo_remote.h"
 #include "third_party/blink/renderer/platform/wtf/gc_plugin.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using blink::mojom::ServiceWorkerResponseError;
 

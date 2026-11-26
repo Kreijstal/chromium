@@ -1342,7 +1342,7 @@ void BrowserMainLoop::ShutdownThreadsAndCleanUp() {
 // On windows, the monitor needs to be destroyed on the same thread
 // as they were created. On Linux, the monitor will be deleted when IO thread
 // goes away.
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   system_message_window_.reset();
 #endif
 
@@ -1532,7 +1532,7 @@ void BrowserMainLoop::PostCreateThreadsImpl() {
 #endif
   }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   if (!base::FeatureList::IsEnabled(
           video_capture::features::kWinCameraMonitoringInVideoCaptureService)) {
     system_message_window_ = std::make_unique<media::SystemMessageWindowWin>();

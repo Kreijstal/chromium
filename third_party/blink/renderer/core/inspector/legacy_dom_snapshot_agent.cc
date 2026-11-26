@@ -41,7 +41,7 @@
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/bindings/thread_debugger.h"
-#include "v8/include/v8-inspector.h"
+#include "v8-inspector.h"
 
 namespace blink {
 

@@ -33,7 +33,7 @@
 #include "third_party/blink/public/platform/web_effective_connection_type.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 class SkBitmap;
 

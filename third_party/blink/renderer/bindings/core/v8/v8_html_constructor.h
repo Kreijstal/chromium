@@ -8,7 +8,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/platform/bindings/wrapper_type_info.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

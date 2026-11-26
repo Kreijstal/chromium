@@ -19,7 +19,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_frame.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 

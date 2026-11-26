@@ -28,7 +28,7 @@
 #include "services/shape_detection/barcode_detection_provider_impl.h"
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "services/shape_detection/face_detection_provider_win.h"
 #elif BUILDFLAG(IS_MAC)
 #include "services/shape_detection/face_detection_provider_mac.h"
@@ -71,7 +71,7 @@ void ShapeDetectionService::BindFaceDetectionProvider(
       receiver.PassPipe().release().value());
 #elif BUILDFLAG(IS_MAC)
   FaceDetectionProviderMac::Create(std::move(receiver));
-#elif BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_MSVC)
   FaceDetectionProviderWin::Create(std::move(receiver));
 #else
   FaceDetectionProviderImpl::Create(std::move(receiver));

@@ -59,10 +59,10 @@
 #include "ui/events/keycodes/dom/keycode_converter.h"
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/gfx/geometry/point_conversions.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/cppgc/prefinalizer.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8.h"
+#include "cppgc/allocation.h"
+#include "cppgc/prefinalizer.h"
+#include "v8-cppgc.h"
+#include "v8.h"
 
 #if BUILDFLAG(IS_WIN)
 #include <windows.h>

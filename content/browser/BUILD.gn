@@ -3042,6 +3042,25 @@ source_set("browser") {
       "speech/tts_win_utils.cc",
       "speech/tts_win_utils.h",
     ]
+    if (is_mingw) {
+      sources -= [
+        "renderer_host/legacy_render_widget_host_win.cc",
+        "installedapp/fetch_related_win_apps_task.cc",
+        "installedapp/fetch_related_win_apps_task.h",
+        "installedapp/native_win_app_fetcher.h",
+        "installedapp/native_win_app_fetcher_impl.cc",
+        "installedapp/native_win_app_fetcher_impl.h",
+        "renderer_host/direct_manipulation_event_handler_win.cc",
+        "renderer_host/direct_manipulation_event_handler_win.h",
+        "renderer_host/direct_manipulation_helper_win.cc",
+        "renderer_host/direct_manipulation_helper_win.h",
+        "renderer_host/input/stylus_handwriting_callback_sink_win.cc",
+        "renderer_host/input/stylus_handwriting_callback_sink_win.h",
+        "renderer_host/input/stylus_handwriting_controller_win.cc",
+        "renderer_host/input/stylus_handwriting_controller_win.h",
+        "speech/tts_win.cc",
+      ]
+    }
     deps += [
       "//components/app_launch_prefetch",
       "//content/utility:delegate_data",
@@ -3051,17 +3070,35 @@ source_set("browser") {
       "//third_party/isimpledom",
       "//third_party/wtl",
     ]
-    libs += [
-      "comctl32.lib",
-      "dinput8.lib",
-      "dwmapi.lib",
-      "dxguid.lib",
-      "imm32.lib",
-      "oleacc.lib",
-      "portabledeviceguids.lib",
-      "uiautomationcore.lib",
-      "wtsapi32.lib",
-    ]
+    if (is_msvc) {
+      libs += [
+        "comctl32.lib",
+        "dinput8.lib",
+        "dwmapi.lib",
+        "dxguid.lib",
+        "imm32.lib",
+        "oleacc.lib",
+        "portabledeviceguids.lib",
+        "uiautomationcore.lib",
+        "wtsapi32.lib",
+      ]
+    } else {
+      libs += [
+        "comctl32",
+        "dinput8",
+        "dwmapi",
+        "dxguid",
+        "imm32",
+        "oleacc",
+        "portabledeviceguids",
+        "uiautomationcore",
+        "wtsapi32",
+      ]
+    }
+
+    if (is_qtwebengine) {
+       sources -= [ "accessibility/browser_accessibility_state_impl_win.cc" ]
+    }
   }
 
   if (is_win || is_mac) {

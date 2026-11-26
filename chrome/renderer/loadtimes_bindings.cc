@@ -17,14 +17,14 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
 #include "third_party/blink/public/web/web_performance_timings.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-microtask-queue.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-primitive.h"
-#include "v8/include/v8-template.h"
+#include "cppgc/allocation.h"
+#include "v8-context.h"
+#include "v8-function.h"
+#include "v8-isolate.h"
+#include "v8-microtask-queue.h"
+#include "v8-object.h"
+#include "v8-primitive.h"
+#include "v8-template.h"
 
 namespace {
 

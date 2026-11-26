@@ -13,8 +13,8 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-function.h"
+#include "v8-context.h"
+#include "v8-function.h"
 
 // static
 void GoogleAccountsPrivateApiExtension::Create(content::RenderFrame* frame) {

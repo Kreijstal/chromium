@@ -76,7 +76,7 @@ def WriteIncludes(headers, include):
   for filename in headers:
     include_point_found = False
     contents = []
-    with open(filename) as f:
+    with open(filename, 'r', encoding='utf-8') as f:
       for line in f:
         stripped_line = line.strip()
         contents.append(stripped_line)
@@ -92,9 +92,15 @@ def WriteIncludes(headers, include):
           "Include point not found in header: {0} .".format(filename)
         )
 
-    with open(filename, "w") as f:
+    with open(filename, 'w', encoding='utf-8') as f:
       for line in contents:
         print(line, file=f)
+
+
+def _PluginPath(path):
+  path = os.path.relpath(path)
+  # cmd.exe parses '/' as a switch; MSYS2 Python uses '/' as os.sep.
+  return path.replace('/', '\\') if os.name == 'nt' else path
 
 
 def main(argv):
@@ -232,7 +238,7 @@ def main(argv):
     plugin_options = FormatGeneratorOptions(options.plugin_options)
     protoc_cmd += [
       "--plugin",
-      "protoc-gen-plugin=" + os.path.relpath(options.plugin),
+      "protoc-gen-plugin=" + _PluginPath(options.plugin),
       "--plugin_out",
       plugin_options + options.plugin_out_dir,
     ]

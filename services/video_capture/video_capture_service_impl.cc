@@ -372,6 +372,7 @@ void VideoCaptureServiceImpl::LazyInitializeDeviceFactory() {
 
   LazyInitializeGpuDependenciesContext();
 
+#if !BUILDFLAG(IS_MINGW)
   // Create the platform-specific device factory.
   // The task runner passed to CreateFactory is used for things that need to
   // happen on a "UI thread equivalent", e.g. obtaining screen rotation on
@@ -391,6 +392,7 @@ void VideoCaptureServiceImpl::LazyInitializeDeviceFactory() {
 
   auto video_capture_system = std::make_unique<media::VideoCaptureSystemImpl>(
       std::move(media_device_factory));
+#endif
 
 #if BUILDFLAG(IS_CHROMEOS)
   device_factory_ = std::make_unique<VirtualDeviceEnabledDeviceFactory>(
@@ -400,7 +402,7 @@ void VideoCaptureServiceImpl::LazyInitializeDeviceFactory() {
               &GpuDependenciesContext::CreateJpegDecodeAccelerator,
               gpu_dependencies_context_->GetWeakPtr()),
           gpu_dependencies_context_->GetTaskRunner()));
-#else
+#elif !BUILDFLAG(IS_MINGW)
   device_factory_ = std::make_unique<VirtualDeviceEnabledDeviceFactory>(
       std::make_unique<DeviceFactoryImpl>(std::move(video_capture_system)));
 #endif  // BUILDFLAG(IS_CHROMEOS)

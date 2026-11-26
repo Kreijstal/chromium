@@ -36,7 +36,9 @@
 #include "third_party/blink/public/common/font_unique_name_lookup/font_unique_name_table.pb.h"
 #include "third_party/blink/public/common/font_unique_name_lookup/icu_fold_case_util.h"
 #include "ui/gfx/win/direct_write.h"
+#if defined(COMPILER_MSVC)
 #include "ui/gfx/win/text_analysis_source.h"
+#endif
 
 namespace mswr = Microsoft::WRL;
 
@@ -123,6 +125,7 @@ bool CheckRequiredStylesPresent(IDWriteFontCollection* collection,
   return true;
 }
 
+#if defined(COMPILER_MSVC)
 HRESULT GetLocalFontCollection(mswr::ComPtr<IDWriteFactory3>& factory,
                                IDWriteFontCollection** collection) {
   if (!g_sideloaded_fonts) {
@@ -189,6 +192,7 @@ HRESULT GetLocalFontCollection(mswr::ComPtr<IDWriteFactory3>& factory,
   hr = collection1->QueryInterface(collection);
   return hr;
 }
+#endif
 
 }  // namespace
 
@@ -394,6 +398,7 @@ void DWriteFontProxyImpl::MapCharacters(
     }
   }
 
+#if defined(COMPILER_MSVC)
   mswr::ComPtr<IDWriteFont> mapped_font;
 
   mswr::ComPtr<IDWriteNumberSubstitution> number_substitution;
@@ -477,6 +482,7 @@ void DWriteFontProxyImpl::MapCharacters(
   // Could not find a matching family
   CHECK_EQ(result->family_index, UINT32_MAX, base::NotFatalUntil::M152);
   CHECK_GT(result->mapped_length, 0u, base::NotFatalUntil::M152);
+#endif
 }
 
 void DWriteFontProxyImpl::MatchUniqueFont(
@@ -602,7 +608,11 @@ void DWriteFontProxyImpl::InitializeDirectWrite() {
 
   // Normally identical to factory_->GetSystemFontCollection() unless a
   // sideloaded font has been added using SideLoadFontForTesting().
+#if defined(COMPILER_MSVC)
   HRESULT hr = GetLocalFontCollection(factory3_, &collection_);
+#else
+  HRESULT hr = factory_->GetSystemFontCollection(&collection_);
+#endif
   CHECK(SUCCEEDED(hr), base::NotFatalUntil::M152);
 
   if (!collection_) {

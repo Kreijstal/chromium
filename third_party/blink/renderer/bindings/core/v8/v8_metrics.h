@@ -7,7 +7,7 @@
 
 #include "services/metrics/public/cpp/ukm_recorder.h"
 #include "third_party/blink/renderer/core/core_export.h"
-#include "v8/include/v8-metrics.h"
+#include "v8-metrics.h"
 
 namespace blink {
 

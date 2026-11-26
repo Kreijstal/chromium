@@ -5,7 +5,8 @@
 #ifndef DEVICE_VR_VR_EXPORT_H_
 #define DEVICE_VR_VR_EXPORT_H_
 
-#if defined(COMPONENT_BUILD) && defined(WIN32)
+#if defined(COMPONENT_BUILD)
+#if defined(COMPILER_MSVC)
 
 #if defined(DEVICE_VR_IMPLEMENTATION)
 #define DEVICE_VR_EXPORT __declspec(dllexport)
@@ -13,9 +14,11 @@
 #define DEVICE_VR_EXPORT __declspec(dllimport)
 #endif
 
-#elif defined(COMPONENT_BUILD) && !defined(WIN32)
+#else // !defined(COMPILER_MSVC)
 
 #define DEVICE_VR_EXPORT __attribute__((visibility("default")))
+
+#endif  // defined(COMPILER_MSVC)
 
 #else
 #define DEVICE_VR_EXPORT

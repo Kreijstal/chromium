@@ -228,10 +228,12 @@ component("gl") {
   }
 
   if (enable_swiftshader) {
-    data_deps += [
-      "//third_party/swiftshader/src/Vulkan:icd_file",
-      "//third_party/swiftshader/src/Vulkan:swiftshader_libvulkan",
-    ]
+    if (enable_swiftshader_vulkan) {
+      data_deps += [
+        "//third_party/swiftshader/src/Vulkan:icd_file",
+        "//third_party/swiftshader/src/Vulkan:swiftshader_libvulkan",
+      ]
+    }
   }
 
   if (enable_vulkan) {
@@ -328,26 +330,38 @@ component("gl") {
       "vsync_thread_win_dxgi.h",
     ]
 
-    libs = [
-      "dcomp.lib",
-      "dxgi.lib",
-      "dxguid.lib",
-      "dwmapi.lib",
-    ]
-    ldflags = [
-      "/DELAYLOAD:dwmapi.dll",
-      "/DELAYLOAD:dxgi.dll",
-    ]
+    if (is_mingw) {
+      configs -= [ "//build/config/compiler:no_rtti" ]
+      libs = [
+        "dcomp",
+        "dxgi",
+        "dxguid",
+        "dwmapi",
+      ]
+    } else {
+      libs = [
+        "dcomp.lib",
+        "dxgi.lib",
+        "dxguid.lib",
+        "dwmapi.lib",
+      ]
+      ldflags = [
+        "/DELAYLOAD:dwmapi.dll",
+        "/DELAYLOAD:dxgi.dll",
+      ]
+    }
     deps += [
       "//ui/base",
       "//ui/display",
       "//ui/gfx/mojom:dxgi_info",
     ]
 
+    if (enable_swiftshader) {
     data_deps += [
       "//third_party/swiftshader/src/Vulkan:icd_file",
       "//third_party/swiftshader/src/Vulkan:swiftshader_libvulkan",
     ]
+    }
     if (!use_static_angle) {
       data_deps += [
         "//third_party/angle:libEGL",

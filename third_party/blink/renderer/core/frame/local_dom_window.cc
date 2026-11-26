@@ -171,7 +171,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/uuid.h"
 #include "ui/display/screen_info.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

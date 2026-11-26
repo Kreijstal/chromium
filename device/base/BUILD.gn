@@ -44,6 +44,10 @@ component("base") {
     ]
     public_deps += [ "//third_party/abseil-cpp:absl" ]
     deps += [ "//ui/gfx" ]
-    libs = [ "setupapi.lib" ]
+    if (is_msvc) {
+      libs = [ "setupapi.lib" ]
+    } else {
+      libs = [ "setupapi" ]
+    }
   }
 }

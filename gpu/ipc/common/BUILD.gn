@@ -61,7 +61,7 @@ source_set("ipc_common_sources") {
       "dxgi_helpers.h",
     ]
     libs = [
-      "d3d11.lib",
+      "d3d11",
       "dxguid.lib",
     ]
   }

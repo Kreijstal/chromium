@@ -16,7 +16,7 @@
 #include "partition_alloc/page_allocator.h"
 #include "partition_alloc/partition_alloc.h"
 #include "partition_alloc/partition_root.h"
-#include "v8/include/v8-initialization.h"
+#include "v8-initialization.h"
 
 #if BUILDFLAG(IS_POSIX)
 #include <sys/mman.h>

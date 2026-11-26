@@ -5,12 +5,14 @@
 assert(is_win)
 
 config("delay_load_mf") {
-  ldflags = [
-    "/DELAYLOAD:d3d11.dll",
-    "/DELAYLOAD:mf.dll",
-    "/DELAYLOAD:mfplat.dll",
-    "/DELAYLOAD:mfreadwrite.dll",
-  ]
+  if (is_msvc) {
+    ldflags = [
+      "/DELAYLOAD:d3d11.dll",
+      "/DELAYLOAD:mf.dll",
+      "/DELAYLOAD:mfplat.dll",
+      "/DELAYLOAD:mfreadwrite.dll",
+    ]
+  }
 }
 
 source_set("media_foundation_util") {
@@ -32,14 +34,25 @@ source_set("media_foundation_util") {
     "//media/gpu:command_buffer_helper",
     "//third_party/libyuv",
   ]
-  libs = [
-    "d3d11.lib",
-    "mf.lib",
-    "mfplat.lib",
-    "mfreadwrite.lib",
-    "dxguid.lib",
-    "dxgi.lib",
-  ]
+  if (is_msvc) {
+    libs = [
+      "d3d11",
+      "mf.lib",
+      "mfplat.lib",
+      "mfreadwrite.lib",
+      "dxguid.lib",
+      "dxgi",
+    ]
+  } else {
+    libs = [
+      "d3d11",
+      "mf",
+      "mfplat",
+      "mfreadwrite",
+      "dxguid",
+      "dxgi",
+    ]
+  }
 
   # MediaFoundation is not available on Windows N, so must be delay loaded.
   all_dependent_configs = [ ":delay_load_mf" ]
@@ -56,11 +69,19 @@ component("color_space_util_win") {
     "//media/base",
     "//ui/gfx:color_space",
   ]
-  libs = [
-    "mf.lib",
-    "mfplat.lib",
-    "mfreadwrite.lib",
-  ]
+  if (is_msvc) {
+    libs = [
+      "mf.lib",
+      "mfplat.lib",
+      "mfreadwrite.lib",
+    ]
+  } else {
+    libs = [
+      "mf",
+      "mfplat",
+      "mfreadwrite",
+    ]
+  }
 
   # MediaFoundation is not available on Windows N, so must be delay loaded.
   all_dependent_configs = [ ":delay_load_mf" ]

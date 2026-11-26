@@ -35,7 +35,9 @@
 #include "services/audio/service_factory.h"
 #include "services/data_decoder/data_decoder_service.h"
 #include "services/network/network_service.h"
+#if defined(CONTENT_UTILITY_ON_DEVICE_MODEL)
 #include "services/on_device_model/on_device_model_service.h"
+#endif
 #include "services/on_device_model/public/mojom/on_device_model_service.mojom.h"
 #include "services/tracing/public/mojom/tracing_service.mojom.h"
 #include "services/tracing/tracing_service.h"
@@ -72,7 +74,7 @@
 #include "device/vr/public/mojom/isolated_xr_service.mojom.h"       // nogncheck
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "base/win/scoped_com_initializer.h"
 #include "sandbox/win/src/sandbox.h"
 extern sandbox::TargetServices* g_utility_target_services;
@@ -91,7 +93,7 @@ extern sandbox::TargetServices* g_utility_target_services;
 #endif  // BUILDFLAG(IS_WIN) || (BUILDFLAG(GOOGLE_CHROME_BRANDING) &&
         // (BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)))
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "media/mojo/mojom/media_foundation_service.mojom.h"  // nogncheck
 #include "media/mojo/services/media_foundation_service_broker.h"  // nogncheck
 #endif  // BUILDFLAG(IS_WIN)
@@ -133,7 +135,7 @@ NetworkBinderCreationCallback& GetNetworkBinderCreationCallbackForTesting() {
 
 namespace {
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void EnsureSandboxedWin() {
   // |g_utility_target_services| can be null if --no-sandbox is specified.
   if (g_utility_target_services)
@@ -153,7 +155,7 @@ class ContentCdmServiceClient final : public media::CdmService::Client {
   ~ContentCdmServiceClient() override = default;
 
   void EnsureSandboxed() override {
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
     EnsureSandboxedWin();
 #endif
   }
@@ -185,7 +187,7 @@ class UtilityThreadVideoCaptureServiceImpl final
                                 /*create_system_monitor=*/true) {}
 
  private:
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   base::win::ScopedCOMInitializer com_initializer_{
       base::win::ScopedCOMInitializer::kMTA};
 #endif  // BUILDFLAG(IS_WIN)
@@ -251,7 +253,7 @@ auto RunAudio(mojo::PendingReceiver<audio::mojom::AudioService> receiver) {
   }
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (command_line->HasSwitch(switches::kAudioProcessHighPriority)) {
     auto success =
@@ -288,14 +290,14 @@ auto RunDataDecoder(
       std::move(receiver));
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 auto RunMediaFoundationServiceBroker(
     mojo::PendingReceiver<media::mojom::MediaFoundationServiceBroker>
         receiver) {
   return std::make_unique<media::MediaFoundationServiceBroker>(
       std::move(receiver), base::BindOnce(&EnsureSandboxedWin));
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE)
 auto RunWebNNCompilerService(
@@ -352,6 +354,7 @@ auto RunVideoCapture(
   return service;
 }
 
+#if defined(CONTENT_UTILITY_ON_DEVICE_MODEL)
 auto RunOnDeviceModel(
     mojo::PendingReceiver<on_device_model::mojom::OnDeviceModelService>
         receiver) {
@@ -374,6 +377,7 @@ auto RunOnDeviceModel(
 #endif
   return on_device_model::OnDeviceModelService::Create(std::move(receiver));
 }
+#endif
 
 #if BUILDFLAG(ENABLE_VR) && !BUILDFLAG(IS_ANDROID)
 auto RunXrDeviceService(
@@ -443,7 +447,9 @@ void RegisterMainThreadServices(mojo::ServiceFactory& services) {
   services.Add(RunOOPVideoDecoderFactoryProcessService);
 #endif
 
+#if defined(CONTENT_UTILITY_ON_DEVICE_MODEL)
   services.Add(RunOnDeviceModel);
+#endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE)
   services.Add(RunWebNNCompilerService);
@@ -461,9 +467,9 @@ void RegisterMainThreadServices(mojo::ServiceFactory& services) {
                    : base::ThreadType::kDefault);
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   services.Add(RunMediaFoundationServiceBroker);
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 #if BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(media::kMediaDrmQueryInSeparateProcess)) {

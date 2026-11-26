@@ -6,11 +6,11 @@
 
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-exception.h"
-#include "v8/include/v8-local-handle.h"
-#include "v8/include/v8-primitive.h"
-#include "v8/include/v8-value.h"
+#include "v8-context.h"
+#include "v8-exception.h"
+#include "v8-local-handle.h"
+#include "v8-primitive.h"
+#include "v8-value.h"
 
 namespace blink {
 

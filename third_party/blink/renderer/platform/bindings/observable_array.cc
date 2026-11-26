@@ -8,11 +8,11 @@
 #include "third_party/blink/renderer/platform/bindings/dom_wrapper_world.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/bindings/v8_private_property.h"
-#include "v8/include/v8-container.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-proxy.h"
-#include "v8/include/v8-template.h"
+#include "v8-container.h"
+#include "v8-function.h"
+#include "v8-object.h"
+#include "v8-proxy.h"
+#include "v8-template.h"
 
 namespace blink {
 

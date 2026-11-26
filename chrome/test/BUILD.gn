@@ -2743,7 +2743,7 @@ test("unit_tests") {
     ]
   }
 
-  if (is_win) {
+  if (is_msvc) {
     assert(toolkit_views)
     deps += [ "//chrome/common/win:unit_tests" ]
 
@@ -3116,7 +3116,7 @@ test("unit_tests") {
       deps += [ "//chrome/browser/startup:unit_tests" ]
     }
 
-    if (is_linux || is_mac || is_win) {
+    if (is_linux || is_mac || (is_win && !is_mingw)) {
       deps += [ "//chrome/browser/ui/webui/updater:unit_tests" ]
     }
 

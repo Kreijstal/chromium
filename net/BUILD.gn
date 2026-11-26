@@ -1604,6 +1604,14 @@ component("net") {
       "ssl/client_cert_store_win.h",
       "ssl/ssl_platform_key_win.cc",
     ]
+    if (is_mingw) {
+      sources -= [
+        "base/network_change_notifier_win.cc",
+        "base/network_change_notifier_win.h",
+        "base/network_cost_change_notifier_win.cc",
+        "base/network_cost_change_notifier_win.h",
+      ]
+    }
   }
 
   if (use_kerberos) {
@@ -1814,9 +1822,22 @@ component("net") {
     }
   }
 
-  if (is_win) {
+  if (is_mingw) {
     libs = [
-      "crypt32.lib",
+      "crypt32",
+      "dhcpcsvc",
+      "iphlpapi",
+      "ncrypt",
+      "rpcrt4",
+      "secur32",
+      "urlmon",
+      "winhttp",
+    ]
+  }
+
+  if (is_msvc) {
+    libs = [
+      "crypt32",
       "dhcpcsvc.lib",
       "iphlpapi.lib",
       "ncrypt.lib",
@@ -3768,7 +3789,12 @@ target(_test_target_type, "net_unittests") {
     }
   }
 
-  if (is_win) {
+  if (is_mingw) {
+    libs = [
+      "iphlpapi",
+      "ncrypt",
+    ]
+  } else if (is_msvc) {
     libs = [
       "iphlpapi.lib",
       "ncrypt.lib",
@@ -3786,10 +3812,10 @@ target(_test_target_type, "net_unittests") {
         "//base/version_info",
         "//net/data/ssl/chrome_root_store:gen_signer_set_inc",
       ]
-      if (is_win) {
+      if (is_msvc) {
         sources += [ "cert/internal/trust_store_win_unittest.cc" ]
         sources += [ "cert/internal/path_builder_trust_store_win_unittest.cc" ]
-        libs += [ "crypt32.lib" ]
+        libs += [ "crypt32" ]
       }
     }
   }

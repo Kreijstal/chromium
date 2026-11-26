@@ -262,10 +262,13 @@ def main(argv):
         f'Cannot use mapping to Ash-specific folder {mapping_path} from '
         f'non-Ash target {target_path}'
       )
-      path_mappings[mapping[0]].append(
-        os.path.join('./', mapping[1]).replace('\\', '/')
-      )
+      # Avoid 'IndexError: list out of range' error
+      if len(mapping) > 1:
+        path_mappings[mapping[0]].append(
+          os.path.join('./', mapping[1]).replace('\\', '/')
+        )
 
+  tsconfig['compilerOptions']['baseUrl'] = '.'
   tsconfig['compilerOptions']['paths'] = path_mappings
 
   tsconfig_file = f'tsconfig_{args.output_suffix}.json'

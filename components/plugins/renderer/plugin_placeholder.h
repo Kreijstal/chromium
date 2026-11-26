@@ -12,7 +12,7 @@
 #include "gin/wrappable.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_plugin_params.h"
-#include "v8/include/cppgc/persistent.h"
+#include "cppgc/persistent.h"
 
 namespace plugins {
 

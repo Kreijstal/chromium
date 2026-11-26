@@ -15,7 +15,7 @@
 #include "gpu/command_buffer/client/client_shared_image.h"
 #include "gpu/command_buffer/common/shared_image_usage.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 #include "ui/gfx/win/d3d_shared_fence.h"
 #endif
 
@@ -145,14 +145,14 @@ void SharedImageInterface::Release() const {
   }
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
 void SharedImageInterface::UpdateSharedImage(
     const SyncToken& sync_token,
     scoped_refptr<gfx::D3DSharedFence> d3d_shared_fence,
     const Mailbox& mailbox) {
   NOTIMPLEMENTED_LOG_ONCE();
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
 void SharedImageInterface::CreateSharedImagePool(
     const SharedImagePoolId& pool_id,

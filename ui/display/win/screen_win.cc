@@ -82,11 +82,13 @@ struct ScaleFactors {
 ScaleFactors GetScaleFactorsForDPI(int dpi, bool include_accessibility) {
   const float device_scale_factor =
       display::win::internal::GetScalingFactorFromDPI(dpi);
+#if defined(COMPILER_MSVC)
   if (include_accessibility) {
     const float text_scale_factor =
         UwpTextScaleFactor::Instance()->GetTextScaleFactor();
     return {device_scale_factor * text_scale_factor, text_scale_factor};
   }
+#endif
   return {device_scale_factor, 1.0f};
 }
 
@@ -1134,10 +1136,12 @@ void ScreenWin::Initialize() {
       base::BindRepeating(&ScreenWin::OnWndProc, base::Unretained(this)));
   UpdateFromDisplayInfos(GetDisplayInfosFromSystem());
 
+#if defined(COMPILER_MSVC)
   // We want to remember that we've observed a screen metrics object so that we
   // can remove ourselves as an observer at some later point (either when the
   // metrics object notifies us it's going away or when we are destructed).
   scale_factor_observation_.Observe(UwpTextScaleFactor::Instance());
+#endif
 }
 
 HMONITOR ScreenWin::HMONITORFromScreenPoint(
@@ -1353,6 +1357,7 @@ int ScreenWin::GetSystemMetricsForScaleFactor(float scale_factor,
                           GetPrimaryDisplay().device_scale_factor());
 }
 
+#if defined(COMPILER_MSVC)
 void ScreenWin::OnUwpTextScaleFactorChanged() {
   UpdateAllDisplaysAndNotify();
 }
@@ -1361,6 +1366,7 @@ void ScreenWin::OnUwpTextScaleFactorCleanup(UwpTextScaleFactor* source) {
   scale_factor_observation_.Reset();
   UwpTextScaleFactor::Observer::OnUwpTextScaleFactorCleanup(source);
 }
+#endif
 
 bool ScreenWin::PerProcessDPIAwarenessDisabledForTesting() const {
   return per_process_dpi_awareness_disabled_for_testing_;

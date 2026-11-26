@@ -52,6 +52,11 @@
 #include "components/policy/core/common/scoped_critical_policy_section.h"
 #include "components/policy/policy_constants.h"
 
+// Missing from mingw-w64 userenv.h.
+#ifndef PT_ROAMING_PREEXISTING
+#define PT_ROAMING_PREEXISTING 0x00000008
+#endif
+
 namespace policy {
 
 namespace {

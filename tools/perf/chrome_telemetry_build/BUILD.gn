@@ -95,6 +95,9 @@ group("telemetry_chrome_test") {
       "//build/win:copy_cdb_to_output",
       "//third_party/crashpad/crashpad/tools:crashpad_database_util",
     ]
+    if (is_mingw) {
+      data_deps -= [ "//build/win:copy_cdb_to_output", ]
+    }
   }
 }
 

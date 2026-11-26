@@ -10,8 +10,8 @@
 #include "base/containers/circular_deque.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-persistent-handle.h"
+#include "v8-forward.h"
+#include "v8-persistent-handle.h"
 
 namespace content {
 class RenderFrame;

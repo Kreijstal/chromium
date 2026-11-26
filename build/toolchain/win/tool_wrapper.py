@@ -87,6 +87,11 @@ class WinTool(object):
         if os.path.exists(path):
             os.unlink(path)
 
+    def ExecDeleteFileAndRun(self, path, *args):
+        """Delete a file before running another tool."""
+        self.ExecDeleteFile(path)
+        return subprocess.call(args, shell=False)
+
     def ExecRecursiveMirror(self, source, dest):
         """Emulation of rm -rf out && cp -af in out."""
         if os.path.exists(dest):

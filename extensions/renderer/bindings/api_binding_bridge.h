@@ -9,7 +9,7 @@
 
 #include "extensions/common/extension_id.h"
 #include "gin/wrappable.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class APIBindingHooks;

@@ -12,10 +12,10 @@
 #include "components/guest_view/common/guest_view_constants.h"
 #include "components/guest_view/renderer/guest_view_request.h"
 #include "content/public/renderer/render_frame_observer.h"
-#include "v8/include/v8-context.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-microtask-queue.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-context.h"
+#include "v8-function.h"
+#include "v8-microtask-queue.h"
+#include "v8-primitive.h"
 
 namespace {
 

@@ -37,8 +37,8 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/document_lifecycle.h"
 #include "third_party/blink/renderer/core/inspector/thread_debugger_common_impl.h"
-#include "v8/include/v8-inspector.h"
-#include "v8/include/v8.h"
+#include "v8-inspector.h"
+#include "v8.h"
 
 namespace blink {
 

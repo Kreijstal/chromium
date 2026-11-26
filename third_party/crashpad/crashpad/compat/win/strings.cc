@@ -16,6 +16,7 @@
 
 #include <string.h>
 
+#ifdef _MSC_VER
 extern "C" {
 
 int strcasecmp(const char* s1, const char* s2) {
@@ -23,3 +24,4 @@ int strcasecmp(const char* s1, const char* s2) {
 }
 
 }  // extern "C"
+#endif

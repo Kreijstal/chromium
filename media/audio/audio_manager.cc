@@ -108,10 +108,14 @@ AudioManager::~AudioManager() {
 std::unique_ptr<AudioManager> AudioManager::Create(
     std::unique_ptr<AudioThread> audio_thread,
     AudioLogFactory* audio_log_factory) {
+#if BUILDFLAG(IS_MINGW) // missing CreateAudioManager
+  return nullptr;
+#else
   std::unique_ptr<AudioManager> manager =
       CreateAudioManager(std::move(audio_thread), audio_log_factory);
   manager->InitializeDebugRecording();
   return manager;
+#endif
 }
 
 // static

@@ -40,12 +40,14 @@ typedef NTSTATUS(WINAPI* NtOpenFileFunction)(OUT PHANDLE FileHandle,
 
 typedef NTSTATUS(WINAPI* NtCloseFunction)(IN HANDLE Handle);
 
+#ifdef _MSC_VER
 typedef struct _FILE_RENAME_INFORMATION {
   BOOLEAN ReplaceIfExists;
   HANDLE RootDirectory;
   ULONG FileNameLength;
   WCHAR FileName[1];
 } FILE_RENAME_INFORMATION, *PFILE_RENAME_INFORMATION;
+#endif
 
 typedef NTSTATUS(WINAPI* NtSetInformationFileFunction)(
     IN HANDLE FileHandle,
@@ -54,6 +56,7 @@ typedef NTSTATUS(WINAPI* NtSetInformationFileFunction)(
     IN ULONG Length,
     IN FILE_INFORMATION_CLASS FileInformationClass);
 
+#ifdef _MSC_VER
 typedef struct FILE_BASIC_INFORMATION {
   LARGE_INTEGER CreationTime;
   LARGE_INTEGER LastAccessTime;
@@ -61,11 +64,13 @@ typedef struct FILE_BASIC_INFORMATION {
   LARGE_INTEGER ChangeTime;
   ULONG FileAttributes;
 } FILE_BASIC_INFORMATION, *PFILE_BASIC_INFORMATION;
+#endif
 
 typedef NTSTATUS(WINAPI* NtQueryAttributesFileFunction)(
     IN POBJECT_ATTRIBUTES ObjectAttributes,
     OUT PFILE_BASIC_INFORMATION FileAttributes);
 
+#ifdef _MSC_VER
 typedef struct _FILE_NETWORK_OPEN_INFORMATION {
   LARGE_INTEGER CreationTime;
   LARGE_INTEGER LastAccessTime;
@@ -75,6 +80,7 @@ typedef struct _FILE_NETWORK_OPEN_INFORMATION {
   LARGE_INTEGER EndOfFile;
   ULONG FileAttributes;
 } FILE_NETWORK_OPEN_INFORMATION, *PFILE_NETWORK_OPEN_INFORMATION;
+#endif
 
 typedef NTSTATUS(WINAPI* NtQueryFullAttributesFileFunction)(
     IN POBJECT_ATTRIBUTES ObjectAttributes,
@@ -147,8 +153,10 @@ typedef NTSTATUS(WINAPI* NtOpenProcessFunction)(OUT PHANDLE ProcessHandle,
                                                     ObjectAttributes,
                                                 IN PCLIENT_ID ClientId);
 
+#ifdef _MSC_VER
 // Provide ThreadImpersonationToken which is not in THREADINFOCLASS.
 constexpr auto ThreadImpersonationToken = static_cast<THREADINFOCLASS>(5);
+#endif
 
 typedef NTSTATUS(WINAPI* NtSetInformationThreadFunction)(
     IN HANDLE ThreadHandle,
@@ -201,8 +209,10 @@ typedef NTSTATUS(WINAPI* NtOpenProcessTokenExFunction)(
 // -----------------------------------------------------------------------
 // Memory
 
+#ifdef _MSC_VER
 // Don't really need this structure right now.
 typedef PVOID PRTL_HEAP_PARAMETERS;
+#endif
 
 typedef PVOID(WINAPI* RtlCreateHeapFunction)(IN ULONG Flags,
                                              IN PVOID HeapBase OPTIONAL,
@@ -264,8 +274,10 @@ typedef NTSTATUS(WINAPI* NtProtectVirtualMemoryFunction)(
 // -----------------------------------------------------------------------
 // Objects
 
+#ifdef _MSC_VER
 // Add some field not in OBJECT_INFORMATION_CLASS.
 constexpr auto ObjectNameInformation = static_cast<OBJECT_INFORMATION_CLASS>(1);
+#endif
 
 typedef enum _POOL_TYPE {
   NonPagedPool,
@@ -277,6 +289,7 @@ typedef enum _POOL_TYPE {
   NonPagedPoolCacheAlignedMustS
 } POOL_TYPE;
 
+#ifdef _MSC_VER
 typedef struct _OBJECT_BASIC_INFORMATION {
   ULONG Attributes;
   ACCESS_MASK GrantedAccess;
@@ -319,6 +332,7 @@ typedef struct _OBJECT_TYPE_INFORMATION {
 typedef struct _OBJECT_NAME_INFORMATION {
   UNICODE_STRING ObjectName;
 } OBJECT_NAME_INFORMATION, *POBJECT_NAME_INFORMATION;
+#endif
 
 typedef NTSTATUS(WINAPI* NtQueryObjectFunction)(
     IN HANDLE Handle,

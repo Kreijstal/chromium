@@ -260,3 +260,13 @@ shim_headers("icuuc_shim") {
     "unicode/uversion.h",
   ]
 }
+
+# Host tools list icudtl.dat as an input; system ICU needs no data file,
+# so an empty placeholder stands in for it.
+action("copy_icudata") {
+  script = "//build/linux/unbundle/touch.py"
+  outputs = [ "$root_out_dir/icudtl.dat" ]
+  args = rebase_path(outputs, root_build_dir)
+}
+group("icudata") {
+}

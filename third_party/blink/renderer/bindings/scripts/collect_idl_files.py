@@ -9,6 +9,7 @@ Collected IDL definitions are parsed into ASTs and saved into a file with
 a label of Blink component.
 """
 
+import os
 import optparse
 import shlex
 
@@ -66,8 +67,29 @@ def main():
         component=web_idl.Component(options.component),
         for_testing=bool(options.for_testing),
     )
+    private_chromium_dir = os.environ.get("QTWEBENGINE_PRIVATE_CHROMIUM_DIR")
+    if not private_chromium_dir:
+        private_chromium_dir = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "..", "..", "..", ".."))
+
+    def _use_private_chromium_path(filepath):
+        if os.path.exists(filepath):
+            return filepath
+        normalized_path = filepath.replace("\\", "/")
+        third_party_marker = "/third_party/"
+        marker_index = normalized_path.find(third_party_marker)
+        if marker_index < 0:
+            return filepath
+        private_path = os.path.join(
+            private_chromium_dir,
+            normalized_path[marker_index + 1:].replace("/", os.sep))
+        if os.path.exists(private_path):
+            return private_path
+        return filepath
+
     for filepath in filepaths:
-        ast_group.add_ast_node(idl_parser.ParseFile(parser, filepath))
+        ast_group.add_ast_node(idl_parser.ParseFile(
+            parser, _use_private_chromium_path(filepath)))
     ast_group.write_to_file(options.output)
 
 

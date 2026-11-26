@@ -92,7 +92,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/inspector_protocol/crdtp/json.h"
 #include "ui/accessibility/ax_mode.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 using crdtp::SpanFrom;
 using crdtp::json::ConvertCBORToJSON;

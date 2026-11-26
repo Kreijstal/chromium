@@ -16,7 +16,7 @@
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
 #include "third_party/blink/renderer/platform/heap/collection_support/heap_deque.h"
 #include "third_party/blink/renderer/platform/wtf/type_traits.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

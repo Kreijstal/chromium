@@ -13,7 +13,7 @@
 #include "base/timer/timer.h"
 #include "third_party/pdfium/public/fpdf_formfill.h"
 #include "third_party/pdfium/public/fpdfview.h"
-#include "v8/include/v8-isolate.h"
+#include "v8-isolate.h"
 
 namespace chrome_pdf {
 

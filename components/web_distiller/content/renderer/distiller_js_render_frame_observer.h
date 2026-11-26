@@ -9,7 +9,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace web_distiller {
 

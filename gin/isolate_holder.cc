@@ -24,10 +24,10 @@
 #include "gin/v8_initializer.h"
 #include "gin/v8_isolate_memory_dump_provider.h"
 #include "gin/v8_shared_memory_dump_provider.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-locker.h"
-#include "v8/include/v8-snapshot.h"
+#include "v8-cppgc.h"
+#include "v8-isolate.h"
+#include "v8-locker.h"
+#include "v8-snapshot.h"
 
 namespace gin {
 

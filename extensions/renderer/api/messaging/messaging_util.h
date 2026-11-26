@@ -11,7 +11,7 @@
 
 #include "extensions/common/api/messaging/message.h"
 #include "extensions/common/extension_id.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace blink {
 class WebLocalFrame;

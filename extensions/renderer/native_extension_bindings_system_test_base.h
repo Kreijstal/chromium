@@ -29,7 +29,7 @@
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "v8/include/v8-forward.h"
+#include "v8-forward.h"
 
 namespace content {
 class MockRenderThread;

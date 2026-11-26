@@ -77,16 +77,18 @@ if (is_win) {
   # ldflags in GN aren't automatically inherited.
   config("browser_win_linker_flags") {
     libs = [
-      "credui.lib",
-      "cryptui.lib",
-      "dwmapi.lib",
-      "imm32.lib",  # chrome_elf_init.cc
-      "netapi32.lib",
-      "ndfapi.lib",  # For browser/net/net_error_diagnostics_dialog_win.h
-      "wbemuuid.lib",  # For browser/metrics /
-                       # antivirus_metrics_provider_win.cc
+      "credui",
+      "cryptui",
+      "dwmapi",
+      "imm32",  # chrome_elf_init.cc
+      "netapi32",
+      "ndfapi",  # For browser/net/net_error_diagnostics_dialog_win.h
+      "wbemuuid",  # For browser/metrics /
+                   # antivirus_metrics_provider_win.cc
     ]
-    ldflags = [ "/DELAYLOAD:ndfapi.dll" ]
+    if (is_msvc) {
+      ldflags = [ "/DELAYLOAD:ndfapi.dll" ]
+    }
   }
 }
 

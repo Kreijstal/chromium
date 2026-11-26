@@ -42,8 +42,8 @@
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
 #include "third_party/perfetto/include/perfetto/ext/base/string_utils.h"
-#include "v8/include/v8-profiler.h"
-#include "v8/include/v8.h"
+#include "v8-profiler.h"
+#include "v8.h"
 
 namespace blink {
 

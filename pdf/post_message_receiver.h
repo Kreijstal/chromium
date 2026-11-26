@@ -14,7 +14,7 @@
 #include "gin/interceptor.h"
 #include "gin/public/wrapper_info.h"
 #include "gin/wrappable.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace base {
 class SequencedTaskRunner;

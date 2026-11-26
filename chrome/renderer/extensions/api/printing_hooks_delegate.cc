@@ -8,7 +8,7 @@
 #include "extensions/renderer/v8_helpers.h"
 #include "gin/dictionary.h"
 #include "third_party/blink/public/web/web_blob.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-primitive.h"
 
 namespace extensions {
 

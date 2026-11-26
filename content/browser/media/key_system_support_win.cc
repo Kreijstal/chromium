@@ -67,6 +67,7 @@ void GetMediaFoundationServiceCdmCapability(
     media::CdmCapabilityCB cdm_capability_cb) {
   DVLOG(3) << __func__ << ": key_system=" << key_system
            << ", is_hw_secure=" << is_hw_secure;
+#if defined(COMPILER_MSVC)
   if (!media::MediaFoundationCdm::IsAvailable()) {
     DVLOG(1) << "MediaFoundationCdm not available!";
     std::move(cdm_capability_cb)
@@ -89,6 +90,13 @@ void GetMediaFoundationServiceCdmCapability(
                   media::CdmCapabilityQueryStatus::kDisconnectionError),
               base::unexpected(
                   media::CdmCapabilityQueryStatus::kDisconnectionError))));
+#else
+  DVLOG(1) << "MediaFoundationCdm not available!";
+  std::move(cdm_capability_cb)
+      .Run(base::unexpected(
+          media::CdmCapabilityQueryStatus::kMediaFoundationCdmNotSupported));
+  return;
+#endif
 }
 
 }  // namespace content

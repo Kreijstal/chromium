@@ -7,9 +7,9 @@
 #include <array>
 
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
-#include "v8/include/v8-container.h"
-#include "v8/include/v8-object.h"
-#include "v8/include/v8-primitive.h"
+#include "v8-container.h"
+#include "v8-object.h"
+#include "v8-primitive.h"
 
 namespace blink {
 namespace bindings {

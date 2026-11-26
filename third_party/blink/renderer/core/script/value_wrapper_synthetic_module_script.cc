@@ -23,7 +23,7 @@
 #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

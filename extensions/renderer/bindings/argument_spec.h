@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace extensions {
 class APITypeReferenceMap;

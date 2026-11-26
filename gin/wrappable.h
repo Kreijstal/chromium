@@ -10,8 +10,8 @@
 #include "gin/converter.h"
 #include "gin/gin_export.h"
 #include "gin/public/wrapper_info.h"
-#include "v8/include/cppgc/garbage-collected.h"
-#include "v8/include/v8-sandbox.h"
+#include "cppgc/garbage-collected.h"
+#include "v8-sandbox.h"
 
 namespace gin {
 

@@ -52,10 +52,10 @@ class MEDIA_EXPORT CdmDocumentService {
       base::OnceCallback<void(uint32_t version,
                               const std::vector<uint8_t>& storage_id)>;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   using GetMediaFoundationCdmDataCB =
       base::OnceCallback<void(std::unique_ptr<MediaFoundationCdmData>)>;
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 
   // Allows authorized services to verify that the underlying platform is
   // trusted. An example of a trusted platform is a Chrome OS device in
@@ -82,7 +82,7 @@ class MEDIA_EXPORT CdmDocumentService {
   //                 version does not exist.
   virtual void GetStorageId(uint32_t version, StorageIdCB callback) = 0;
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_MSVC)
   // Gets the Media Foundation cdm data for the origin associated with the CDM.
   virtual void GetMediaFoundationCdmData(
       GetMediaFoundationCdmDataCB callback) = 0;
@@ -91,7 +91,7 @@ class MEDIA_EXPORT CdmDocumentService {
   // logic, e.g. disable the CDM in the current robustness level. For error
   // events, the `hresult` provides more details about the error.
   virtual void OnCdmEvent(CdmEvent event, HRESULT hresult) = 0;
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_MSVC)
 };
 
 }  // namespace media

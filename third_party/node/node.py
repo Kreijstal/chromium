@@ -9,8 +9,12 @@ import subprocess
 import sys
 import os
 
-
 def GetBinaryPath():
+  # qtwebengine: This is set with cmake -E env when calling ninja.
+  node_path = os.getenv('NODEJS_EXECUTABLE')
+  assert node_path, "NODEJS_EXECUTABLE must be set to the nodejs executable"
+  return node_path
+
   if platform.machine() == 'arm64':
     darwin_path = 'mac_arm64'
     darwin_name = 'node-darwin-arm64'
@@ -25,7 +29,11 @@ def GetBinaryPath():
 
 
 def RunNodeRaw(cmd_parts, stdout=None):
-  cmd = [GetBinaryPath()] + cmd_parts
+  if sys.platform == 'win32' and 'MINGW' in sys.version:
+    # We have to invoke node.exe through winpty
+    cmd = ['node'] + cmd_parts
+  else:
+    cmd = [GetBinaryPath()] + cmd_parts
   process = subprocess.Popen(
       cmd, cwd=os.getcwd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
       universal_newlines=True, encoding='utf-8')

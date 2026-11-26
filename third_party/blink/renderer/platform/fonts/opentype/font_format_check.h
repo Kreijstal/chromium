@@ -5,7 +5,18 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_OPENTYPE_FONT_FORMAT_CHECK_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_OPENTYPE_FONT_FORMAT_CHECK_H_
 
+#include <stdint.h>
+
+#include <initializer_list>
+#include <optional>
+
+#include "build/buildflag.h"
+#include "third_party/blink/renderer/platform/fonts/font_rust_buildflags.h"
+#if BUILDFLAG(ENABLE_CPP_API_FROM_RUST)
 #include "third_party/blink/renderer/platform/fonts/font_format.h"
+#else
+#include "third_party/blink/renderer/platform/wtf/vector.h"
+#endif
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -41,7 +52,15 @@ class PLATFORM_EXPORT FontFormatCheck {
   static VariableFontSubType ProbeVariableFont(sk_sp<SkTypeface>);
 
  private:
+#if BUILDFLAG(ENABLE_CPP_API_FROM_RUST)
   font_format::FontFormatInfo format_info_;
+#else
+  bool HasTables(std::initializer_list<uint32_t> tags) const;
+
+  Vector<uint32_t> table_tags_;
+  std::optional<uint16_t> colr_version_;
+  std::optional<uint16_t> avar_major_version_;
+#endif
 };
 
 }  // namespace blink

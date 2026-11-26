@@ -506,16 +506,20 @@ source_set("unit_tests") {
       "notification_platform_bridge_win_unittest.cc",
       "win/fake_notification_image_retainer.cc",
       "win/fake_notification_image_retainer.h",
-      "win/notification_helper_launches_chrome_unittest.cc",
       "win/notification_image_retainer_unittest.cc",
       "win/notification_launch_id_unittest.cc",
       "win/notification_template_builder_unittest.cc",
     ]
     deps += [
       "//chrome/common/notifications",
-      "//chrome/installer/setup:lib",
       "//chrome/test/base:process_helpers_win",
     ]
+
+    # chrome/installer/setup is MSVC-only.
+    if (is_msvc) {
+      sources += [ "win/notification_helper_launches_chrome_unittest.cc" ]
+      deps += [ "//chrome/installer/setup:lib" ]
+    }
   }
 
   if (is_mac) {

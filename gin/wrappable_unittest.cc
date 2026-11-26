@@ -16,11 +16,11 @@
 #include "gin/test/v8_test.h"
 #include "gin/try_catch.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "v8/include/cppgc/allocation.h"
-#include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-function.h"
-#include "v8/include/v8-message.h"
-#include "v8/include/v8-script.h"
+#include "cppgc/allocation.h"
+#include "v8-cppgc.h"
+#include "v8-function.h"
+#include "v8-message.h"
+#include "v8-script.h"
 
 namespace gin {
 

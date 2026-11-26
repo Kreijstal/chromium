@@ -26,6 +26,7 @@ HRESULT DCompositionWaitForCompositorClock(UINT count,
                                            const HANDLE* handles,
                                            DWORD timeoutInMs);
 
+#if !defined(COMPILER_GCC) /* FIXME: missing COMPOSITION_FRAME_ID, COMPOSITION_FRAME_ID_TYPE from dcomp.h */
 // Wrapper for DcompositionGetFrameId Win32 dcomp.h function
 HRESULT DCompositionGetFrameId(COMPOSITION_FRAME_ID_TYPE frameIdType,
                                COMPOSITION_FRAME_ID* frameId);
@@ -36,6 +37,7 @@ HRESULT DCompositionGetStatistics(COMPOSITION_FRAME_ID frameId,
                                   UINT targetIdCount,
                                   COMPOSITION_TARGET_ID* targetIds,
                                   UINT* actualTargetIdCount);
+#endif
 
 // Initialize direct composition with the given d3d11 device, d3d12 command
 // queue, and factory used to create a `SolidColorPoolBase` matching the

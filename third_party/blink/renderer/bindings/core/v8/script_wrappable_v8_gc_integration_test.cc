@@ -9,7 +9,7 @@
 #include "third_party/blink/renderer/core/testing/dictionary_test.h"
 #include "third_party/blink/renderer/core/testing/gc_object_liveness_observer.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
-#include "v8/include/v8.h"
+#include "v8.h"
 
 namespace blink {
 

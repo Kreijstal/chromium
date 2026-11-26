@@ -12,6 +12,7 @@ does not have a POSIX-like shell (e.g. Windows).
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 
@@ -60,6 +61,11 @@ def main():
     )
     parser.add_argument('command', nargs='+', help='Linking command')
     args = parser.parse_args()
+    if sys.platform == 'win32':
+        # MinGW: BUILD files shared with MSVC name libs as foo.lib.
+        args.command = [
+            re.sub(r'^-l(.+)\.lib$', r'-l\1', a) for a in args.command
+        ]
 
     # Work-around for gold being slow-by-default. http://crbug.com/632230
     fast_env = dict(os.environ)

@@ -7,6 +7,10 @@
 #include "base/notreached.h"
 #include "build/build_config.h"
 
+#if BUILDFLAG(IS_WIN) && !defined(D3D_FEATURE_LEVEL_1_0_GENERIC)
+#define D3D_FEATURE_LEVEL_1_0_GENERIC static_cast<D3D_FEATURE_LEVEL>(0x1001)
+#endif
+
 namespace mojo {
 
 #if BUILDFLAG(IS_WIN)

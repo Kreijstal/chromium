@@ -826,7 +826,7 @@ static_library("common") {
       "touch_injector_win.h",
       "usage_stats_consent_win.cc",
     ]
-    libs += [ "crypt32.lib" ]
+    libs += [ "crypt32" ]
     deps += [
       "//mojo/core/embedder",
       "//remoting/base/crash",
@@ -1046,10 +1046,12 @@ source_set("unit_tests") {
 
   if (is_win) {
     sources += [ "setup/daemon_controller_delegate_win_unittest.cc" ]
-    deps += [
-      "//remoting/host/installer/win/mini_installer:unit_tests",
-      "//remoting/host/installer/win/setup:unit_tests",
-    ]
+    if (is_msvc) {
+      deps += [
+        "//remoting/host/installer/win/mini_installer:unit_tests",
+        "//remoting/host/installer/win/setup:unit_tests",
+      ]
+    }
   }
 
   if (is_linux) {

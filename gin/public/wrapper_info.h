@@ -8,8 +8,8 @@
 #include "gin/gin_export.h"
 #include "gin/public/gin_embedders.h"
 #include "gin/public/wrappable_pointer_tags.h"
-#include "v8/include/v8-forward.h"
-#include "v8/include/v8-object.h"
+#include "v8-forward.h"
+#include "v8-object.h"
 
 namespace gin {
 

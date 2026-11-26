@@ -53,7 +53,9 @@ if (is_win || is_linux) {
       sources = [ "$_dir/$_name" ]
       if (target_os == "win") {
         sources[0] += ".exe"
-        sources += [ "$_dir/$_name.exe.pdb" ]
+        if (!is_mingw) {
+          sources += [ "$_dir/$_name.exe.pdb" ]
+        }
       }
       outputs = [ "$root_out_dir/{{source_file_part}}" ]
       deps = [ _label ]

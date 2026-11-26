@@ -14,7 +14,9 @@
 #include <devpkey.h>
 #include <setupapi.h>
 #include <stddef.h>
+#if defined(COMPILER_MSVC)
 #include <wdmguid.h>
+#endif
 #include <winioctl.h>
 
 // LogSeverity is both a macro in setupapi.h and an enum in absl, which is used

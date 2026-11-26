@@ -18,7 +18,7 @@
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 #include "third_party/blink/renderer/platform/bindings/source_location.h"
 #include "third_party/blink/renderer/platform/wtf/text/format.h"
-#include "v8/include/v8-metrics.h"
+#include "v8-metrics.h"
 
 namespace blink {
 

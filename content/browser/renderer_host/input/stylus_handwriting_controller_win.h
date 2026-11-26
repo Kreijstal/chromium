@@ -5,7 +5,9 @@
 #ifndef CONTENT_BROWSER_RENDERER_HOST_INPUT_STYLUS_HANDWRITING_CONTROLLER_WIN_H_
 #define CONTENT_BROWSER_RENDERER_HOST_INPUT_STYLUS_HANDWRITING_CONTROLLER_WIN_H_
 
+#if defined(COMPILER_MSVC)
 #include <ShellHandwriting.h>
+#endif
 #include <msctf.h>
 #include <winerror.h>
 #include <wrl/client.h>

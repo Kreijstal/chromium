@@ -34,8 +34,8 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "v8/include/cppgc/heap-statistics.h"
 #include "v8/include/v8-cppgc.h"
-#include "v8/include/v8-isolate.h"
-#include "v8/include/v8-statistics.h"
+#include "v8-isolate.h"
+#include "v8-statistics.h"
 
 #if BUILDFLAG(ENABLE_VRP_FLAGS)
 #include "components/vrp_flags/vrp_flags.h"        // nogncheck
