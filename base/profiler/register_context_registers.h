@@ -8,7 +8,12 @@
 #ifndef BASE_PROFILER_REGISTER_CONTEXT_REGISTERS_H_
 #define BASE_PROFILER_REGISTER_CONTEXT_REGISTERS_H_
 
+#if __has_include(<ptrauth.h>)
 #include <ptrauth.h>
+#else
+// Clang-only header; no pointer auth elsewhere.
+#define ptrauth_strip(value, key) (value)
+#endif
 #include <stdint.h>
 
 #include "base/compiler_specific.h"
