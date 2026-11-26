@@ -165,6 +165,7 @@ component("crypto") {
     if (is_mingw) {
       sources -= [ "user_verifying_key_win.cc" ]
       libs = [
+        "crypt32",
         "ncrypt",
         "tbs",
       ]
