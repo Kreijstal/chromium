@@ -111,9 +111,15 @@ class flat_tree {
  protected:
   // Alias for the key type. Deduced based on whether the comparator is
   // transparent.
+#if defined(__clang__)
   template <typename K>
   using KeyT =
       ConditionalT<requires { typename KeyCompare::is_transparent; }, K, Key>;
+#else
+  // GCC can't deduce K through ConditionalT.
+  template <typename K>
+  using KeyT = K;
+#endif
 
  public:
   // --------------------------------------------------------------------------
