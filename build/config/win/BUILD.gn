@@ -335,6 +335,10 @@ config("winver") {
     "_WIN32_WINNT=0x0A00",
     "WINVER=0x0A00",
   ]
+  if (is_mingw) {
+    # mingw-w64's sdkddkver.h stops at NTDDI_WIN11_GE.
+    defines += [ "NTDDI_WIN11_BR=0x0A000011" ]
+  }
 }
 
 # Linker flags for Windows SDK setup, this is applied only to EXEs and DLLs.
