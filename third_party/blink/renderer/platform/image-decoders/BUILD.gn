@@ -94,13 +94,6 @@ component("image_decoders") {
     defines = [ "BLINK_CRABBYAVIF" ]
   }
 
-  if (enable_rust_png) {
-    sources += [
-      "png/skia_png_rust_image_decoder.cc",
-      "png/skia_png_rust_image_decoder.h",
-    ]
-  }
-
   if (enable_jxl_decoder) {
     sources += [
       "jxl/jxl_image_decoder.cc",
