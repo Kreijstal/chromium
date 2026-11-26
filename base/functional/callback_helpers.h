@@ -29,18 +29,21 @@ namespace internal {
 template <typename... Args>
 class OnceCallbackHolder final {
  public:
-  explicit OnceCallbackHolder(OnceCallback<void(Args...)> callback)
-      : callback_(std::move(callback)) {
+  OnceCallbackHolder(OnceCallback<void(Args...)> callback,
+                     bool ignore_extra_runs = false)
+      : callback_(std::move(callback)), ignore_extra_runs_(ignore_extra_runs) {
     DCHECK(callback_);
   }
   OnceCallbackHolder(const OnceCallbackHolder&) = delete;
   OnceCallbackHolder& operator=(const OnceCallbackHolder&) = delete;
 
   void Run(Args... args) {
-    CHECK(!has_run_.exchange(true, std::memory_order_relaxed))
-        << "Both OnceCallbacks returned by "
-           "base::SplitOnceCallback() were run. "
-           "At most one of the pair should be run.";
+    if (has_run_.exchange(true, std::memory_order_relaxed)) {
+      CHECK(ignore_extra_runs_) << "Both OnceCallbacks returned by "
+                                   "base::SplitOnceCallback() were run. "
+                                   "At most one of the pair should be run.";
+      return;
+    }
     DCHECK(callback_);
     std::move(callback_).Run(std::forward<Args>(args)...);
   }
@@ -48,6 +51,7 @@ class OnceCallbackHolder final {
  private:
   std::atomic<bool> has_run_{false};
   base::OnceCallback<void(Args...)> callback_;
+  const bool ignore_extra_runs_;
 };
 
 template <typename... Args>
@@ -75,6 +79,22 @@ RepeatingCallback<void(Args...)> ForwardRepeatingCallbacks(
           cbs));
   return BindRepeating(&internal::ForwardRepeatingCallbacksImpl<Args...>,
                        std::move(v));
+}
+
+// Wraps the given OnceCallback into a RepeatingCallback that relays its
+// invocation to the original OnceCallback on the first invocation. The
+// following invocations are just ignored.
+//
+// Note that this deliberately subverts the Once/Repeating paradigm of Callbacks
+// but helps ease the migration from old-style Callbacks. Avoid if possible; use
+// if necessary for migration. TODO(tzik): Remove it. https://crbug.com/730593
+template <typename... Args>
+RepeatingCallback<void(Args...)> AdaptCallbackForRepeating(
+    OnceCallback<void(Args...)> callback) {
+  using Helper = internal::OnceCallbackHolder<Args...>;
+  return base::BindRepeating(
+      &Helper::Run, std::make_unique<Helper>(std::move(callback),
+                                             /*ignore_extra_runs=*/true));
 }
 
 // Wraps the given OnceCallback and returns two OnceCallbacks with an identical
