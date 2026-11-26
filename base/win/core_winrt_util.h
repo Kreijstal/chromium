@@ -36,6 +36,8 @@ HRESULT GetActivationFactory(InterfaceType** factory) {
 
   return base::win::RoGetActivationFactory(class_id_hstring.get(),
                                            IID_PPV_ARGS(factory));
+#else
+  return E_NOTIMPL;
 #endif
 }
 

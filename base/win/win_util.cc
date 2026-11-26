@@ -496,6 +496,9 @@ bool& IsDeviceFormConvertible() {
            (deviceForm == DEVICEFAMILYDEVICEFORM_DETACHABLE);
   }();
   return is_convertible;
+#else
+  static bool is_convertible = false;  // MinGW: no device form query.
+  return is_convertible;
 #endif
 }
 
