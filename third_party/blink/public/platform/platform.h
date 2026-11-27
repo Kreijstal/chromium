@@ -39,6 +39,8 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+// GCC: complete types for the inline nullptr returns below.
+#include "base/memory/ref_counted_memory.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/threading/platform_thread.h"
@@ -55,6 +57,7 @@
 #include "third_party/blink/public/platform/audio/web_audio_device_source_type.h"
 #include "third_party/blink/public/platform/cross_variant_mojo_util.h"
 #include "third_party/blink/public/platform/url_loader_throttle_provider.h"
+#include "third_party/blink/public/platform/web_audio_bus.h"
 #include "third_party/blink/public/platform/web_audio_device.h"
 #include "third_party/blink/public/platform/web_data.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -129,7 +132,6 @@ class MainThread;
 class ThreadSafeBrowserInterfaceBrokerProxy;
 class URLLoaderThrottle;
 class UserMetricsAction;
-class WebAudioBus;
 class WebAudioLatencyHint;
 class WebAudioSinkDescriptor;
 class WebCrypto;

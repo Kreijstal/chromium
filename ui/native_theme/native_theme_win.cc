@@ -12,6 +12,24 @@
 #include <vsstyle.h>
 #include <wrl/event.h>
 
+#if defined(__MINGW32__)
+// mingw-w64 lacks IClosedCaptionPropertiesStatics2 (UniversalApiContract 15).
+namespace ABI::Windows::Media::ClosedCaptioning {
+MIDL_INTERFACE("9DE26870-37DE-4197-8845-9A48DC5AC317")
+IClosedCaptionPropertiesStatics2 : public IInspectable {
+ public:
+  virtual HRESULT STDMETHODCALLTYPE add_PropertiesChanged(
+      ABI::Windows::Foundation::IEventHandler<IInspectable*>* handler,
+      EventRegistrationToken* token) = 0;
+  virtual HRESULT STDMETHODCALLTYPE remove_PropertiesChanged(
+      EventRegistrationToken token) = 0;
+};
+}  // namespace ABI::Windows::Media::ClosedCaptioning
+__CRT_UUID_DECL(ABI::Windows::Media::ClosedCaptioning::IClosedCaptionPropertiesStatics2,
+                0x9de26870, 0x37de, 0x4197,
+                0x88, 0x45, 0x9a, 0x48, 0xdc, 0x5a, 0xc3, 0x17)
+#endif
+
 #include <array>
 #include <cmath>
 #include <optional>

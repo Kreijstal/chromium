@@ -25,6 +25,17 @@
 
 namespace media {
 
+// MinGW DirectX-Headers return D3D12 structs through an out pointer.
+template <typename T>
+D3D12_RESOURCE_DESC GetResourceDesc(const T& resource) {
+#if defined(__MINGW32__)
+  D3D12_RESOURCE_DESC desc;
+  return *resource->GetDesc(&desc);
+#else
+  return resource->GetDesc();
+#endif
+}
+
 struct D3D12HeapProperties {
   constexpr static D3D12_HEAP_PROPERTIES kDefault{D3D12_HEAP_TYPE_DEFAULT};
   constexpr static D3D12_HEAP_PROPERTIES kUpload{D3D12_HEAP_TYPE_UPLOAD};

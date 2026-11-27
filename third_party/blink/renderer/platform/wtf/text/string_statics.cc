@@ -57,8 +57,18 @@ struct NewlineThenWhitespaceEntry {
       typename StaticAsciiStringImpl<N>::NewlineThenWhitespaceTag{}};
 };
 
+// GCC cannot constant-evaluate a String returned by value (its
+// scoped_refptr has a non-constexpr destructor); initialise it at startup.
+#if defined(__clang__)
+#define WTF_TABLE_CONSTEVAL consteval
+#define WTF_TABLE_CONSTINIT constinit
+#else
+#define WTF_TABLE_CONSTEVAL constexpr
+#define WTF_TABLE_CONSTINIT
+#endif
+
 template <size_t... Is>
-consteval NewlineThenWhitespaceStringsTable::TableType
+WTF_TABLE_CONSTEVAL NewlineThenWhitespaceStringsTable::TableType
 MakeNewlineThenWhitespaceTable(std::index_sequence<Is...>) {
   return {String(),
           String(NewlineThenWhitespaceEntry<Is + 1>::kImpl.AsStringImpl(),
@@ -93,8 +103,9 @@ MakeNewlineThenWhitespaceTable(std::index_sequence<Is...>) {
 // This is not an AtomicString because it is unlikely to be used as an
 // event/element/attribute name, so it shouldn't pollute the AtomicString hash
 // table.
-[[clang::no_destroy]] WTF_EXPORT constinit const String g_xmlns_with_colon =
-    String::FromLiteral<"xmlns:">();
+[[clang::no_destroy]] WTF_EXPORT constinit const String g_xmlns_with_colon(
+    StaticAsciiLiteral<"xmlns:">::Impl(),
+    String::StaticImplTag{});
 
 [[clang::no_destroy]] WTF_EXPORT constinit const String g_empty_string(
     &StringImpl::g_global_empty,
@@ -104,7 +115,7 @@ MakeNewlineThenWhitespaceTable(std::index_sequence<Is...>) {
     String::StaticImplTag{});
 
 [[clang::
-      no_destroy]] WTF_EXPORT constinit const NewlineThenWhitespaceStringsTable::
+      no_destroy]] WTF_EXPORT WTF_TABLE_CONSTINIT const NewlineThenWhitespaceStringsTable::
     TableType NewlineThenWhitespaceStringsTable::g_table_ =
         MakeNewlineThenWhitespaceTable(
             std::make_index_sequence<kTableSize - 1>());

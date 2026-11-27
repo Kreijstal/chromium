@@ -311,14 +311,14 @@ class ScopedD3D12ResourceBuffer : public ScopedD3DBuffer {
     }
     data_ = UNSAFE_TODO(
         base::span(reinterpret_cast<uint8_t*>(mapped_data),
-                   static_cast<size_t>(resource_->GetDesc().Width)));
+                   static_cast<size_t>(GetResourceDesc(resource_).Width)));
   }
   ~ScopedD3D12ResourceBuffer() override { ScopedD3D12ResourceBuffer::Commit(); }
 
   ScopedD3D12ResourceBuffer(ScopedD3D12ResourceBuffer&) = delete;
   ScopedD3D12ResourceBuffer& operator=(ScopedD3D12ResourceBuffer&) = delete;
 
-  bool Commit() override { return Commit(resource_->GetDesc().Width); }
+  bool Commit() override { return Commit(GetResourceDesc(resource_).Width); }
 
   bool Commit(uint32_t written_size) override {
     if (data_.empty()) {

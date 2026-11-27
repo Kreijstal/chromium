@@ -27,11 +27,12 @@ inline constexpr auto kWinAppRuntimeSupportedMinVersion =
 inline constexpr base::wcstring_view kWinAppRuntimePackageFamilyName =
     WINDOWSAPPSDK_RUNTIME_PACKAGE_FRAMEWORK_PACKAGEFAMILYNAME_W;
 
+// In declaration order (GCC rejects out-of-order designators).
 inline constexpr PACKAGE_VERSION kWinAppRuntimePackageMinVersion = {
-    .Major = WINDOWSAPPSDK_RUNTIME_VERSION_MAJOR,
-    .Minor = WINDOWSAPPSDK_RUNTIME_VERSION_MINOR,
+    .Revision = WINDOWSAPPSDK_RUNTIME_VERSION_REVISION,
     .Build = WINDOWSAPPSDK_RUNTIME_VERSION_BUILD,
-    .Revision = WINDOWSAPPSDK_RUNTIME_VERSION_REVISION};
+    .Minor = WINDOWSAPPSDK_RUNTIME_VERSION_MINOR,
+    .Major = WINDOWSAPPSDK_RUNTIME_VERSION_MAJOR};
 
 inline constexpr std::string_view kWinAppRuntimePackageMinVersionString =
     WINDOWSAPPSDK_RUNTIME_VERSION_DOTQUADSTRING;

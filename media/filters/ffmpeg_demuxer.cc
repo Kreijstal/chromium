@@ -1327,9 +1327,14 @@ FFmpegDemuxer::MetadataTrackMap FFmpegDemuxer::BuildMetadataTracks(
     const AVStream* metadata_stream =
         streams[stream_group->params.tref->metadata_index];
     // Map only IT35 metadata tracks.
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(63, 6, 100)
+    // System FFmpeg predates AV_CODEC_ID_ITUT_T35.
+    continue;
+#else
     if (metadata_stream->codecpar->codec_id != AV_CODEC_ID_ITUT_T35) {
       continue;
     }
+#endif
     // Only AGTM metadata tracks are supported.
     if (!MatchesAgtmT35(
             AVCodecParametersExtraDataToSpan(metadata_stream->codecpar))) {
@@ -1464,11 +1469,13 @@ void FFmpegDemuxer::OnFindStreamInfoDone(int result) {
     } else if (codec_type == AVMEDIA_TYPE_SUBTITLE) {
       stream->discard = AVDISCARD_ALL;
       continue;
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(63, 6, 100)
     } else if (codec_id == AV_CODEC_ID_ITUT_T35) {
       if (!metadata_tracks_.contains(stream->index)) {
         stream->discard = AVDISCARD_ALL;
       }
       continue;
+#endif
     } else {
       stream->discard = AVDISCARD_ALL;
       continue;

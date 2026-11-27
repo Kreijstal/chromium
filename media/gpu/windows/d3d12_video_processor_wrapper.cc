@@ -137,8 +137,8 @@ D3D12FenceAndValue D3D12VideoProcessorWrapper::ProcessFrames(
     const gfx::Rect& output_rectangle) {
   DCHECK(command_queue_ && command_allocator_ && command_list_ && fence_);
   DCHECK(!input_rectangle.IsEmpty());
-  D3D12_RESOURCE_DESC input_texture_desc = input_texture->GetDesc();
-  D3D12_RESOURCE_DESC output_texture_desc = output_texture->GetDesc();
+  D3D12_RESOURCE_DESC input_texture_desc = GetResourceDesc(input_texture);
+  D3D12_RESOURCE_DESC output_texture_desc = GetResourceDesc(output_texture);
   D3D12_VIDEO_SIZE_RANGE source_size_range{
       static_cast<UINT>(input_texture_desc.Width), input_texture_desc.Height,
       static_cast<UINT>(input_rectangle.width()),

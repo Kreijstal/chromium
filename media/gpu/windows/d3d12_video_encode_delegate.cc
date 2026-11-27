@@ -502,7 +502,7 @@ D3D12VideoEncodeDelegate::Encode(
       GetEncoderOutputColorSpaceFromInputColorSpace(input_frame_color_space);
 
   const D3D12_RESOURCE_DESC input_frame_desc =
-      picture_buffer.resource->GetDesc();
+      GetResourceDesc(picture_buffer.resource);
   const gfx::Rect input_frame_rect(
       0, 0, base::checked_cast<int>(input_frame_desc.Width),
       base::checked_cast<int>(input_frame_desc.Height));

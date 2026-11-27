@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "media/gpu/windows/d3d12_copy_command_list_wrapper.h"
+#include "media/gpu/windows/d3d12_helpers.h"
 
 #include "base/check_op.h"
 #include "base/notreached.h"
@@ -91,8 +92,8 @@ bool D3D12CopyCommandQueueWrapper::CopyBufferToBiPlanarTexture(
     uint32_t y_stride,
     uint32_t uv_offset,
     uint32_t uv_stride) {
-  CHECK_EQ(source_buffer->GetDesc().Dimension, D3D12_RESOURCE_DIMENSION_BUFFER);
-  D3D12_RESOURCE_DESC target_texture_desc = target_texture->GetDesc();
+  CHECK_EQ(GetResourceDesc(source_buffer).Dimension, D3D12_RESOURCE_DIMENSION_BUFFER);
+  D3D12_RESOURCE_DESC target_texture_desc = GetResourceDesc(target_texture);
   CHECK_LE(static_cast<uint64_t>(size.width()), target_texture_desc.Width);
   CHECK_LE(static_cast<uint32_t>(size.height()), target_texture_desc.Height);
   const UINT width = base::checked_cast<UINT>(size.width());

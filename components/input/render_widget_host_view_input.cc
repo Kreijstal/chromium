@@ -6,6 +6,7 @@
 
 #include "base/notreached.h"
 #include "components/input/render_widget_host_input_event_router.h"
+#include "ui/events/gesture_detection/filtered_gesture_provider.h"
 #include "ui/gfx/geometry/dip_util.h"
 
 namespace input {

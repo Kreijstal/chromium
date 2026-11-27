@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "media/gpu/windows/d3d12_video_decode_task.h"
+#include "media/gpu/windows/d3d12_helpers.h"
 
 #include "base/task/thread_pool.h"
 #include "media/base/win/mf_helpers.h"
@@ -90,12 +91,12 @@ Microsoft::WRL::ComPtr<ID3D12Resource>
 D3D12VideoDecoderTask::GetBitstreamBuffer(ID3D12Device* device, size_t size) {
   CHECK(!fence_and_value_.first);
   // The compressed_bitstream_ is reused if it's large enough.
-  if (!compressed_bitstream_ || compressed_bitstream_->GetDesc().Width < size) {
+  if (!compressed_bitstream_ || GetResourceDesc(compressed_bitstream_).Width < size) {
     // Double the size of the buffer if it's too small, to avoid frequent
     // reallocations.
     size_t new_size = std::max(
         compressed_bitstream_
-            ? static_cast<size_t>(compressed_bitstream_->GetDesc().Width) * 2
+            ? static_cast<size_t>(GetResourceDesc(compressed_bitstream_).Width) * 2
             : size,
         size);
     D3D12_HEAP_PROPERTIES heap_properties{.Type = D3D12_HEAP_TYPE_UPLOAD};

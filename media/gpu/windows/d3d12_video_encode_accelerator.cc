@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "media/gpu/windows/d3d12_video_encode_accelerator.h"
+#include "media/gpu/windows/d3d12_helpers.h"
 
 #include <d3d11.h>
 
@@ -857,9 +858,9 @@ bool D3D12VideoEncodeAccelerator::EnsureInputTexture(DXGI_FORMAT format) {
                                    config_.input_visible_size.height(), 1, 1);
   // The format is part of the reuse predicate: a cached texture of a different
   // format cannot receive this frame even when it is large enough.
-  if (input_texture_ && input_texture_->GetDesc().Format == format &&
-      input_texture_->GetDesc().Width >= input_texture_desc.Width &&
-      input_texture_->GetDesc().Height >= input_texture_desc.Height) {
+  if (input_texture_ && GetResourceDesc(input_texture_).Format == format &&
+      GetResourceDesc(input_texture_).Width >= input_texture_desc.Width &&
+      GetResourceDesc(input_texture_).Height >= input_texture_desc.Height) {
     return true;
   }
   HRESULT hr = device_->CreateCommittedResource(
@@ -880,7 +881,7 @@ bool D3D12VideoEncodeAccelerator::EnsureUploadBuffer(uint64_t size) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(encoder_sequence_checker_);
   D3D12_RESOURCE_DESC upload_buffer_desc = CD3DX12_RESOURCE_DESC::Buffer(size);
   if (upload_buffer_ &&
-      upload_buffer_->GetDesc().Width >= upload_buffer_desc.Width) {
+      GetResourceDesc(upload_buffer_).Width >= upload_buffer_desc.Width) {
     return true;
   }
   HRESULT hr = device_->CreateCommittedResource(

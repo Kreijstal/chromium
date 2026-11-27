@@ -120,7 +120,7 @@ bool ScopedD3D12ResourceMap::Map(ID3D12Resource* resource,
                                  const D3D12_RANGE* read_range) {
   CHECK(data_.empty());
   CHECK(resource);
-  CHECK_EQ(resource->GetDesc().Dimension, D3D12_RESOURCE_DIMENSION_BUFFER);
+  CHECK_EQ(GetResourceDesc(resource).Dimension, D3D12_RESOURCE_DIMENSION_BUFFER);
   void* data;
   HRESULT hr = resource->Map(subresource, read_range, &data);
   if (FAILED(hr)) {
@@ -135,7 +135,7 @@ bool ScopedD3D12ResourceMap::Map(ID3D12Resource* resource,
   // its |Width|. We will also reset the |data_| before we |Unmap()|.
   data_ = UNSAFE_BUFFERS(
       base::span(static_cast<uint8_t*>(data),
-                 static_cast<size_t>(resource_->GetDesc().Width)));
+                 static_cast<size_t>(GetResourceDesc(resource_).Width)));
   return true;
 }
 
@@ -174,7 +174,7 @@ CreateD3D12TransitionBarriersForAllPlanes(ID3D12Resource* resource,
                                           D3D12_RESOURCE_STATES state_before,
                                           D3D12_RESOURCE_STATES state_after) {
   CHECK(resource);
-  D3D12_RESOURCE_DESC desc = resource->GetDesc();
+  D3D12_RESOURCE_DESC desc = GetResourceDesc(resource);
   absl::InlinedVector<D3D12_RESOURCE_BARRIER, 2> barriers;
   for (size_t i = 0; i < GetFormatPlaneCount(desc.Format); i++) {
     barriers.push_back({.Transition = {.pResource = resource,
