@@ -442,7 +442,8 @@ std::u16string TypeConverter<UNIQUE_TYPE_NAME(SkColor)>::ToString(
 
 std::optional<SkColor> TypeConverter<UNIQUE_TYPE_NAME(SkColor)>::FromString(
     std::u16string_view source_value) {
-  return GetNextColor(source_value.cbegin(), source_value.cend());
+  const std::u16string value(source_value);
+  return GetNextColor(value.cbegin(), value.cend());
 }
 
 ValidStrings TypeConverter<UNIQUE_TYPE_NAME(SkColor)>::GetValidStrings() {

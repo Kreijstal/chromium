@@ -45,8 +45,8 @@ struct NullTraits<T> {
 };
 
 template <>
-struct NullTraits<nullptr_t> {
-  static constexpr bool IsNull(nullptr_t) { return true; }
+struct NullTraits<std::nullptr_t> {
+  static constexpr bool IsNull(std::nullptr_t) { return true; }
 };
 
 template <typename T>
