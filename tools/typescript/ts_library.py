@@ -268,7 +268,7 @@ def main(argv):
           os.path.join('./', mapping[1]).replace('\\', '/')
         )
 
-  tsconfig['compilerOptions']['baseUrl'] = '.'
+  # TypeScript 7 removed baseUrl; paths resolve from the tsconfig's dir.
   tsconfig['compilerOptions']['paths'] = path_mappings
 
   tsconfig_file = f'tsconfig_{args.output_suffix}.json'
