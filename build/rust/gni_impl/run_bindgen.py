@@ -134,7 +134,17 @@ def main():
             genargs.append(wrap_static_fns.name)
         genargs.append(args.header)
         genargs.append('--')
-        genargs.extend(filter_clang_args(args.clangargs))
+        clangargs = list(filter_clang_args(args.clangargs))
+        # MinGW libclang derives a relative resource dir; pass it.
+        if (sys.platform == 'win32' and args.libclang_path
+                and '-resource-dir' not in clangargs):
+            import glob
+            dirs = glob.glob(os.path.join(
+                os.path.abspath(args.libclang_path), '..', 'lib', 'clang', '*'))
+            if dirs:
+                clangargs = ['-resource-dir', os.path.normpath(dirs[-1]),
+                             *clangargs]
+        genargs.extend(clangargs)
         env = os.environ
         if args.ld_library_path:
             if sys.platform == 'darwin':
