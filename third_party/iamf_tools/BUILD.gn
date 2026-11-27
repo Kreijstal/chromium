@@ -249,7 +249,7 @@ test("iamf_tools_lib_fuzz_tests") {
 }
 
 config("strip_errors_config") {
-  if (is_win) {
+  if (is_win && !is_mingw) {
     cflags_cc = [
       "/FI",
       rebase_path("strip_errors.h", root_build_dir),
