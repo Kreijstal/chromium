@@ -1,7 +1,10 @@
 import("//build/shim_headers.gni")
 
 config("flatbuffers_config") {
-  include_dirs = [ "src/include" ]
+  # src/include is not removed on MinGW; it would shadow the system headers.
+  if (!is_mingw) {
+    include_dirs = [ "src/include" ]
+  }
 
   # Required to prevent static initialization of locale
   # in util.cpp
