@@ -109,7 +109,9 @@ blink_python_runner("runtime_feature_state_override_context") {
 
 blink_python_runner("color_data") {
   script = "../build/scripts/gperf.py"
-  sources = [ gperf_exe ]
+  if (!gperf_from_path) {
+    sources = [ gperf_exe ]
+  }
 
   color_data_gperf = "color_data.gperf"
   inputs = [
@@ -120,8 +122,12 @@ blink_python_runner("color_data") {
   output_file = "$blink_platform_output_dir/color_data.cc"
   outputs = [ output_file ]
 
-  args = [
-    rebase_path(gperf_exe, root_build_dir),
+  if (gperf_from_path) {
+    args = [ gperf_exe ]
+  } else {
+    args = [ rebase_path(gperf_exe, root_build_dir) ]
+  }
+  args += [
     "--key-positions=*",
     "-D",
     "-s",
