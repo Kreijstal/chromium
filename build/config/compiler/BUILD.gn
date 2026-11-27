@@ -345,7 +345,12 @@ config("compiler") {
   configs = []
 
   if (is_mingw) {
-    include_dirs = [ "//build/win/mingw_compat" ]
+    include_dirs = [
+      "//build/win/mingw_compat",
+
+      # wrl/implements.h and wrl/event.h, which mingw-w64 lacks.
+      "//build/win/mingw_wrl",
+    ]
   }
 
   # System-specific flags. If your compiler flags apply to one of the
