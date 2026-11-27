@@ -19,6 +19,11 @@ config("pthreadpool_config") {
     "PTHREADPOOL_USE_GCD=0",
     "PTHREADPOOL_USE_CONDVAR=0",
   ]
+
+  # mingw-w64 has no C11 <threads.h>; use winpthreads.
+  if (is_mingw) {
+    defines += [ "PTHREADPOOL_USE_PTHREADS=1" ]
+  }
 }
 
 # This is a target that depends on //base.
