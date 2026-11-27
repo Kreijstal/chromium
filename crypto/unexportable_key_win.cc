@@ -5,6 +5,32 @@
 #include "crypto/unexportable_key_win.h"
 
 #include <ncrypt.h>
+#if defined(__MINGW32__)
+// ncrypt.h type missing from mingw-w64.
+typedef struct _NCRYPT_PCP_TPM_WEB_AUTHN_ATTESTATION_STATEMENT {
+  UINT32 Magic;
+  UINT32 Version;
+  UINT32 HeaderSize;
+  UINT32 cbCertifyInfo;
+  UINT32 cbSignature;
+  UINT32 cbTpmPublic;
+} NCRYPT_PCP_TPM_WEB_AUTHN_ATTESTATION_STATEMENT;
+#ifndef NCRYPTBUFFER_CLAIM_KEYATTESTATION_NONCE
+#define NCRYPTBUFFER_CLAIM_KEYATTESTATION_NONCE 49
+#endif
+#ifndef NCRYPT_CLAIM_WEB_AUTH_SUBJECT_ONLY
+#define NCRYPT_CLAIM_WEB_AUTH_SUBJECT_ONLY 0x00000102
+#endif
+#ifndef NCRYPT_PCP_RSA_SCHEME_PROPERTY
+#define NCRYPT_PCP_RSA_SCHEME_PROPERTY L"PCP_RSA_SCHEME"
+#endif
+#ifndef NCRYPT_PCP_RSA_SCHEME_HASH_ALG_PROPERTY
+#define NCRYPT_PCP_RSA_SCHEME_HASH_ALG_PROPERTY L"PCP_RSA_SCHEME_HASH_ALG"
+#endif
+#ifndef BCRYPT_ECDSA_ALGORITHM
+#define BCRYPT_ECDSA_ALGORITHM L"ECDSA"
+#endif
+#endif
 #include <tbs.h>
 
 #include <array>

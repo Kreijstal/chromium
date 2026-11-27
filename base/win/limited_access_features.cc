@@ -7,7 +7,9 @@
 #include <inspectable.h>
 #include <roapi.h>
 #include <windows.foundation.h>
+#if !defined(__MINGW32__)
 #include <windows.services.store.h>
+#endif
 #include <wrl.h>
 
 #include <string>
@@ -18,6 +20,7 @@
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
 
+#if !defined(__MINGW32__)
 using ABI::Windows::ApplicationModel::IID_ILimitedAccessFeaturesStatics;
 using ABI::Windows::ApplicationModel::ILimitedAccessFeatureRequestResult;
 using ABI::Windows::ApplicationModel::ILimitedAccessFeaturesStatics;
@@ -26,6 +29,7 @@ using ABI::Windows::ApplicationModel::LimitedAccessFeatureStatus_Available;
 using ABI::Windows::ApplicationModel::
     LimitedAccessFeatureStatus_AvailableWithoutToken;
 using Microsoft::WRL::ComPtr;
+#endif
 
 namespace {
 
@@ -43,6 +47,10 @@ namespace base::win {
 
 bool TryToUnlockLimitedAccessFeature(const std::wstring& feature,
                                      const std::wstring& token) {
+#if defined(__MINGW32__)
+  // mingw-w64 lacks the LimitedAccessFeatures WinRT headers.
+  return false;
+#else
   ComPtr<ILimitedAccessFeaturesStatics> limited_access_features;
   ComPtr<ILimitedAccessFeatureRequestResult> limited_access_features_result;
 
@@ -81,6 +89,7 @@ bool TryToUnlockLimitedAccessFeature(const std::wstring& feature,
     return false;
   }
   return true;
+#endif
 }
 
 }  // namespace base::win

@@ -15,6 +15,14 @@
 #include <cfgmgr32.h>
 #include <inspectable.h>
 #include <lm.h>
+#if defined(__MINGW32__)
+// lmjoin.h type missing from mingw-w64.
+typedef enum _DSREG_JOIN_TYPE {
+  DSREG_UNKNOWN_JOIN = 0,
+  DSREG_DEVICE_JOIN = 1,
+  DSREG_WORKPLACE_JOIN = 2
+} DSREG_JOIN_TYPE;
+#endif
 #if defined(COMPILER_MSVC)
 #include <mdmregistration.h>
 #endif
