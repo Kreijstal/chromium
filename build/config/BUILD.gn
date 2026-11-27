@@ -47,6 +47,11 @@ if (is_android) {
 # build flags.
 config("feature_flags") {
   defines = []
+  if (is_qtwebengine) {
+    defines += [ "BUILDFLAG_INTERNAL_IS_QTWEBENGINE()=1" ]
+  } else {
+    defines += [ "BUILDFLAG_INTERNAL_IS_QTWEBENGINE()=0" ]
+  }
   rustflags = []
   if (dcheck_always_on) {
     defines += [ "DCHECK_ALWAYS_ON=1" ]

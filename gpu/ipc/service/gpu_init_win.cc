@@ -121,8 +121,11 @@ bool PreloadDLLs(const base::CommandLine* command_line,
   // - DefaultForceFallbackAdapter() covers Graphite/Dawn using
   //   SwiftShader via --skia-graphite-dawn-backend=swiftshader.
   if (features::IsSwiftShaderAllowed(command_line) ||
-      gpu_preferences.use_webgpu_adapter == WebGPUAdapterName::kSwiftShader ||
-      DawnContextProvider::DefaultForceFallbackAdapter()) {
+      gpu_preferences.use_webgpu_adapter == WebGPUAdapterName::kSwiftShader
+#if BUILDFLAG(SKIA_USE_DAWN)
+      || DawnContextProvider::DefaultForceFallbackAdapter()
+#endif
+  ) {
     TRACE_EVENT("gpu,startup", "Load vk_swiftshader.dll");
     base::LoadNativeLibrary(module_path.Append(L"vk_swiftshader.dll"), nullptr);
   }
@@ -153,10 +156,10 @@ void InitializeDirectComposition(DawnContextProvider* dawn_context_provider) {
   Microsoft::WRL::ComPtr<ID3D11Device> d3d11_device;
   Microsoft::WRL::ComPtr<ID3D12CommandQueue> d3d12_command_queue;
   gl::SolidColorPoolFactory solid_color_factory;
+#if BUILDFLAG(SKIA_USE_DAWN)
   if (dawn_context_provider) {
     d3d11_device = dawn_context_provider->GetD3D11Device();
     d3d12_command_queue = dawn_context_provider->GetD3D12CommandQueue();
-#if BUILDFLAG(SKIA_USE_DAWN)
     // When Skia is on Graphite-D3D12, use Dawn (the same `wgpu::Device`
     // and `ID3D12CommandQueue` Skia is using) to fill solid-color
     // overlays.
@@ -165,8 +168,9 @@ void InitializeDirectComposition(DawnContextProvider* dawn_context_provider) {
       solid_color_factory = CreateDawnTextureSolidColorPoolFactory(
           dawn_context_provider->GetDevice(), d3d12_command_queue);
     }
+  } else
 #endif  // BUILDFLAG(SKIA_USE_DAWN)
-  } else {
+  {
     d3d11_device = gl::QueryD3D11DeviceObjectFromANGLE();
   }
   if (!solid_color_factory) {

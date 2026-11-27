@@ -17,7 +17,11 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/synchronization/lock.h"
 #include "base/win/windows_version.h"
+#if defined(__MINGW32__)
+#include "ui/gl/experimental_dcomp_mingw.h"
+#else
 #include "third_party/microsoft_dxheaders/src/include/experimental-composition/experimental-dcomp.h"
+#endif
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/win/d3d_shared_fence.h"
 #include "ui/gl/gl_features.h"

@@ -91,7 +91,7 @@ struct GPU_GLES2_EXPORT AccessParams {
   AccessParams& operator=(const AccessParams&);
   ~AccessParams();
 
-  scoped_refptr<SharedContextState> context_state = nullptr;
+  scoped_refptr<SharedContextState> context_state;
   wgpu::Device wgpu_device = nullptr;
   // Other context types can be added here in the future.
 };

@@ -75,9 +75,11 @@
 #include "gpu/command_buffer/service/shared_image/iosurface_image_backing_factory.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "gpu/command_buffer/service/shared_image/d3d_image_backing_factory.h"
+#endif
 #if BUILDFLAG(IS_MSVC)
 #include "gpu/command_buffer/service/dxgi_shared_handle_manager.h"
-#include "gpu/command_buffer/service/shared_image/d3d_image_backing_factory.h"
 #include "gpu/command_buffer/service/shared_image/dcomp_image_backing_factory.h"
 #include "ui/gl/direct_composition_support.h"
 #include "ui/gl/gl_angle_util_win.h"

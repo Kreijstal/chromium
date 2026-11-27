@@ -5,6 +5,8 @@
 #ifndef UI_GL_VSYNC_PROVIDER_WIN_DCOMP_H_
 #define UI_GL_VSYNC_PROVIDER_WIN_DCOMP_H_
 
+#include <windows.h>
+
 #include <dcomp.h>
 
 #include "ui/gfx/vsync_provider.h"

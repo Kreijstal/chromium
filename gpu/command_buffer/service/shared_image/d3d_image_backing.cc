@@ -2457,14 +2457,23 @@ ID3D12CommandQueue* D3DImageBacking::GetOrCreateCommandQueueFor11On12() {
   CHECK_EQ(hr, S_OK);
 
   D3D12_COMMAND_QUEUE_DESC command_queue_desc = {};
+#if defined(__MINGW32__)
+  command_queue_desc.Type = static_cast<D3D12_COMMAND_LIST_TYPE>(-1);
+#else
   command_queue_desc.Type = D3D12_COMMAND_LIST_TYPE_NONE;
+#endif
   command_queue_desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
   command_queue_desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
   command_queue_desc.NodeMask = 0;
 
   Microsoft::WRL::ComPtr<ID3D12CommandQueue> command_queue;
   Microsoft::WRL::ComPtr<ID3D12Device> d3d12_device;
+#if defined(__MINGW32__)
+  d3d11on12_device->GetD3D12Device(__uuidof(ID3D12Device),
+                                   d3d12_device.GetAddressOf());
+#else
   d3d11on12_device->GetD3D12Device(IID_PPV_ARGS(&d3d12_device));
+#endif
   // `CreateCommandQueue` with D3D12_COMMAND_QUEUE_FLAG_NONE should always
   // succeed, even if the device has been removed.
   hr = d3d12_device->CreateCommandQueue(&command_queue_desc,

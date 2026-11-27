@@ -21,7 +21,11 @@
 #include "base/types/expected.h"
 #include "dc_commit_error.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#if defined(__MINGW32__)
+#include "ui/gl/experimental_dcomp_mingw.h"
+#else
 #include "third_party/microsoft_dxheaders/src/include/experimental-composition/experimental-dcomp.h"
+#endif
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/overlay_layer_id.h"
 #include "ui/gl/dc_commit_error.h"

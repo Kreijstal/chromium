@@ -756,8 +756,11 @@ bool GpuInitLegacy::InitializeAndStartSandbox(
       //   SwiftShader via --skia-graphite-dawn-backend=swiftshader.
       if (features::IsSwiftShaderAllowed(command_line) ||
           gpu_preferences_.use_webgpu_adapter ==
-              WebGPUAdapterName::kSwiftShader ||
-          DawnContextProvider::DefaultForceFallbackAdapter()) {
+              WebGPUAdapterName::kSwiftShader
+#if BUILDFLAG(SKIA_USE_DAWN)
+          || DawnContextProvider::DefaultForceFallbackAdapter()
+#endif
+      ) {
         TRACE_EVENT("gpu,startup", "Load vk_swiftshader.dll");
         base::LoadNativeLibrary(module_path.Append(L"vk_swiftshader.dll"),
                                 nullptr);

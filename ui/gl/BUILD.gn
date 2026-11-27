@@ -294,6 +294,7 @@ component("gl") {
       "dc_layer_overlay_params.h",
       "dc_layer_tree.cc",
       "dc_layer_tree.h",
+      "experimental_dcomp_mingw.h",
       "dc_surface_solid_color_pool.cc",
       "dc_surface_solid_color_pool.h",
       "dcomp_presenter.cc",

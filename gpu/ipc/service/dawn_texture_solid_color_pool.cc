@@ -13,7 +13,11 @@
 #include "base/memory/ptr_util.h"
 #include "base/types/expected_macros.h"
 #include "gpu/command_buffer/service/shared_image/d3d_image_utils.h"
+#if defined(__MINGW32__)
+#include "ui/gl/experimental_dcomp_mingw.h"
+#else
 #include "third_party/microsoft_dxheaders/src/include/experimental-composition/experimental-dcomp.h"
+#endif
 #include "ui/gfx/color_space.h"
 #include "ui/gfx/color_space_win.h"
 #include "ui/gfx/win/d3d_shared_fence.h"

@@ -506,7 +506,11 @@ bool GpuInit2::InitializeAndStartSandbox(
   }
 
 #if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(SKIA_USE_DAWN)
   gpu_init_internal::InitializeDirectComposition(dawn_context_provider_.get());
+#else
+  gpu_init_internal::InitializeDirectComposition(nullptr);
+#endif
 #endif  // BUILDFLAG(IS_WIN)
 
   InitializePlatformOverlaySettings(&gpu_info_, gpu_feature_info_);

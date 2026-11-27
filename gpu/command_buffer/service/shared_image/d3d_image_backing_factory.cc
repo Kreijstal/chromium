@@ -1129,6 +1129,9 @@ bool D3DImageBackingFactory::IsSupported(SharedImageUsageSet usage,
     return false;
   }
 
+  const bool is_buffer =
+      usage.Has(gpu::SHARED_IMAGE_USAGE_WEBGPU_SHARED_BUFFER);
+
 #if !BUILDFLAG(IS_QTWEBENGINE)
   const bool is_scanout = usage.Has(gpu::SHARED_IMAGE_USAGE_SCANOUT);
   const bool is_video_decode = usage.Has(gpu::SHARED_IMAGE_USAGE_VIDEO_DECODE);
@@ -1169,8 +1172,6 @@ bool D3DImageBackingFactory::IsSupported(SharedImageUsageSet usage,
     return true;
   }
 #endif
-  const bool is_buffer =
-      usage.Has(gpu::SHARED_IMAGE_USAGE_WEBGPU_SHARED_BUFFER);
 
   if (gmb_type == gfx::EMPTY_BUFFER) {
     if (ToDXGIFormat(format) == DXGI_FORMAT_UNKNOWN && !is_buffer) {

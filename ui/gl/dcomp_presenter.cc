@@ -6,6 +6,10 @@
 
 #include <winerror.h>
 
+#if defined(__MINGW32__) && !defined(PRESENTATION_ERROR_LOST)
+#define PRESENTATION_ERROR_LOST _HRESULT_TYPEDEF_(0x88810001L)
+#endif
+
 #include <memory>
 #include <string_view>
 #include <utility>
