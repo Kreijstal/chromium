@@ -15,6 +15,7 @@
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/strings/string_util_win.h"
+#include "build/build_config.h"
 #include "ui/base/cursor/platform_cursor.h"
 #include "ui/base/ime/input_method.h"
 #include "ui/base/win/win_cursor.h"
@@ -309,12 +310,15 @@ LRESULT WinWindow::OnKeyEvent(UINT message, WPARAM w_param, LPARAM l_param) {
 }
 
 void WinWindow::OnInputLangChange(DWORD character_set, HKL input_language_id) {
+#if BUILDFLAG(IS_MSVC)
   if (input_method_) {
     input_method_->OnInputLocaleChanged();
   }
+#endif
 }
 
 LRESULT WinWindow::OnImeMessages(UINT message, WPARAM w_param, LPARAM l_param) {
+#if BUILDFLAG(IS_MSVC)
   if (input_method_) {
     LRESULT result = 0;
     base::WeakPtr<WinWindow> ref(msg_handler_weak_factory_.GetWeakPtr());
@@ -326,6 +330,7 @@ LRESULT WinWindow::OnImeMessages(UINT message, WPARAM w_param, LPARAM l_param) {
     }
     return result;
   }
+#endif
 
   return ::DefWindowProc(hwnd(), message, w_param, l_param);
 }
