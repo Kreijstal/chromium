@@ -339,6 +339,9 @@ struct EVENTS_BASE_EXPORT GestureEventDetails {
 
  private:
   EventType type_;
+#if !defined(__clang__)
+ public:  // GCC checks access in kCanSafelyConvertToByteSpan<Details>
+#endif
   union Details {
     Details();
     struct {  // SCROLL start details.
@@ -408,7 +411,11 @@ struct EVENTS_BASE_EXPORT GestureEventDetails {
     // Number of tap downs that have occurred in the current repeated tap
     // sequence. Should be set for EventType::kGestureTapDown events.
     int tap_down_count;
-  } data_;
+  };
+#if !defined(__clang__)
+ private:
+#endif
+  Details data_;
 
   GestureDeviceType device_type_;
 
