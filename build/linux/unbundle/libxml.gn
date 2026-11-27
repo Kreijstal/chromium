@@ -40,6 +40,9 @@ static_library("xml_reader") {
     "//components/trusted_vault",
     "//services/data_decoder:*",
   ]
+  if (is_win) {
+    visibility += [ "//components/wifi" ]
+  }
   sources = [
     "chromium/xml_reader.cc",
     "chromium/xml_reader.h",
