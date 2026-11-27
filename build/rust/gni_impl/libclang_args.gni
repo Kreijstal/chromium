@@ -36,10 +36,14 @@ _libclang_extra_args = []
 # says the wrong thing. We point it to our clang's resource dir which will
 # make it behave consistently with our other command line flags and allows
 # system headers to be found.
-_libclang_extra_args += [
-  "-resource-dir",
-  rebase_path(clang_base_path + "/lib/clang/" + clang_version, root_build_dir),
-]
+# MinGW: libclang finds the system clang's resource dir itself.
+if (!is_mingw) {
+  _libclang_extra_args += [
+    "-resource-dir",
+    rebase_path(clang_base_path + "/lib/clang/" + clang_version,
+                root_build_dir),
+  ]
+}
 
 if (is_win && !is_mingw) {
   # On Windows we fall back to using system headers from a sysroot from
