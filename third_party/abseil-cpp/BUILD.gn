@@ -19,7 +19,17 @@ config("absl_component_build") {
 
 component("absl") {
   public_deps = [ ":absl_component_deps" ]
+
+  # Also when a chromium-base SDK serves absl as its DLL.
+  if (chromium_base_sdk_gni != "" &&
+      filter_include([ "//third_party/abseil-cpp:absl" ],
+                     chromium_base_sdk_targets) != [] &&
+      filter_include([ "//third_party/abseil-cpp:absl" ],
+                     chromium_base_sdk_keep) == []) {
+    public_configs = [ ":absl_component_build" ]
+  }
   if (is_component_build) {
+    public_configs = []
     public_configs = [ ":absl_component_build" ]
 
     if (is_win && is_clang) {
