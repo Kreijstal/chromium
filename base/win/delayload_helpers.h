@@ -30,6 +30,10 @@ namespace base::win {
 // Note that `dll_name` is case-sensitive including the dll extension and must
 // match the name listed in the current module's delayloaded imports section.
 inline bool LoadAllImportsForDll(base::cstring_view dll_name) {
+#if defined(__MINGW32__)
+  // MinGW links without delayloads.
+  return false;
+#else
   HRESULT hr = ::__HrLoadAllImportsForDll(dll_name.c_str());
 
   if (hr == HRESULT_FROM_WIN32(ERROR_MOD_NOT_FOUND)) {
@@ -40,6 +44,7 @@ inline bool LoadAllImportsForDll(base::cstring_view dll_name) {
     return false;
   }
   return SUCCEEDED(hr);
+#endif
 }
 
 namespace delayload_internal {
@@ -69,6 +74,9 @@ class BASE_EXPORT ScopedSuppressDelayLoadFailure {
 // by providing a downgraded experience.
 inline base::expected<bool, HRESULT> LoadAllImportsForDllUnchecked(
     base::cstring_view dll_name) {
+#if defined(__MINGW32__)
+  return base::ok(false);
+#else
   delayload_internal::ScopedSuppressDelayLoadFailure suppress;
   HRESULT hr = E_FAIL;
   __try {
@@ -95,6 +103,7 @@ inline base::expected<bool, HRESULT> LoadAllImportsForDllUnchecked(
     return base::unexpected(hr);
   }
   return base::ok(true);
+#endif
 }
 
 // Returns true if the current thread is executing within
