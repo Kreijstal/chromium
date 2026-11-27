@@ -54,14 +54,14 @@ class CBOR_EXPORT Value {
 
     friend bool operator==(const Null&, const Null&) { return true; }
   };
-  static constexpr Null null;
+  static constexpr Null null{};
 
   struct Undefined final {
     constexpr explicit Undefined() = default;
 
     friend bool operator==(const Undefined&, const Undefined&) { return true; }
   };
-  static constexpr Undefined undefined;
+  static constexpr Undefined undefined{};
 
   struct InvalidUTF8 final {
     BinaryValue bytes;
@@ -167,7 +167,7 @@ class CBOR_EXPORT Value {
   struct invalid_utf8_t final {
     constexpr explicit invalid_utf8_t() = default;
   };
-  static constexpr invalid_utf8_t invalid_utf8;
+  static constexpr invalid_utf8_t invalid_utf8{};
 
   // This constructor creates `INVALID_UTF8` values, which only
   // `Reader` and `InvalidUTF8StringValueForTesting()` may do.
