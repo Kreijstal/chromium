@@ -736,6 +736,18 @@ template("rust_target") {
         # In a component_build the cxx bindings may be linked into a shared
         # library at any point up the dependency tree, so always export.
         export_symbols = is_component_build
+
+        # Also as the chromium-base SDK built them, when it serves them.
+        if (chromium_base_sdk_gni != "" &&
+            current_toolchain == default_toolchain) {
+          _cxx_label = get_label_info(":${_target_name}_cxx_generated",
+                                      "label_no_toolchain")
+          if (filter_include([ _cxx_label ], chromium_base_sdk_targets) !=
+              [] && filter_include([ _cxx_label ], chromium_base_sdk_keep) ==
+                    []) {
+            export_symbols = true
+          }
+        }
       }
     } else {
       not_needed([ "_cxx_deps" ])
