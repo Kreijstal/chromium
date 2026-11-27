@@ -164,6 +164,16 @@ declare_args() {
 memory_tool_replaces_allocator =
     is_asan || is_hwasan || is_lsan || is_tsan || is_msan
 
+# A consumer of a chromium-base SDK links PA from its DLLs.
+_pa_is_shared = is_component_build
+if (defined(chromium_base_sdk_gni) && chromium_base_sdk_gni != "" &&
+    filter_include([ "//base/allocator/partition_allocator/src/partition_alloc:allocator_base" ],
+                   chromium_base_sdk_targets) != [] &&
+    filter_include([ "//base/allocator/partition_allocator/src/partition_alloc:allocator_base" ],
+                   chromium_base_sdk_keep) == []) {
+  _pa_is_shared = true
+}
+
 pa_buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
@@ -203,7 +213,7 @@ pa_buildflag_header("buildflags") {
     "HAS_MEMORY_TAGGING=$has_memory_tagging",
     "IS_ANDROID=$is_android",
     "IS_CHROMEOS=$is_chromeos",
-    "IS_COMPONENT_BUILD=$is_component_build",
+    "IS_COMPONENT_BUILD=$_pa_is_shared",
     "IS_DEBUG=$partition_alloc_is_debug",
     "IS_HWASAN=$is_hwasan",
     "MEMORY_TOOL_REPLACES_ALLOCATOR=$memory_tool_replaces_allocator",
