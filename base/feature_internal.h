@@ -128,7 +128,7 @@ consteval auto MakeCountryCodeStorage(Args... args) {
 // cache writes. lld-link merges `.data$*` sections into `.data`, ordered by
 // suffix.
 // LINT.IfChange(FeatureStateSection)
-#if defined(_WIN32)
+#if defined(_WIN32) && defined(__clang__)
 #define BASE_FEATURE_STATE_SECTION \
   __attribute__((section(".data$cr_feature_states")))
 #else
