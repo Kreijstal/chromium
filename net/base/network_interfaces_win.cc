@@ -4,6 +4,10 @@
 
 #include "net/base/network_interfaces_win.h"
 
+#if defined(__MINGW32__) && !defined(GAA_FLAG_SKIP_DNS_INFO)
+#define GAA_FLAG_SKIP_DNS_INFO 0x0800
+#endif
+
 #include <algorithm>
 #include <memory>
 #include <string_view>
