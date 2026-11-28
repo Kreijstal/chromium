@@ -20,7 +20,9 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "components/update_client/background_downloader_win.h"
+#if !defined(__MINGW32__)
 #include "components/update_client/delivery_optimization_downloader_win.h"
+#endif
 #elif BUILDFLAG(IS_MAC)
 #include "components/update_client/background_downloader_mac.h"
 #endif
@@ -76,6 +78,7 @@ scoped_refptr<CrxDownloader> CrxDownloaderFactoryChromium::MakeCrxDownloader(
     scoped_refptr<CrxDownloader> bits_downloader =
         base::MakeRefCounted<BackgroundDownloader>(url_fetcher_downloader,
                                                    prod_id);
+#if !defined(__MINGW32__)
     if (base::FeatureList::IsEnabled(kDeliveryOptimizationDownloader)) {
       // Delivery Optimization -> BITS -> URL fetcher. If DO is unavailable
       // on the host, the DO downloader fails fast and the download falls
@@ -83,6 +86,7 @@ scoped_refptr<CrxDownloader> CrxDownloaderFactoryChromium::MakeCrxDownloader(
       return base::MakeRefCounted<DeliveryOptimizationDownloader>(
           bits_downloader, prod_id);
     }
+#endif
     return bits_downloader;
 #endif
   }

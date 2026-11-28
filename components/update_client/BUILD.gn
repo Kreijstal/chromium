@@ -201,9 +201,15 @@ static_library("update_client") {
     sources += [
       "background_downloader_win.cc",
       "background_downloader_win.h",
-      "delivery_optimization_downloader_win.cc",
-      "delivery_optimization_downloader_win.h",
     ]
+
+    # mingw-w64 lacks deliveryoptimization.h.
+    if (!is_mingw) {
+      sources += [
+        "delivery_optimization_downloader_win.cc",
+        "delivery_optimization_downloader_win.h",
+      ]
+    }
   }
 }
 
@@ -340,8 +346,10 @@ source_set("unit_tests") {
     if (is_win) {
       sources += [
         "background_downloader_win_unittest.cc",
-        "delivery_optimization_downloader_win_unittest.cc",
       ]
+      if (!is_mingw) {
+        sources += [ "delivery_optimization_downloader_win_unittest.cc" ]
+      }
     }
 
     if (is_mac) {

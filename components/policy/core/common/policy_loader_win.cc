@@ -9,6 +9,9 @@
 
 #include <lm.h>       // For NetGetJoinInformation
 // <security.h> needs this.
+// MinGW: UNICODE_STRING from winternl.h, not ntsecapi.h.
+#include <winternl.h>
+
 #define SECURITY_WIN32 1
 #include <security.h>  // For GetUserNameEx()
 #include <stddef.h>
