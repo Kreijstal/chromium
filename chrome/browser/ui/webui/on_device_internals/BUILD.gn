@@ -2,6 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//services/on_device_model/on_device_model.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(!is_android)
@@ -33,10 +34,15 @@ source_set("on_device_internals") {
     "//chrome/common",
     "//content/public/browser",
     "//services/data_decoder/public/cpp",
-    "//services/on_device_model/ml:ml_no_internal",
     "//ui/base",
     "//ui/webui",
   ]
+  if (use_on_device_model_service) {
+    deps += [ "//services/on_device_model/ml:ml_no_internal" ]
+  } else {
+    # Only the ml:: enums; ml_no_internal needs Dawn.
+    deps += [ "//services/on_device_model/ml:api" ]
+  }
   if (is_chromeos) {
     deps += [ "//chromeos/ash/components/mojo_service_manager" ]
   }
