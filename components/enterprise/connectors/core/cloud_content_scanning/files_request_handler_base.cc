@@ -53,6 +53,7 @@ std::string AccessPointToUmaHistogramPrefix(DeepScanAccessPoint access_point) {
     case enterprise_connectors::FILE_DOWNLOADED:
       return "Enterprise.OnFileDownload";
     default:
+      break;
   }
   NOTREACHED();
 }

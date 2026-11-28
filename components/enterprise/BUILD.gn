@@ -5,7 +5,9 @@
 import("//components/enterprise/buildflags/buildflags.gni")
 
 config("extra_warnings") {
-  cflags = [ "-Wshadow-field" ]
+  if (is_clang) {
+    cflags = [ "-Wshadow-field" ]
+  }
 }
 
 static_library("enterprise") {

@@ -1228,7 +1228,7 @@ void RuleSet::FlattenMixinLocals(
               });
           inserted.erase(new_end, inserted.end());
           inserted.push_back(MixinParameterBindings::CQDependentValue{
-              variable_data, Member{container_queries}});
+              variable_data, Member<const ContainerQuerySet>(container_queries)});
         } else {
           locals.Set(name, variable_data);
           cq_dependent_locals.erase(name);

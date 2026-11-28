@@ -5,6 +5,8 @@
 #ifndef SERVICES_DATA_DECODER_XML_DOM_BUILDER_H_
 #define SERVICES_DATA_DECODER_XML_DOM_BUILDER_H_
 
+#include <memory>
+
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace data_decoder::xml {

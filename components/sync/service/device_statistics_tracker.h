@@ -290,7 +290,7 @@ class DeviceStatisticsTracker {
   base::flat_map<GaiaId, std::unique_ptr<DeviceStatisticsRequest>> requests_;
 
   class RequestFailed {};
-  const RequestFailed kRequestFailed;
+  const RequestFailed kRequestFailed{};
 
   // Results. This will have exactly one entry for every request that completed,
   // successfully or not. On success, the value is the list of all valid other

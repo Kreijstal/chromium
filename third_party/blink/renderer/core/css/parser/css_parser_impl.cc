@@ -1286,7 +1286,7 @@ StyleRuleBase* CSSParserImpl::CreateDeclarationsRule(
   // Create a nested declarations rule containing all declarations from
   // start_index to the end.
   HeapVector<CSSPropertyValue, 64> declarations(
-      base::span(parsed_properties_).subspan(start_index));
+      (base::span(parsed_properties_).subspan(start_index)));
 
   // Create the selector for StyleRuleNestedDeclarations's inner StyleRule.
 
@@ -2600,7 +2600,8 @@ StyleRuleResult* CSSParserImpl::ConsumeResultRule(
   // Clone(), which changes all the parent references to @apply's parent.
   fake_parent_rule->EnsureChildRules();
   return MakeGarbageCollected<StyleRuleResult>(
-      HeapVector{std::move(*fake_parent_rule->ChildRules())});
+      HeapVector<Member<StyleRuleBase>>(
+          std::move(*fake_parent_rule->ChildRules())));
 }
 
 // Parses one variable declared inside a @private block e.g. `--foo: 10px` or
@@ -2827,7 +2828,8 @@ StyleRuleApplyMixin* CSSParserImpl::ConsumeApplyMixinRule(
   fake_parent_rule->EnsureChildRules();
   return MakeGarbageCollected<StyleRuleApplyMixin>(
       name, std::move(arguments),
-      HeapVector{std::move(*fake_parent_rule->ChildRules())});
+      HeapVector<Member<StyleRuleBase>>(
+          std::move(*fake_parent_rule->ChildRules())));
 }
 
 StyleRuleContentsStatement* CSSParserImpl::ConsumeContentsRule(
@@ -2864,7 +2866,8 @@ StyleRuleContentsStatement* CSSParserImpl::ConsumeContentsRule(
   StyleRule* fake_parent_rule = ConsumeDeclarationListForMixins(stream);
   fake_parent_rule->EnsureChildRules();
   return MakeGarbageCollected<StyleRuleContentsStatement>(
-      HeapVector{std::move(*fake_parent_rule->ChildRules())});
+      HeapVector<Member<StyleRuleBase>>(
+          std::move(*fake_parent_rule->ChildRules())));
 }
 
 // Parse the parameters of a CSS function: Zero or more comma-separated

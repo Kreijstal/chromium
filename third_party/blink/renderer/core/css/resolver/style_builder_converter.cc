@@ -2664,7 +2664,7 @@ GapDataList<T> ConvertGapDecorationDataList(const StyleResolverState& state,
   }
 
   typename GapDataList<T>::GapDataVector gap_data_list(
-      base::span(values), [&](const CSSValue* curr_value) {
+      (base::span(values)), [&](const CSSValue* curr_value) {
         if (auto* gap_repeat_value =
                 DynamicTo<cssvalue::CSSRepeatValue>(curr_value)) {
           typename ValueRepeater<T>::VectorType gap_values(
@@ -2761,7 +2761,7 @@ ShadowList* StyleBuilderConverter::ConvertShadowList(StyleResolverState& state,
   }
 
   const auto& list = To<CSSValueList>(value);
-  ShadowDataVector shadows(base::span(list), [&state](const CSSValue* item) {
+  ShadowDataVector shadows((base::span(list)), [&state](const CSSValue* item) {
     return ConvertShadow(state.CssToLengthConversionData(), &state, *item);
   });
 

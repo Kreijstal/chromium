@@ -520,8 +520,8 @@ void SpeechRecognition::ResultRetrieved(
 
   // |final_results_| = (1) + (2).
   HeapVector<Member<SpeechRecognitionResult>> new_final_results(
-      base::span(aggregated_results)
-          .first(aggregated_results.size() - provisional_count));
+      (base::span(aggregated_results)
+           .first(aggregated_results.size() - provisional_count)));
   final_results_ = std::move(new_final_results);
 
   // The recognizer reports timestamps as offsets from the start of the audio

@@ -10,6 +10,7 @@
 #include "base/barrier_callback.h"
 #include "base/files/file.h"
 #include "base/functional/bind.h"
+#include "base/memory/ptr_util.h"
 #include "storage/browser/file_system/copy_or_move_hook_delegate.h"
 #include "storage/browser/file_system/file_system_url.h"
 
@@ -86,7 +87,7 @@ CopyOrMoveHookDelegateComposite::CreateOrAdd(
   DCHECK(parent != nullptr) << "parent must not be null";
   DCHECK(child != nullptr) << "child must not be null";
   auto composite =
-      std::make_unique<CopyOrMoveHookDelegateComposite>(std::move(parent));
+      base::WrapUnique(new CopyOrMoveHookDelegateComposite(std::move(parent)));
   composite->Add(std::move(child));
   return std::move(composite);
 }
