@@ -6,9 +6,9 @@
 
 #include "components/web_package/input_reader.h"
 
+#include <algorithm>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/numerics/checked_math.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
@@ -94,11 +94,11 @@ std::optional<CBORHeader> InputReader::ReadCBORHeader() {
   const auto& [type, additional_info] = *pair;
   switch (type) {
     case CBORType::kSimpleValue: {
-      using SimpleValue = cbor::Value::SimpleValue;
-      if (additional_info == std::to_underlying(SimpleValue::TRUE_VALUE)) {
+      using SimpleValue = cbor::constants::SimpleValue;
+      if (additional_info == std::to_underlying(SimpleValue::kTrue)) {
         return {{true}};
       } else if (additional_info ==
-                 std::to_underlying(SimpleValue::FALSE_VALUE)) {
+                 std::to_underlying(SimpleValue::kFalse)) {
         return {{false}};
       } else {
         return std::nullopt;
@@ -150,7 +150,7 @@ InputReader::ReadTypeAndArgument() {
   // during `static_cast<CBORType>`, it's safer to validate the type beforehand.
   uint8_t type_byte = (*first_byte & cbor::constants::kMajorTypeMask) >>
                       cbor::constants::kMajorTypeBitShift;
-  if (!base::Contains(kAcceptedCBORTypes, type_byte,
+  if (!std::ranges::contains(kAcceptedCBORTypes, type_byte,
                       [](CBORType t) { return std::to_underlying(t); })) {
     return std::nullopt;
   }
