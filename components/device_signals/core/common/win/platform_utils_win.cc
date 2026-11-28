@@ -6,6 +6,9 @@
 
 #include <windows.h>
 
+// MinGW: UNICODE_STRING from winternl.h, not ntsecapi.h.
+#include <winternl.h>
+
 // SECURITY_WIN32 must be defined in order to get
 // EXTENDED_NAME_FORMAT enumeration.
 #define SECURITY_WIN32 1
